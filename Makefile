@@ -11,10 +11,8 @@ MLX42_BUILD = ./lib/MLX42/build
 MLX42_REPO = https://github.com/codam-coding-college/MLX42.git
 
 ifeq ($(shell uname), Darwin)
-# CC := gcc
 LIBS := $(MLX42_BUILD)/libmlx42.a -L/opt/homebrew/lib -lglfw -framework Cocoa -framework OpenGL -framework IOKit
 else
-# CC := cc
 LIBS := $(MLX42_BUILD)/libmlx42.a -ldl -lglfw -pthread -lm
 endif
 
