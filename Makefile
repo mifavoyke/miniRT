@@ -52,6 +52,7 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
+	@$(RM) -r ./lib/MLX42
 	@make fclean -C $(LIBFT_DIR)
 
 re: fclean all
