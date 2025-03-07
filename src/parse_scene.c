@@ -1,5 +1,15 @@
 #include "../includes/minirt.h"
 
+void create_test_sphere(t_sphere *sp)
+{
+	if (!sp)
+		return;
+	sp->centre = set_default_coord(0.0, 0.0, 20.6);
+	sp->diameter = 12.6;
+	sp->colour = set_default_colour(10, 0, 255);
+	sp->next = NULL;
+}
+
 int default_scene(t_scene *scene)
 {
 	scene->a.ratio = 0.2;								// idk what defaul values will we choose?
@@ -13,11 +23,17 @@ int default_scene(t_scene *scene)
 	scene->l.brightness = 0.6;
 	scene->l.colour = set_default_colour(255, 255, 255);
 
-	scene->sp = NULL;
+	// scene->sp = NULL;
+	scene->sp = malloc(sizeof(t_sphere));
+	if (!scene->sp)
+	{
+		return (1);
+	}
+	create_test_sphere(scene->sp);
 	scene->pl = NULL;
 	scene->cy = NULL;
 
-	scene->sp_count = 0;
+	scene->sp_count = 1;
 	scene->pl_count = 0;
 	scene->cy_count = 0;
 	return (0);
