@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/07 14:46:29 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:58:34 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int32_t main(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		printf("Don't: ./miniRT\nDo: ./miniRT [scene]\n");
+		printf("Error\nDon't: ./miniRT\nDo: ./miniRT [scene]\n");
 		return (1);
 	}
 	if (minirt_init(&minirt))

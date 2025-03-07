@@ -23,6 +23,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/parse_utils.c \
 		$(SRC_DIR)/get_next_line/get_next_line.c \
 		$(SRC_DIR)/get_next_line/get_next_line_utils.c \
+		$(SRC_DIR)/ft_split.c
 
 OBJS := ${SRCS:.c=.o}
 

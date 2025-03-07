@@ -12,7 +12,7 @@ void create_test_sphere(t_sphere *sp)
 
 int default_scene(t_scene *scene)
 {
-	scene->a.ratio = 0.2;								// idk what defaul values will we choose?
+	scene->a.ratio = 0.2;								// idk what default values will we choose?
 	scene->a.colour = set_default_colour(255, 51, 255); // pink
 
 	scene->c.viewpoint = set_default_coord(-50.0, 0, 20);
@@ -37,6 +37,13 @@ int default_scene(t_scene *scene)
 	scene->pl_count = 0;
 	scene->cy_count = 0;
 	return (0);
+}
+
+void print_array(char **arr, int size)
+{
+	printf("\n");
+	for (int i = 0; i < size; i++)
+		printf("%s", arr[i]);
 }
 
 void print_colour(t_colour colour)
@@ -88,6 +95,32 @@ void print_scene(t_scene *scene)
 
 // }
 
+t_scene *fill_scene(char **rows, int size)
+{
+	t_scene *scene;
+	char **values;
+	int i;
+
+	scene = malloc(sizeof(t_scene));
+	if (!scene)
+		return (NULL);
+	default_scene(scene);
+	i = 0;
+	while (i < size)
+	{
+		values = ft_split(rows[i], ' ');
+		if (!values)
+		{
+			printf("Error. ft_split failed.\n");
+			return (NULL);
+		}
+		// process the row into the scene
+		i++;
+	}
+	ft_free(values, size);
+	return (scene);
+}
+
 int parse_scene(t_minirt *minirt, char *rt_file)
 {
 	char **parsed_file;
@@ -99,13 +132,17 @@ int parse_scene(t_minirt *minirt, char *rt_file)
 	if (!parsed_file)
 		return (1);
 
-	for (int i = 0; i < size; i++)
-		printf("%s", parsed_file[i]);
+	print_array(parsed_file, size);
 
-	default_scene(&minirt->scene);
+	minirt->scene = fill_scene(parsed_file, size);
+	if (!minirt->scene)
+		return (1);
 
-	print_scene(&minirt->scene);
-
+	printf("\n");
+	print_scene(minirt->scene);
+	
+	free(minirt->scene->sp);
+	free(minirt->scene);
 	ft_free(parsed_file, size);
 	return (0);
 }

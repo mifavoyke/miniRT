@@ -10,7 +10,7 @@ t_colour set_default_colour(int r, int b, int g)
 	top = 255;
 	if (r < bottom || r > top || b < bottom || b > top || g < bottom || g > top)
 	{
-		printf("Wrong colour range. RGB values must be within [0, 255]\nSetting the default white colour...\n");
+		printf("Error\nWrong colour range. RGB values must be within [0, 255]\nSetting the default white colour...\n");
 		clr.r = clr.b = clr.g = 255;
 		return (clr);
 	}

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/07 14:54:59 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:09:21 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 #include <unistd.h>
 #include <math.h>
 #include <fcntl.h>
-#include "../lib/MLX42/include/MLX42/MLX42.h"
+// #include "../lib/libft/libft.h"
 #include "../src/get_next_line/get_next_line.h"
+#include "../lib/MLX42/include/MLX42/MLX42.h"
 #define WIDTH 600
 #define HEIGHT 400
 
@@ -102,7 +103,7 @@ typedef struct s_minirt
     mlx_image_t *img;
     int img_width;
     int img_height;
-    t_scene scene;
+    t_scene *scene;
 } t_minirt;
 
 // MAIN
@@ -120,5 +121,6 @@ int	count_rows(char *arg);
 // UTILS
 void ft_error(void);
 void ft_free(char **arr, int size);
+char	**ft_split(char const *s, char c);
 
 #endif

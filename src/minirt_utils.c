@@ -2,7 +2,7 @@
 
 void ft_error(void)
 {
-	fprintf(stderr, "%s", mlx_strerror(mlx_errno)); // replace the function for the norm
+	fprintf(stderr, "Error\n%s", mlx_strerror(mlx_errno)); // replace the function for the norm
     // exit (1);
 }
 
