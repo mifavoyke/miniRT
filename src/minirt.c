@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/07 16:58:34 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:25:57 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,18 @@ int32_t main(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		printf("Error\nDon't: ./miniRT\nDo: ./miniRT [scene]\n");
+		printf("Error\nDon't: ./miniRT\nDo: ./miniRT [scene].rt\n");
+		return (1);
+	}
+	if (check_file_format(argv[1]))
+	{
+		printf("Wrong scene format.\n");
 		return (1);
 	}
 	if (minirt_init(&minirt))
 		return (1); // how will we handle errors? should we exit but what about the window termination?
-	if (parse_scene(&minirt, argv[1]))
-		return (1);
-	draw_line(minirt.img);
+	if (!parse_scene(&minirt, argv[1]))
+		draw_line(minirt.img);
 
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);

@@ -21,7 +21,10 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/minirt_utils.c \
 		$(SRC_DIR)/hooks.c \
 		$(SRC_DIR)/parse_scene.c \
-		$(SRC_DIR)/parse_utils.c
+		$(SRC_DIR)/parse_utils.c \
+		$(SRC_DIR)/fill_scene.c \
+		$(SRC_DIR)/ft_atof.c \
+		$(SRC_DIR)/test_utils.c # remove after done
 
 OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -48,11 +51,11 @@ libft:
 	@make all -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS)
-	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(HEADERS) -L$(LIBFT_DIR) -lft -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@mkdir -p $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@$(RM) $(OBJ_DIR)

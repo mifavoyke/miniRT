@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/08 14:48:58 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:44:09 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,24 @@ void ft_hook(void *param);
 
 // PARSING
 int parse_scene(t_minirt *minirt, char *rt_file);
-t_coord set_default_coord(float x, float y, float z);
-t_colour set_default_colour(int r, int b, int g);
+t_scene *fill_scene(char **rows, int size);
+int default_scene(t_scene *scene);
+t_coord parse_coord(char *coord);
+t_colour parse_colour(char *clr);
+t_coord set_coord(float x, float y, float z);
+t_colour set_colour(int r, int b, int g);
 char	**get_lines(char *arg, int size);
 int	count_rows(char *arg);
 
 // UTILS
 void ft_error(void);
 void ft_free(char **arr, int size);
-// char	**ft_split(char const *s, char c);
+float ft_atof(const char *str);
+int check_file_format(char *filename);
+
+// TESTS - REMOVE AFTER DONE
+void print_array(char **arr);
+void print_scene(t_scene *scene);
+void create_test_sphere(t_sphere *sp);
 
 #endif

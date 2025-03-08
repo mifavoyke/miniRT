@@ -19,3 +19,16 @@ void ft_free(char **arr, int size)
     free(arr);
 }
 
+int check_file_format(char *filename)
+{
+	int i;
+
+	i = 0;
+	while (filename[i])
+	{
+		if (filename[i] == '.' && filename[i + 1] == 'r' && filename[i + 2] == 't' && filename[i + 3] == '\0')
+			return (0);
+		i++;
+	}
+	return (1);
+}
