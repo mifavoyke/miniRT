@@ -3,66 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 20:28:17 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/24 18:51:36 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/08/28 15:50:49 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/08/28 15:50:51 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-size_t	get_size(int n)
+static size_t	ft_numsize(int n)
 {
-	size_t	size;
+	int	i;
 
-	size = 0;
-	if (n <= 0)
-		size = 1;
-	while (n != 0)
+	i = 0;
+	if (n == 0)
+		return (1);
+	if (n < 0)
+		i++;
+	while (n)
 	{
-		size++;
 		n /= 10;
+		i++;
 	}
-	return (size);
+	return (i);
 }
 
 char	*ft_itoa(int n)
 {
-	int				size;
-	char			*result;
-	long			num;
+	char	*str;
+	size_t	size;
 
-	size = get_size(n);
-	result = (char *)malloc((size + 1) * sizeof(char));
-	if (!result)
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	size = ft_numsize(n);
+	str = malloc((size + 1) * sizeof(char));
+	if (str == NULL)
 		return (NULL);
-	num = (long) n;
+	str[size] = '\0';
+	if (n == 0)
+		str[0] = '0';
 	if (n < 0)
 	{
-		num *= -1;
+		str[0] = '-';
+		n *= -1;
 	}
-	result[size] = '\0';
-	while (size > 0)
+	while (n)
 	{
-		result[size - 1] = num % 10 + '0';
-		num /= 10;
+		str[size - 1] = (n % 10) + '0';
+		n /= 10;
 		size--;
 	}
-	if (n < 0)
-		result[0] = '-';
-	return (result);
+	return (str);
 }
-
-// int main(void)
-// {
-// 	int n = 183990277;
-// 	char *result = ft_itoa(n);
-// 	printf("result: %s\n", result);
-// 	printf("result: %c\n", result[0]);
-// 	printf("result: %c\n", result[1]);
-// 	printf("result: %c\n", result[2]);
-// 	printf("result: %c\n", result[3]);
-// }

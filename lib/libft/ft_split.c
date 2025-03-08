@@ -3,87 +3,91 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 20:14:38 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/15 19:58:29 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/08/28 12:43:26 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/08/28 12:43:28 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-size_t	count_elements(char const *s, char c)
+static int	ft_wcount(const char *s, char c)
 {
-	size_t	count;
-	size_t	i;
+	int	i;
+	int	w;
 
 	i = 0;
-	count = 0;
-	while (s[i] && i < ft_strlen(s))
+	w = 0;
+	while (s[i])
 	{
-		while (s[i] == c && s[i])
+		while (s[i] == c)
 			i++;
-		if (s[i] != c && s[i] != '\0')
+		if (s[i])
 		{
-			count++;
-			i++;
+			while (s[i] && s[i] != c)
+				i++;
+			w++;
 		}
-		while (s[i] != c && s[i] != '\0')
-			i++;
-		i++;
 	}
-	return (count);
+	return (w);
 }
 
-// void	free_array(size_t count, char **array)
-// {
-// 	while (count > 0)
-// 	{
-// 		count--;
-// 		free(*(array + count));
-// 	}
-// 	free(array);
-// }
+static int	ft_wlen(const char *s, char c, int i)
+{
+	int	len;
+
+	len = 0;
+	while (s[i] && s[i] != c)
+	{
+		i++;
+		len++;
+	}
+	return (len);
+}
+
+static char	*ft_cword(const char *s, char c, int *i)
+{
+	char	*w;
+	int		k;
+
+	k = 0;
+	w = (char *)malloc((ft_wlen(s, c, *i) + 1) * sizeof(char));
+	if (w == 0)
+		return (NULL);
+	while (s[*i] && s[*i] != c)
+	{
+		w[k] = s[*i];
+		*i += 1;
+		k++;
+	}
+	w[k] = '\0';
+	return (w);
+}
 
 char	**ft_split(char const *s, char c)
 {
-	t_vars	vars;
+	char	**str;
+	int		i;
+	int		j;
 
-	vars.i = 0;
-	vars.j = 0;
-	vars.arr = (char **)malloc((count_elements(s, c) + 1) * sizeof(char *));
-	if (!vars.arr)
+	if (s == 0)
 		return (NULL);
-	while (vars.j < count_elements(s, c))
+	str = (char **)malloc((ft_wcount(s, c) + 1) * sizeof(char *));
+	if (str == 0)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[i])
 	{
-		while (s[vars.i] == c)
-			vars.i++;
-		if (s[vars.i] != c && s[vars.i] != '\0')
-			vars.start_i = vars.i;
-		while (s[vars.i + 1] != c && s[vars.i + 1] != '\0')
-			vars.i++;
-		vars.arr[vars.j] = ft_substr(s, vars.start_i, vars.i - vars.start_i
-				+ 1);
-		vars.i++;
-		vars.j++;
+		while (s[i] == c)
+			i++;
+		if (s[i])
+		{
+			str[j] = ft_cword(s, c, &i);
+			j++;
+		}
 	}
-	vars.arr[vars.j] = NULL;
-	return (vars.arr);
+	str[j] = NULL;
+	return (str);
 }
-
-// int main(void)
-// {
-// 	char *s = ",1.,2..,3...,4....,5.....,,,,l,";
-// 	char c = ',';
-// 	char **arr;
-// 	arr = ft_split(s, c);
-// 	printf("%s\n", arr[0]);
-// 	printf("%s\n", arr[1]);
-// 	printf("%s\n", arr[2]);
-// 	printf("%s\n", arr[3]);
-// 	printf("%s\n", arr[4]);
-// 	printf("%s\n", arr[5]);
-// 	printf("%s\n", arr[6]);
-// }

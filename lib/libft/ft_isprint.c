@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_str_is_printable.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/31 22:05:32 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/15 16:18:21 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/06/20 16:40:58 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/06/20 16:40:59 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ctype.h>
 #include "libft.h"
-#include <stdio.h>
 
 int	ft_isprint(int c)
 {
