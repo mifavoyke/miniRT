@@ -1,111 +1,67 @@
 #include "../includes/minirt.h"
 
-void create_test_sphere(t_sphere *sp)
+void default_ambient(t_ambient *a)
 {
-	if (!sp)
-		return;
-	sp->centre = set_default_coord(0.0, 0.0, 20.6);
-	sp->diameter = 12.6;
-	sp->colour = set_default_colour(10, 0, 255);
-	sp->next = NULL;
+	a->ratio = 0.2;
+	a->colour = set_colour(255, 51, 255);
+}
+
+void default_camera(t_camera *c)
+{
+	c->viewpoint = set_coord(-50.0, 0.0, 20.0);
+	c->vector = set_coord(0.0, 0.0, 1.0);
+	c->view_degree = 70;
+}
+
+void default_light(t_light *l)
+{
+	l->lightpoint = set_coord(-40.0, 50.0, 0.0);
+	l->brightness = 0.6;
+	l->colour = set_colour(255, 255, 255);
 }
 
 int default_scene(t_scene *scene)
 {
-	scene->a.ratio = 0.2;								// idk what defaul values will we choose?
-	scene->a.colour = set_default_colour(255, 51, 255); // pink
+	default_ambient(&scene->a);
+	default_camera(&scene->c);
+	default_light(&scene->l);
 
-	scene->c.viewpoint = set_default_coord(-50.0, 0, 20);
-	scene->c.vector = set_default_coord(0.0, 0.0, 1.0);
-	scene->c.view_degree = 70;
-
-	scene->l.lightpoint = set_default_coord(-40.0, 50.0, 0.0);
-	scene->l.brightness = 0.6;
-	scene->l.colour = set_default_colour(255, 255, 255);
-
-	// scene->sp = NULL;
 	scene->sp = malloc(sizeof(t_sphere));
 	if (!scene->sp)
-	{
 		return (1);
-	}
 	create_test_sphere(scene->sp);
+	
+	// scene->sp = NULL;
 	scene->pl = NULL;
 	scene->cy = NULL;
-
 	scene->sp_count = 1;
 	scene->pl_count = 0;
 	scene->cy_count = 0;
 	return (0);
 }
 
-void print_colour(t_colour colour)
-{
-	printf("(%d, %d, %d)", colour.r, colour.g, colour.b);
-}
-
-void print_coord(t_coord coord)
-{
-	printf("(%.2f, %.2f, %.2f)", coord.x, coord.y, coord.z);
-}
-
-void print_scene(t_scene *scene)
-{
-	printf("\n--- Scene Parameters ---\n");
-
-	// Ambient Light
-	printf("Ambient Light:\n");
-	printf("  Ratio: %.2f\n", scene->a.ratio);
-	printf("  Colour: ");
-	print_colour(scene->a.colour);
-	printf("\n");
-
-	// Camera
-	printf("\nCamera:\n");
-	printf("  Viewpoint: ");
-	print_coord(scene->c.viewpoint);
-	printf("\n  Vector: ");
-	print_coord(scene->c.vector);
-	printf("\n  View Degree: %d\n", scene->c.view_degree);
-
-	// Light Source
-	printf("\nLight:\n");
-	printf("  Position: ");
-	print_coord(scene->l.lightpoint);
-	printf("\n  Brightness: %.2f\n", scene->l.brightness);
-	printf("  Colour: ");
-	print_colour(scene->l.colour);
-	printf("\n");
-
-	printf("\n--- Object Counts ---\n");
-	printf("Spheres: %d\n", scene->sp_count);
-	printf("Planes: %d\n", scene->pl_count);
-	printf("Cylinders: %d\n", scene->cy_count);
-}
-
-// void identify_objects(char **parsed_file, int size)
-// {
-
-// }
-
 int parse_scene(t_minirt *minirt, char *rt_file)
 {
 	char **parsed_file;
 	int size;
-	(void)minirt;
 
 	size = count_rows(rt_file);
 	parsed_file = get_lines(rt_file, size);
 	if (!parsed_file)
 		return (1);
 
-	for (int i = 0; i < size; i++)
-		printf("%s", parsed_file[i]);
+	minirt->scene = fill_scene(parsed_file, size);
+	if (!minirt->scene)
+	{
+		// free(minirt->scene);
+		// ft_free(parsed_file, size);
+		return (1);
+	}
 
-	default_scene(&minirt->scene);
+	print_scene(minirt->scene);
+	free(minirt->scene->sp);
 
-	print_scene(&minirt->scene);
-
+	free(minirt->scene);
 	ft_free(parsed_file, size);
 	return (0);
 }

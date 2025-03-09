@@ -3,41 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/31 21:26:03 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/09/15 18:29:21 by zuzanapiaro      ###   ########.fr       */
+/*   Created: 2023/08/16 17:34:52 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/08/16 17:34:55 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "libft.h"
-#include <stdio.h>
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	unsigned char	*chars1;
-	unsigned char	*chars2;
+	size_t				i;
+	unsigned const char	*str1;
+	unsigned const char	*str2;
 
-	chars1 = (unsigned char *) s1;
-	chars2 = (unsigned char *) s2;
-	while (n > 0)
+	if (s1 == 0 && s2 == 0)
+		return (0);
+	i = 0;
+	str1 = (unsigned const char *)s1;
+	str2 = (unsigned const char *)s2;
+	while (i < n)
 	{
-		if (*chars1 != *chars2)
-			return (*chars1 - *chars2);
-		n--;
-		chars1++;
-		chars2++;
+		if (*str1 > *str2)
+			return (1);
+		else if (*str1 < *str2)
+			return (-1);
+		str1++;
+		str2++;
+		i++;
 	}
 	return (0);
 }
-
-// int	main(void)
-// {
-// 	char s11[] = "abcdef";
-// 	char s12[] = "bbcdef";
-// 	char s21[] = "abcdef";
-// 	char s22[] = "bbcdef";
-// 	printf("%d\n", memcmp(s11, s12, 2));
-// 	printf("%d\n", ft_memcmp(s21, s22, 2));
-// }

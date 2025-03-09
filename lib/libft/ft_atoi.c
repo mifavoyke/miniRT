@@ -3,45 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/01 16:57:58 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/15 16:17:21 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/06/28 18:18:59 by yhusieva          #+#    #+#             */
+/*   Updated: 2025/03/09 17:43:18 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-int	ft_atoi(const char *nptr)
+int ft_atoi(const char *nptr)
 {
-	int				r;
-	int				i;
-	int				sign;
+    int i;
+    int sign;
+    long long result;
 
-	i = 0;
-	sign = 1;
-	r = 0;
-	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if (nptr[i] == '+' || nptr[i] == '-')
-	{
-		if (nptr[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		r = r * 10 + (nptr[i] - '0');
-		i++;
-	}
-	return (r * sign);
+    i = 0;
+    sign = 1;
+    result = 0;
+    while ((nptr[i] >= '\t' && nptr[i] <= '\r') || nptr[i] == ' ')
+        i++;
+    if (nptr[i] == '+' || nptr[i] == '-')
+    {
+        if (nptr[i] == '-')
+            sign = -1;
+        i++;
+    }
+    while (nptr[i] >= '0' && nptr[i] <= '9')
+    {
+        result = (nptr[i] - '0') + (result * 10);
+        if ((sign == 1 && result > INT_MAX) || (sign == -1 && -result < INT_MIN))
+            return (INT_MIN);
+        i++;
+    }
+    return ((int)(result * sign));
 }
-
-// int	main(void)
-// {
-// 	char *nptr = "+101";
-// 	printf("atoi: %d\n", atoi(nptr));
-// 	printf("ft_atoi: %d\n", ft_atoi(nptr));
-// }

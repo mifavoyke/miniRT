@@ -1,18 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:25:21 by yhusieva          #+#    #+#             */
-/*   Updated: 2024/04/25 12:25:24 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:42:22 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
-char	*read_chunk(int fd, char *buffer)
+static char	*ft_strjoin_gnl(char *buff, char *read_tmp)
+{
+	size_t	i;
+	size_t	j;
+	char	*new;
+
+	if (!buff)
+	{
+		buff = (char *)malloc(sizeof(char));
+		buff[0] = 0;
+	}
+	if (!buff || !read_tmp)
+		return (NULL);
+	new = malloc(sizeof(char) * (ft_strlen(buff) + ft_strlen(read_tmp) + 1));
+	if (new == NULL)
+		return (NULL);
+	i = -1;
+	j = 0;
+	if (buff)
+		while (buff[++i] != '\0')
+			new[i] = buff[i];
+	while (read_tmp[j] != '\0')
+		new[i++] = read_tmp[j++];
+	new[ft_strlen(buff) + ft_strlen(read_tmp)] = '\0';
+	free(buff);
+	return (new);
+}
+
+static char	*read_chunk(int fd, char *buffer)
 {
 	int		bytes_read;
 	char	*read_buffer;
@@ -38,7 +66,7 @@ char	*read_chunk(int fd, char *buffer)
 	return (buffer);
 }
 
-char	*get_line(char *buffer)
+static char	*get_line(char *buffer)
 {
 	char	*line;
 	int		i;
@@ -52,7 +80,7 @@ char	*get_line(char *buffer)
 	return (line);
 }
 
-char	*get_remaining(char *buffer)
+static char	*get_remaining(char *buffer)
 {
 	int		i;
 	char	*remaining;
@@ -88,26 +116,3 @@ char	*get_next_line(int fd)
 	buffer = get_remaining(buffer);
 	return (line);
 }
-
-// int main(int argc, char *argv[])
-// {
-// 	char *line;
-// 	int fd;
-
-// 	// line = get_next_line(0);
-// 	// printf("%s", line);
-
-// 	if (argc != 2)
-// 	{
-// 		printf("are you dumb. gimme the file %s", argv[0]);
-// 		return (1);
-// 	}
-// 	fd = open(argv[1], O_RDONLY);
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }

@@ -3,49 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/01 19:46:57 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/15 19:07:34 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/08/18 17:07:31 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/08/18 17:07:33 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <string.h>
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	size;
-	size_t	little_length;
-	size_t	big_length;
+	size_t	i;
+	size_t	j;
 
-	if ((!big || !little) && !len)
-		return (0);
-	if (*little == '\0')
-		return ((char *)big);
-	little_length = ft_strlen(little);
-	big_length = ft_strlen(big);
-	if (big_length < little_length || len < little_length)
-		return (0);
-	if (big_length > len)
-		size = len;
-	else
-		size = big_length;
-	while (size >= little_length)
+	i = 0;
+	j = 0;
+	if (little[j] == '\0')
+		return ((char *)&big[i]);
+	if (len == 0)
+		return (NULL);
+	while (big[i] && i < len)
 	{
-		if (ft_strncmp(big, little, little_length) == 0)
-			return (((char *)(big)));
-		big++;
-		size--;
+		j = 0;
+		while (big[i + j] == little[j] && little[j] && (i + j) < len)
+		{
+			j++;
+		}
+		if (little[j] == '\0')
+			return ((char *)&big[i]);
+		i++;
 	}
-	return (0);
+	return (NULL);
 }
-
-// int	main(void)
-// {
-// 	char *little = "lo";
-// 	char *big = "hello world";
-// 	//char *big = ((void*)0);
-// 	printf("%s", ft_strnstr(big, little, 6));
-// }

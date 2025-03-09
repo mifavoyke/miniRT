@@ -1,20 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_is_alpha.c                                  :+:      :+:    :+:   */
+/*   ft_printf_formats_csp%.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/20 15:29:41 by yhusieva          #+#    #+#             */
-/*   Updated: 2023/06/20 15:29:43 by yhusieva         ###   ########.fr       */
+/*   Created: 2024/02/05 11:47:36 by yhusieva          #+#    #+#             */
+/*   Updated: 2024/02/05 11:47:38 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+int	ft_char(int c)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	write(1, &c, 1);
+	return (1);
+}
+
+int	ft_string(char *s)
+{
+	int	i;
+
+	if (s == NULL)
+		s = "(null)";
+	i = 0;
+	while (s[i])
+	{
+		write(1, &s[i], 1);
+		i++;
+	}
+	return (i);
+}
+
+int	ft_percent(void)
+{
+	int	c;
+
+	c = '%';
+	write(1, &c, 1);
+	return (1);
 }

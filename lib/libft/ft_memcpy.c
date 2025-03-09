@@ -3,45 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/31 18:37:44 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/13 20:35:58 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/08/18 17:06:56 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/08/18 17:06:57 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdio.h>
 #include "libft.h"
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	int		i;
-	char	*chardest;
-	char	*charsrc;
+	size_t				i;
+	unsigned char		*to;
+	unsigned const char	*from;
 
-	i = 0;
-	chardest = (char *) dest;
-	charsrc = (char *) src;
-	if (!dest && !src)
+	if (dest == NULL && src == NULL)
 		return (NULL);
-	while (n > 0)
+	i = 0;
+	to = (unsigned char *)dest;
+	from = (unsigned const char *)src;
+	while (i < n)
 	{
-		chardest[i] = charsrc[i];
+		to[i] = from[i];
 		i++;
-		n--;
 	}
-	return ((void *) dest);
+	return (dest);
 }
-
-// int	main(void)
-// {
-// 	char dest1[] = "AAAAAAA";
-// 	char dest2[] = "AAAAAAA";
-// 	char src1[] = {0, 0};
-// 	char src2[] = {0, 0};
-// 	ft_memcpy(dest1, src1, 2);
-// 	memcpy(dest2, src2, 2);
-// 	printf("%c\n", dest1[1]);
-// 	printf("%c\n", dest2[1]);
-// }

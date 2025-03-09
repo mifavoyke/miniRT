@@ -3,39 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/31 22:17:26 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/15 16:20:52 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/08/17 20:16:21 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/08/17 20:16:23 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <string.h>
 
 char	*ft_strchr(const char *s, int c)
 {
-	char			*res;
-	unsigned char	d;
+	int	i;
 
-	d = (unsigned char) c;
-	res = (char *) s;
-	while (*res)
+	i = 0;
+	while (s[i] != '\0')
 	{
-		if (*res == d)
-			return ((char *)res);
-		res++;
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
 	}
-	if (d == '\0')
-		return ((char *)res);
-	return (0);
+	if (s[i] == c)
+		return ((char *)&s[i]);
+	if (c == 0)
+		return ((char *)s + (ft_strlen(s)));
+	return (NULL);
 }
-
-// int	main(void)
-// {
-// 	const char *s = "abcdef";
-// 	int c = 0;
-// 	printf("%s\n", strchr(s, c));
-// 	printf("%s\n", ft_strchr(s, c));
-// }

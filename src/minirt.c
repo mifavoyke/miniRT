@@ -31,13 +31,13 @@ int minirt_init(t_minirt *minirt)
 	minirt->mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
 	if (!minirt->mlx)
 	{
-		ft_error();
+		ft_error_mlx();
 		return (1);
 	}
 	minirt->img = mlx_new_image(minirt->mlx, minirt->img_width, minirt->img_height);
 	if (!minirt->img || (mlx_image_to_window(minirt->mlx, minirt->img, 0, 0) < 0))
 	{
-		ft_error();
+		ft_error_mlx();
 		return (1);
 	}
 	return (0);
@@ -49,15 +49,20 @@ int32_t main(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		printf("Don't: ./miniRT\nDo: ./miniRT [scene]\n");
+		printf("Error\nDon't: ./miniRT\nDo: ./miniRT [scene].rt\n");
+		return (1);
+	}
+	if (check_file_format(argv[1]))
+	{
+		printf("Wrong scene format.\n");
 		return (1);
 	}
 	if (minirt_init(&minirt))
 		return (1); // how will we handle errors? should we exit but what about the window termination?
-	if (parse_scene(&minirt, argv[1]))
-		return (1);
-	draw_line(minirt.img);
-	get_viewport_coordinate();
+	if (!parse_scene(&minirt, argv[1]))
+		draw_line(minirt.img);
+	else
+		return (1); // if you terminate the window it seg faults
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 	mlx_terminate(minirt.mlx);

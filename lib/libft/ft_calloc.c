@@ -3,36 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 19:24:01 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/06/15 21:02:12 by zpiarova         ###   ########.fr       */
+/*   Created: 2023/08/23 16:28:23 by yhusieva          #+#    #+#             */
+/*   Updated: 2023/08/23 16:28:25 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
-//doda+t ochranu ored overflow
-void	*ft_calloc(size_t nelem, size_t elsize)
+void	*ft_calloc(size_t num, size_t size)
 {
-	unsigned char	*result;
-	int				size;
-	int				i;
+	size_t	total_size;
+	void	*ptr;
 
-	i = 0;
-	if (nelem == 0 || elsize == 0)
-		return (malloc(1));
-	size = nelem * elsize;
-	result = (unsigned char *)malloc(size);
-	if (!result)
-		return (NULL);
-	while (i < size)
+	total_size = num * size;
+	if (num == 0 || size == 0)
 	{
-		result[i] = 0;
-		i++;
+		ptr = malloc(0);
+		return (ptr);
 	}
-	return ((char *)result);
+	if (total_size / num != size)
+		return (NULL);
+	ptr = malloc(total_size);
+	if (ptr == 0)
+		return (NULL);
+	ft_bzero(ptr, total_size);
+	return (ptr);
 }

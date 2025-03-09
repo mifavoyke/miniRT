@@ -18,11 +18,13 @@
 #include <unistd.h>
 #include <math.h>
 #include <fcntl.h>
+#include <float.h>
+#include <ctype.h>
+#include "../lib/libft/libft.h"
 #include "../lib/MLX42/include/MLX42/MLX42.h"
-#include "../src/get_next_line/get_next_line.h"
 #define WIDTH 600
 #define HEIGHT 400
-//#define M_PI 3.1415
+#define INT_ERROR INT_MIN
 
 typedef struct s_colour
 {
@@ -92,6 +94,9 @@ typedef struct s_scene
     t_sphere *sp;
     t_plane *pl;
     t_cylinder *cy;
+    int a_count;
+    int c_count;
+    int l_count;
     int sp_count;
     int pl_count;
     int cy_count;
@@ -103,7 +108,7 @@ typedef struct s_minirt
     mlx_image_t *img;
     int img_width;
     int img_height;
-    t_scene scene;
+    t_scene *scene;
 } t_minirt;
 
 // MAIN
@@ -118,13 +123,25 @@ void ft_hook(void *param);
 
 // PARSING
 int parse_scene(t_minirt *minirt, char *rt_file);
-t_coord set_default_coord(float x, float y, float z);
-t_colour set_default_colour(int r, int b, int g);
+t_scene *fill_scene(char **rows, int size);
+int default_scene(t_scene *scene);
+t_coord parse_coord(char *coord);
+t_colour parse_colour(char *clr);
+t_coord set_coord(float x, float y, float z);
+t_colour set_colour(int r, int b, int g);
 char	**get_lines(char *arg, int size);
 int	count_rows(char *arg);
+int valid_input(char **values);
 
 // UTILS
-void ft_error(void);
+void ft_error_mlx(void);
+int ft_error(const char *msg);
 void ft_free(char **arr, int size);
+double ft_atof(const char *str);
+int check_file_format(char *filename);
+
+// TESTS - REMOVE AFTER DONE
+void print_scene(t_scene *scene);
+void create_test_sphere(t_sphere *sp);
 
 #endif
