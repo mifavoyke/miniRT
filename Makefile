@@ -23,9 +23,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/render.c \
 		$(SRC_DIR)/parse_scene.c \
 		$(SRC_DIR)/parse_utils.c \
-		$(SRC_DIR)/get_next_line/get_next_line.c \
-		$(SRC_DIR)/get_next_line/get_next_line_utils.c \
-		$(SRC_DIR)/math/math.c \
+		$(SRC_DIR)/math.c \
 		$(SRC_DIR)/fill_scene.c \
 		$(SRC_DIR)/ft_atof.c \
 		$(SRC_DIR)/parse_checks.c \
