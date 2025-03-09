@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/09 18:40:06 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:01:22 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,11 @@ typedef struct s_minirt
 } t_minirt;
 
 // MAIN
+
+// MATH
+int transform_to_tl(char coordinate, float value);
+float get_viewport_width(float angle_deg, float distance);
+t_coord *get_viewport_coordinate();
 
 // HOOKS
 void ft_hook(void *param);

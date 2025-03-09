@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/09 18:46:26 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:02:08 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void draw_line(mlx_image_t *image)
 {
-	int i = 50;
+	int i = 0;
 
-	while (i < 500)
+	while (i < 50)
 	{
-		mlx_put_pixel(image, i, 100, 0xe5f89f);
+		mlx_put_pixel(image, transform_to_tl('x', (float)i), transform_to_tl('y', 0), 0xe5f89f);
 		i++;
 	}
 }
@@ -63,7 +63,6 @@ int32_t main(int argc, char *argv[])
 		draw_line(minirt.img);
 	else
 		return (1); // if you terminate the window it seg faults
-
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 	mlx_terminate(minirt.mlx);
