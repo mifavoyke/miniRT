@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/07 14:54:59 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:01:22 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include "../src/get_next_line/get_next_line.h"
 #define WIDTH 600
 #define HEIGHT 400
+//#define M_PI 3.1415
 
 typedef struct s_colour
 {
@@ -106,6 +107,11 @@ typedef struct s_minirt
 } t_minirt;
 
 // MAIN
+
+// MATH
+int transform_to_tl(char coordinate, float value);
+float get_viewport_width(float angle_deg, float distance);
+t_coord *get_viewport_coordinate();
 
 // HOOKS
 void ft_hook(void *param);

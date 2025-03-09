@@ -19,10 +19,12 @@ endif
 SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/minirt_utils.c \
 		$(SRC_DIR)/hooks.c \
+		$(SRC_DIR)/render.c \
 		$(SRC_DIR)/parse_scene.c \
 		$(SRC_DIR)/parse_utils.c \
 		$(SRC_DIR)/get_next_line/get_next_line.c \
 		$(SRC_DIR)/get_next_line/get_next_line_utils.c \
+		$(SRC_DIR)/math/math.c \
 
 OBJS := ${SRCS:.c=.o}
 
