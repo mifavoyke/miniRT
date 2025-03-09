@@ -1,6 +1,6 @@
 #include "../includes/minirt.h"
 
-void ft_error(void)
+void ft_error_mlx(void)
 {
 	fprintf(stderr, "Error\n%s", mlx_strerror(mlx_errno)); // replace the function for the norm
     // exit (1);

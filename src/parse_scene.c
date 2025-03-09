@@ -44,7 +44,6 @@ int parse_scene(t_minirt *minirt, char *rt_file)
 {
 	char **parsed_file;
 	int size;
-	(void)minirt;
 
 	size = count_rows(rt_file);
 	parsed_file = get_lines(rt_file, size);

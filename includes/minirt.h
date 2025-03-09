@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/08 17:44:09 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/09 18:40:06 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@
 #include <unistd.h>
 #include <math.h>
 #include <fcntl.h>
+#include <float.h>
+#include <ctype.h>
 #include "../lib/libft/libft.h"
 #include "../lib/MLX42/include/MLX42/MLX42.h"
 #define WIDTH 600
 #define HEIGHT 400
+#define INT_ERROR INT_MIN
 
 typedef struct s_colour
 {
@@ -91,6 +94,9 @@ typedef struct s_scene
     t_sphere *sp;
     t_plane *pl;
     t_cylinder *cy;
+    int a_count;
+    int c_count;
+    int l_count;
     int sp_count;
     int pl_count;
     int cy_count;
@@ -120,15 +126,16 @@ t_coord set_coord(float x, float y, float z);
 t_colour set_colour(int r, int b, int g);
 char	**get_lines(char *arg, int size);
 int	count_rows(char *arg);
+int valid_input(char **values);
 
 // UTILS
-void ft_error(void);
+void ft_error_mlx(void);
+int ft_error(const char *msg);
 void ft_free(char **arr, int size);
-float ft_atof(const char *str);
+double ft_atof(const char *str);
 int check_file_format(char *filename);
 
 // TESTS - REMOVE AFTER DONE
-void print_array(char **arr);
 void print_scene(t_scene *scene);
 void create_test_sphere(t_sphere *sp);
 

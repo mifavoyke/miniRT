@@ -1,6 +1,6 @@
 #include "../includes/minirt.h"
 
-t_coord set_coord(float x, float y, float z) // add some range checks?
+t_coord set_coord(float x, float y, float z)
 {
 	t_coord coord;
 
@@ -28,13 +28,18 @@ t_coord parse_coord(char *coord)
 	values = ft_split(coord, ',');
 	if (!values || !values[0] || !values[1] || !values[2])
 	{
-		printf("Error: Invalid coordinate format. Using default (0,0,0).\n");
-		return (set_coord(0.0, 0.0, 0.0));
+		printf("Error: Invalid coordinate format.\n");
+		return (set_coord(INT_ERROR, INT_ERROR, INT_ERROR));
 	}
 	parsed.x = ft_atof(values[0]);
 	parsed.y = ft_atof(values[1]);
 	parsed.z = ft_atof(values[2]);
 	ft_free(values, 3);
+	if (parsed.x == INT_MIN || parsed.y == INT_MIN || parsed.z == INT_MIN)
+	{
+		printf("Error: Coordinate out of allowed range.\n");
+		return (set_coord(INT_ERROR, INT_ERROR, INT_ERROR));
+	}
 	return (parsed);
 }
 
@@ -47,7 +52,7 @@ t_colour parse_colour(char *clr)
 	if (!values || !values[0] || !values[1] || !values[2])
 	{
 		printf("Error: Invalid colour format.\n");
-		return (set_colour(255, 255, 255));
+		return (set_colour(-1, -1, -1));
 	}
 	colour.r = ft_atoi(values[0]);
 	colour.g = ft_atoi(values[1]);
@@ -55,8 +60,8 @@ t_colour parse_colour(char *clr)
 	ft_free(values, 3);
 	if (colour.r < 0 || colour.r > 255 || colour.g < 0 || colour.g > 255 || colour.b < 0 || colour.b > 255)
 	{
-		printf("Error: Colour values out of range. Using default.\n");
-		return (set_colour(255, 255, 255));
+		printf("Error: Colour values out of range.\n");
+		return (set_colour(-1, -1, -1));
 	}
 	return (colour);
 }

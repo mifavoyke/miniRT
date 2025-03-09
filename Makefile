@@ -24,6 +24,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/parse_utils.c \
 		$(SRC_DIR)/fill_scene.c \
 		$(SRC_DIR)/ft_atof.c \
+		$(SRC_DIR)/parse_checks.c \
 		$(SRC_DIR)/test_utils.c # remove after done
 
 OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
