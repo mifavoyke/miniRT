@@ -23,13 +23,16 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/render.c \
 		$(SRC_DIR)/parse_scene.c \
 		$(SRC_DIR)/parse_utils.c \
-		$(SRC_DIR)/math.c \
+		$(SRC_DIR)/math/basic.c \
+		$(SRC_DIR)/math/math.c \
+		$(SRC_DIR)/math/vector.c \
+		$(SRC_DIR)/math/viewport.c \
 		$(SRC_DIR)/fill_scene.c \
 		$(SRC_DIR)/ft_atof.c \
 		$(SRC_DIR)/parse_checks.c \
 		$(SRC_DIR)/test_utils.c # remove after done
-
-OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJS	:= ${SRCS:.c=.o}
+#OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: libmlx libft $(NAME)
 
@@ -61,7 +64,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@$(RM) $(OBJ_DIR)
+	@$(RM) $(OBJS)
 	@$(RM) $(MLX42_BUILD)
 	@make clean -C $(LIBFT_DIR)
 

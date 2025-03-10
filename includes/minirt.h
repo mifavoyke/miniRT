@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/09 20:01:22 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:55:49 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,27 @@ typedef struct s_plane
     struct s_plane *next;
 } t_plane;
 
-typedef struct s_cyliner
+typedef struct s_cylinder
 {
     t_coord centre;
     t_coord vector;
     float diameter;
     float height;
     t_colour colour;
-    struct s_cyliner *next;
+    struct s_cylinder *next;
 } t_cylinder;
+
+typedef struct s_viewport
+{
+    float viewport_width;
+	float viewport_height;
+	float corner_distance;
+	t_coord viewport_centre;
+    t_coord Vtl;
+	t_coord Vtr;
+    t_coord Vbl;
+    t_coord Vbr;
+}   t_viewport;
 
 typedef struct s_scene
 {
@@ -100,6 +112,7 @@ typedef struct s_scene
     int sp_count;
     int pl_count;
     int cy_count;
+    t_viewport *viewport;
 } t_scene;
 
 typedef struct s_minirt
@@ -113,10 +126,27 @@ typedef struct s_minirt
 
 // MAIN
 
-// MATH
+// MATH - vector.c
+float dot_product(t_coord A, t_coord B);
+int is_vector_normalized(t_coord v);
+t_coord make_vector(t_coord from, t_coord to);
+t_coord get_point_on_vector(t_coord C, t_coord v, float d);
+bool are_collinear(t_coord A, t_coord B);
+t_coord get_cross_product(t_coord A, t_coord B);
+void normalize(t_coord *N);
+
+// MATH - basic.c
+void set_viewport_plane(t_scene *scene, t_viewport *v);
+float get_discriminant(float a, float b, float c);
+t_coord make_vector(t_coord from, t_coord to);
+t_coord get_point_on_vector(t_coord C, t_coord v, float d);
+
+//MATH - math.c
 int transform_to_tl(char coordinate, float value);
 float get_viewport_width(float angle_deg, float distance);
-t_coord *get_viewport_coordinate();
+t_coord get_viewport_coordinate(t_viewport *v, int x, int y);
+int shoot_rays(t_scene *scene);
+void get_viewport_corners(t_viewport *v, t_camera c);
 
 // HOOKS
 void ft_hook(void *param);
