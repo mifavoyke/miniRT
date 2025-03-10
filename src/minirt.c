@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/09 20:02:08 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:53:21 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int minirt_init(t_minirt *minirt)
 	minirt->img_width = 1920;
 	minirt->img_height = 1080;
 	// mlx_set_setting(MLX_MAXIMIZED, true);
-	minirt->mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
+	minirt->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
 	if (!minirt->mlx)
 	{
 		ft_error_mlx();
@@ -46,6 +46,26 @@ int minirt_init(t_minirt *minirt)
 int32_t main(int argc, char *argv[])
 {
 	t_minirt minirt;
+	t_scene scene; // TEMPORARY SCENE WITH DEFAULT VALUES, YOU CAN HOOK IT UP TO HAVE VALUES FROM .rt FILES
+
+	(void)argv;
+	scene.c.vector.x = 0.0;
+	scene.c.vector.y = 1.0;
+	scene.c.vector.z = 0.0;
+	scene.c.view_degree = 70.0;
+	scene.c.viewpoint.x = 0;
+	scene.c.viewpoint.y = 0;
+	scene.c.viewpoint.z = 0;
+	scene.sp = (t_sphere *)malloc(sizeof(t_sphere *));
+	scene.sp->centre.x = 0;
+	scene.sp->centre.y = 30;
+	scene.sp->centre.z = 0;
+	scene.sp->colour.r = 64;
+	scene.sp->colour.g = 224;
+	scene.sp->colour.b = 208;
+	scene.sp->diameter = 10.0;
+	scene.sp->next = NULL;
+	scene.viewport = (t_viewport *)malloc(sizeof(t_viewport *));
 
 	if (argc != 2)
 	{
@@ -60,11 +80,16 @@ int32_t main(int argc, char *argv[])
 	if (minirt_init(&minirt))
 		return (1); // how will we handle errors? should we exit but what about the window termination?
 	if (!parse_scene(&minirt, argv[1]))
-		draw_line(minirt.img);
+	{
+	draw_line(minirt.img);
+	set_viewport_plane(&scene, scene.viewport);
+	shoot_rays(&scene);
+	}
 	else
 		return (1); // if you terminate the window it seg faults
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
+	free(scene.sp);
 	mlx_terminate(minirt.mlx);
 	return (0);
 }
