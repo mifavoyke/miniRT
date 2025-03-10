@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/10 20:53:21 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/10 21:16:52 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,10 @@ int32_t main(int argc, char *argv[])
 		return (1); // how will we handle errors? should we exit but what about the window termination?
 	if (!parse_scene(&minirt, argv[1]))
 	{
-	draw_line(minirt.img);
-	set_viewport_plane(&scene, scene.viewport);
-	shoot_rays(&scene);
+		// here will probably connect to my part right ? -Zuzana (for now i use it to check output of math functions)
+		draw_line(minirt.img);
+		set_viewport_plane(&scene, scene.viewport);
+		shoot_rays(&scene);
 	}
 	else
 		return (1); // if you terminate the window it seg faults
