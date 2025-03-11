@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/11 20:03:08 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 23:12:02 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ double	scale(double num, double new_min, double new_max, double old_max);
 int transform_to_tl(char coordinate, float value);
 
 //MATH - math.c
-t_viewport *set_viewport_plane(t_scene *scene);
+t_viewport *set_viewport_plane(t_scene scene);
 float get_discriminant(float a, float b, float c);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);

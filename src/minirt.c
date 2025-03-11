@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/11 21:33:53 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 23:29:27 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int32_t main(int argc, char *argv[])
 	scene.c.vector.y = 0.707;
 	scene.c.vector.z = 0.0;
 	scene.c.view_degree = 70.0;
-	scene.c.viewpoint.x = -10.0;
-	scene.c.viewpoint.y = 0;
-	scene.c.viewpoint.z = 1;
+	scene.c.viewpoint.x = 25.0;
+	scene.c.viewpoint.y = 25;
+	scene.c.viewpoint.z = 25;
 	scene.sp = (t_sphere *)malloc(sizeof(t_sphere *));
 	scene.sp->centre.x = 0;
 	scene.sp->centre.y = 50;
@@ -82,7 +82,7 @@ int32_t main(int argc, char *argv[])
 	{
 		// here will probably connect to my part right ? -Zuzana (for now i use it to check output of math functions)
 		draw_line(minirt.img);
-		set_viewport_plane(&scene);
+		scene.viewport = set_viewport_plane(scene);
 		shoot_rays(&scene);
 	}
 	else

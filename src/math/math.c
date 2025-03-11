@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/11 21:30:22 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 23:28:13 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+// mke a function to get the 4x4 translation matrix
+// t_coord translation_matrix[][]()
+// {
+
+// }
 
 // TODO: MUST CHECK FOR CORRECTNESS AND IF THE MATRIX IS OK BUT I THINK IT LOOKS GOOD
 // ALREADY MAPS ALL PIXELS DESCRIBED BY x AND y FROM SCREEN SPACE TO CAMERA SPACE TO 3D SPACE! <3
@@ -25,11 +31,11 @@ t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y)
 	t_coord v0; // initial camera vector for simplicity
 	t_coord right;		// vector along x axis
 	t_coord forward;	// vector along y axis
-	t_coord up;			// vector along z axis 
+	t_coord up;			// vector along z axis
 	t_coord translation; // translation vector: Cnew - C0
 	t_coord up_temp;	// temporary global vector (0, 0, 1) used for calculating
-	t_coord ray_vector; // resulting vector 
-	
+	t_coord ray_vector; // resulting vector
+
 	// initial simple position and direction of camera
 	C0.x = 0.0;
 	C0.y = 0.0;
@@ -50,8 +56,10 @@ t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y)
 	translation.x = c.viewpoint.x - C0.x;
 	translation.y = c.viewpoint.y - C0.y;
 	translation.z = c.viewpoint.z - C0.z;
+	if (x == 0 && y == 0)
+		printf("T[%f, %f, %f]\n", translation.x, translation.y, translation.z);
 	// applying the camera-to-world to transform P from camera space to world space
-	// the matrix:	
+	// the matrix:
 	// T = R(rotation) * Tr(translation) = [[ Rx Ry Rz Tx ]
 	//										[ Fx Fy Fz Ty ]
 	//										[ Ux Uy Uz Tz ]
@@ -72,22 +80,22 @@ t_coord sphere_intersection(t_coord *V, t_camera *C, t_sphere *sp)
 {
 	t_coord r;
 	t_coord q;
-	
+
 	float a;
 	float b;
 	float c;
-	
+
 	float t1;
 	float t2;
 	float discriminant;
-	
-	r = make_vector(C->viewpoint, *V); // r = V - C --> vector in the direction from the camera to the viewpoint coordinate corresponding to a pixel in the screen 
+
+	r = make_vector(C->viewpoint, *V); // r = V - C --> vector in the direction from the camera to the viewpoint coordinate corresponding to a pixel in the screen
 	q = make_vector(C->viewpoint, sp->centre);  // q = C - S --> vector in the direction of the camera and the sphere centre
 
 	a = dot_product(r, r);
 	b = 2 * (dot_product(q, r));
 	c = dot_product(q, q) - sp->diameter / 2;
-	
+
 	// this maybe has to be changed, what if the one where  we use + sqrt(D) is not root but the - sqrt(D) is the root
 	discriminant = get_discriminant(a, b, c);
 	if (discriminant >= 0)
@@ -95,9 +103,9 @@ t_coord sphere_intersection(t_coord *V, t_camera *C, t_sphere *sp)
 	if (discriminant > 0)
 		t2 = (-b - sqrt(discriminant)) / (2 * a);
 
-		
+
 		// dosad the t variable value that we now know to the equation P = C + t*(V - C);
-	return (*V); // TODO: for now we return V, but not correct, just to shut up the errors 
+	return (*V); // TODO: for now we return V, but not correct, just to shut up the errors
 }
 */
 
@@ -106,7 +114,7 @@ int shoot_rays(t_scene *scene)
 	int     x;
 	int     y;
 
-	t_coord viewport_point;
+	//t_coord viewport_point;
 	//t_coord ray;
 	// t_coord intersection;
 
@@ -116,10 +124,10 @@ int shoot_rays(t_scene *scene)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			viewport_point = get_viewport_ray(scene->c, scene->viewport, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
+			get_viewport_ray(scene->c, scene->viewport, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			//intersection = sphere_intersection(&viewport_point, &scene->c, scene->sp);
 		}
-		
+
 	}
 	return (0);
 }

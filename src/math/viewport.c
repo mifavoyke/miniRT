@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   viewport.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:53:45 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/11 17:30:55 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 23:22:47 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ float get_viewport_width(float angle_deg, float distance)
 {
 	float   viewport_width;
 	float   angle_rad;
-	
+
 	// Convert angle to radians
 	angle_rad = angle_deg * M_PI / 180.0;
 	viewport_width = 2 * (tan(angle_rad / 2) * distance);
@@ -31,20 +31,18 @@ float get_viewport_height(float viewport_width)
 }
 
 // sets the information we have abot the viewport plane - must be regenerated for each new render/movement
-t_viewport *set_viewport_plane(t_scene *scene)
-{	
+t_viewport *set_viewport_plane(t_scene scene)
+{
 	t_viewport *v;
-	
-	v = (t_viewport *)malloc(sizeof(t_viewport *));
-	v->d = 1.0; // TODO: maybe the distance d must be calculated, for now it is 1, coming from normalized vector 
-	v->viewport_width = get_viewport_width(scene->c.view_degree, v->d); 
+
+	v = (t_viewport *)malloc(sizeof(t_viewport));
+	v->d = 1.0;
+	v->viewport_width = get_viewport_width(scene.c.view_degree, v->d);
 	v->viewport_height = get_viewport_height(v->viewport_width);
-	v->viewport_centre = get_point_on_vector(scene->c.viewpoint, scene->c.vector, v->d);
+	v->viewport_centre = get_point_on_vector(scene.c.viewpoint, scene.c.vector, v->d);
 	v->corner_center_distance = sqrt(pow(v->viewport_width / 2, 2) + pow(v->viewport_height / 2, 2));
 	v->corner_camera_distance = sqrt(pow(v->corner_center_distance, 2) + pow(v->d, 2));
-    printf("viewport:\nWIDTH: %f, HEIGHT: %f | S [%f, %f, %f] | corner distance: %f | corner camera distance: %f | v normalized: %d\n", 
-            v->viewport_width, v->viewport_height, v->viewport_centre.x, v->viewport_centre.y, v->viewport_centre.z, 
-			v->corner_center_distance, v->corner_camera_distance, is_vector_normalized(scene->c.vector));
-	scene->viewport = v;
+    printf("viewport:\nWIDTH: %f, HEIGHT: %f | S [%f, %f, %f] | v normalized: %d\n",
+            v->viewport_width, v->viewport_height, v->viewport_centre.x, v->viewport_centre.y, v->viewport_centre.z, is_vector_normalized(scene.c.vector));
 	return (v);
 }
