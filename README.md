@@ -17,6 +17,8 @@ https://www.researchgate.net/publication/230583216_Ray_Tracing_Algorithms_-_Theo
 
 * FOR YEVA *
 - vectors must be normalized, we can check if they are during parsing, with function is_vector_normalized from math/vector.c that returns 0(no) or 1(yes) so we must put error if 0 - not normalized
+- object files are kept in src folder by their .c file, not in separate objs folder because of having folders in src - did not work, we can change the makefile later to separate them again
+- I print some things 
 
 * FOR ZUZANA *
 

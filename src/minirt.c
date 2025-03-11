@@ -80,8 +80,9 @@ int32_t main(int argc, char *argv[])
 		return (1); // how will we handle errors? should we exit but what about the window termination?
 	if (!parse_scene(&minirt, argv[1]))
 	{
+		// here will probably connect to my part right ? -Zuzana (for now i use it to check output of math functions)
 		draw_line(minirt.img);
-		set_viewport_plane(&scene);
+		set_viewport_plane(&scene, scene.viewport);
 		shoot_rays(&scene);
 	}
 	else
@@ -89,7 +90,6 @@ int32_t main(int argc, char *argv[])
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 	free(scene.sp);
-	printf("hi\n");
 	mlx_terminate(minirt.mlx);
 	return (0);
 }
