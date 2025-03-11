@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/11 17:24:55 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:03:08 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ typedef struct s_minirt
 // MAIN
 
 // MATH - vector.c
-float dot_product(t_coord A, t_coord B);
+float get_dot_product(t_coord A, t_coord B);
 int is_vector_normalized(t_coord v);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);

@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/10 20:14:08 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:04:19 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 // gets a scalar number from 2 vectors
 // dot product of a vector with itself is its length
-float dot_product(t_coord A, t_coord B)
+float get_dot_product(t_coord A, t_coord B)
 {
-    return (A.x * B.x + A.y * B.y + A.z  + B.z);
+    return (A.x * B.x + A.y * B.y + A.z * B.z);
 }
 
 // normalized vector has a magnitude (length) of 1
@@ -52,7 +52,8 @@ t_coord get_point_on_vector(t_coord C, t_coord v, float d)
     return (P);
 }
 
-// computes cross product of two vectors
+// computes cross product of two normalized vectors
+// results in a vector that is perpendicular to both vectors
 t_coord get_cross_product(t_coord A, t_coord B)
 {
     t_coord cross_product;
