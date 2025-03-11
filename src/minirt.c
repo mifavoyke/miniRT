@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/11 21:17:14 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:33:53 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int32_t main(int argc, char *argv[])
 	{
 		// here will probably connect to my part right ? -Zuzana (for now i use it to check output of math functions)
 		draw_line(minirt.img);
-		set_viewport_plane(&scene, scene.viewport);
+		set_viewport_plane(&scene);
 		shoot_rays(&scene);
 	}
 	else
