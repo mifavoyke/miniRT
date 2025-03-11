@@ -6,59 +6,34 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/10 21:07:31 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:31:53 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// mapping screen pixel coordinate to a coordinate in the scene, mapped to the viewport size
-// x and y are coordinates on the screen
-// TODO: not workng properly, check some vector math t understand better 
-void get_viewport_corners(t_viewport *v, t_camera c)
-{
-	t_coord temp_vector;
-	t_coord normal;
-
-	// we have lengths, angles, coordinates of S(viewport_centre) and C(camera.viewpoint), and CS vector(camera.vector), and it is right-angled at S
-	// find perpendicular vector
-		// Choose any arbitrary vector t that is not parallel to →CS - simple choice is (1, 0, 0), (0,1,0), (0,0,1)
-		temp_vector.x = 1;
-		temp_vector.y = 0;
-		temp_vector.z = 0;
-		// but if it happend to be collinear with CS, pick another one of them 
-		if (are_collinear(c.vector, temp_vector))
-		{
-			temp_vector.x = 0;
-			temp_vector.y = 1;
-			temp_vector.z = 0;
-		}
-		// compute the cross product: 𝑁 = →CS × t --> this gives perpendicular vector N
-		normal = get_cross_product(c.vector, temp_vector);
-		// normalize N to get a unit vector: N(normalized) = N / |N|
-		normalize(&normal);
-	// compute third point C(Vtl, Vtr, Vbl, Vbr) --> 𝐶 = S + |SV|(corner_distance) * N(normalized) --> expand for coordinates x, y, z
-	v->Vtr.x = v->viewport_centre.x + v->corner_distance * normal.x;
-	v->Vtr.y = v->viewport_centre.y + v->corner_distance * normal.y;
-	v->Vtr.z = v->viewport_centre.z + v->corner_distance * normal.z;
-	//printf("|Vtr| = %f, Vtr [%f, %f, %f]\n", v->corner_distance, v->Vtr.x, v->Vtr.y, v->Vtr.z);
-	
-	// Vtl = ;
-	// Vbl = ;
-	// Vbr = ;
-}
-
 // TODO: maps coordinate from screen to the 3D coordinates, using the scale function and corner points 
-t_coord get_viewport_coordinate(t_viewport *v, int x, int y)
+// maps coordinate from top-left 2d screen to the viewport plane in 3d
+// in screen, one pixel is one unit defined by x and y, but they specify start of the pixel
+// the middle of it is [x + 0.5, y + 0.5]
+t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y)
 {
-	t_coord V;
+	t_coord P;
+	t_coord ray_vector;
 	
-	(void)v;
-	V.x = x;
-	V.y = y;
-	V.z = 0;
-	//printf("screen: P[%f, %f]\n", V.x, V.y);
-	return (V);
+	// P are camera space coordinates 
+	P.x = scale(x + 0.5, - v->viewport_width / 2, v->viewport_width / 2, WIDTH);
+	P.y = scale(y + 0.5, v->viewport_height / 2, - v->viewport_height / 2, HEIGHT);
+	P.z = 1;
+	ray_vector = make_vector(c.viewpoint, P); // ! this does not calculate for translation and rotation
+	// 4. Apply the final camera-to-world transformation 4x4 matrix transforms the coordinates in screen space to world space.
+	
+	// 1. transform from 0,0 in top left to 0 in center
+	// 2. scale the coordinates from 600x400 to Vw and Vh								_
+	// 3. do not shoot ray through top-left corner of each pixel, but find its center |X|
+	if (x == 599 && y == 399)
+		printf("viewport: P[%f, %f, %f] | ->v (%f, %f, %f)\n", P.x, P.y, P.z, ray_vector.x, ray_vector.y, ray_vector.z);
+	return (ray_vector);
 }
 
 /*
@@ -112,7 +87,7 @@ int shoot_rays(t_scene *scene)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			viewport_point = get_viewport_coordinate(scene->viewport, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
+			viewport_point = get_viewport_ray(scene->c, scene->viewport, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			//intersection = sphere_intersection(&viewport_point, &scene->c, scene->sp);
 		}
 		

@@ -27,6 +27,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/math/math.c \
 		$(SRC_DIR)/math/vector.c \
 		$(SRC_DIR)/math/viewport.c \
+		$(SRC_DIR)/math/extra.c \
 		$(SRC_DIR)/fill_scene.c \
 		$(SRC_DIR)/ft_atof.c \
 		$(SRC_DIR)/parse_checks.c \

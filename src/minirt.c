@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/10 20:53:21 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:30:08 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int32_t main(int argc, char *argv[])
 
 	(void)argv;
 	scene.c.vector.x = 0.0;
-	scene.c.vector.y = 1.0;
-	scene.c.vector.z = 0.0;
+	scene.c.vector.y = 0.0;
+	scene.c.vector.z = 1;
 	scene.c.view_degree = 70.0;
 	scene.c.viewpoint.x = 0;
 	scene.c.viewpoint.y = 0;
@@ -65,7 +65,6 @@ int32_t main(int argc, char *argv[])
 	scene.sp->colour.b = 208;
 	scene.sp->diameter = 10.0;
 	scene.sp->next = NULL;
-	scene.viewport = (t_viewport *)malloc(sizeof(t_viewport *));
 
 	if (argc != 2)
 	{
@@ -81,15 +80,16 @@ int32_t main(int argc, char *argv[])
 		return (1); // how will we handle errors? should we exit but what about the window termination?
 	if (!parse_scene(&minirt, argv[1]))
 	{
-	draw_line(minirt.img);
-	set_viewport_plane(&scene, scene.viewport);
-	shoot_rays(&scene);
+		draw_line(minirt.img);
+		set_viewport_plane(&scene);
+		shoot_rays(&scene);
 	}
 	else
 		return (1); // if you terminate the window it seg faults
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 	free(scene.sp);
+	printf("hi\n");
 	mlx_terminate(minirt.mlx);
 	return (0);
 }
