@@ -7,6 +7,11 @@ Starter ray tracing math:
 https://www.gabrielgambetta.com/computer-graphics-from-scratch/01-common-concepts.html
 Optimizing - not all objects are considered, only those in path of the ray:
 https://gfxcourses.stanford.edu/cs348b/spring22content/media/intersection/rt1_3GyBK6F.pdf
+Mapping coordinates from screen to viewport to 3d space 
+https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays.html
+https://www.ogldev.org/www/tutorial13/tutorial13.html
+Ray tracing pdf handbook:
+https://www.researchgate.net/publication/230583216_Ray_Tracing_Algorithms_-_Theory_and_Practice
 
 
 
@@ -18,8 +23,9 @@ https://gfxcourses.stanford.edu/cs348b/spring22content/media/intersection/rt1_3G
 * FOR ZUZANA *
 
 ** GENERAL INFORMATION **
-- near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 
-- origin: space center - in the middle of the scene 
+- viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 
+- origin: space center - in the middle of the scene
+- by convention in ray tracing, viewport is often placed exactly 1 unit away from the camera's origin 
 - xyz orientation: x  and y describe the ground, z describes the height
 - dot product: operation that takes two vectors and returns a single scalar value
 - length of a vector = square root of the dot product of the vector by itself
@@ -58,5 +64,7 @@ Matrix Representation (2D, counterclockwise by angle θ):
 - using dummies and drivers - one partner did parsing, other started working with dummy object, later replaces with real data object
 
 CHECK OUT
+- Bresenham-algorithm = transforms 2d coordinate to 3d space 
+- camera-to-world transformation matrix
 - gimbal lock and code rotations for rotations of camera
-- 
+- are we gonna do preprocessing?

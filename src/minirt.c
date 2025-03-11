@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/10 21:16:52 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:17:14 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,22 @@ int32_t main(int argc, char *argv[])
 	t_scene scene; // TEMPORARY SCENE WITH DEFAULT VALUES, YOU CAN HOOK IT UP TO HAVE VALUES FROM .rt FILES
 
 	(void)argv;
-	scene.c.vector.x = 0.0;
-	scene.c.vector.y = 1.0;
+	scene.c.vector.x = 0.707;
+	scene.c.vector.y = 0.707;
 	scene.c.vector.z = 0.0;
 	scene.c.view_degree = 70.0;
-	scene.c.viewpoint.x = 0;
+	scene.c.viewpoint.x = -10.0;
 	scene.c.viewpoint.y = 0;
-	scene.c.viewpoint.z = 0;
+	scene.c.viewpoint.z = 1;
 	scene.sp = (t_sphere *)malloc(sizeof(t_sphere *));
 	scene.sp->centre.x = 0;
-	scene.sp->centre.y = 30;
+	scene.sp->centre.y = 50;
 	scene.sp->centre.z = 0;
 	scene.sp->colour.r = 64;
 	scene.sp->colour.g = 224;
 	scene.sp->colour.b = 208;
 	scene.sp->diameter = 10.0;
 	scene.sp->next = NULL;
-	scene.viewport = (t_viewport *)malloc(sizeof(t_viewport *));
 
 	if (argc != 2)
 	{

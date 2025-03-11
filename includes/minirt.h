@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/10 20:55:49 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:03:08 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,11 @@ typedef struct s_cylinder
 
 typedef struct s_viewport
 {
+    float d;
     float viewport_width;
 	float viewport_height;
-	float corner_distance;
+	float corner_center_distance;
+    float corner_camera_distance;
 	t_coord viewport_centre;
     t_coord Vtl;
 	t_coord Vtr;
@@ -127,7 +129,7 @@ typedef struct s_minirt
 // MAIN
 
 // MATH - vector.c
-float dot_product(t_coord A, t_coord B);
+float get_dot_product(t_coord A, t_coord B);
 int is_vector_normalized(t_coord v);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
@@ -136,15 +138,19 @@ t_coord get_cross_product(t_coord A, t_coord B);
 void normalize(t_coord *N);
 
 // MATH - basic.c
-void set_viewport_plane(t_scene *scene, t_viewport *v);
+float get_discriminant(float a, float b, float c);
+double	scale(double num, double new_min, double new_max, double old_max);
+int transform_to_tl(char coordinate, float value);
+
+//MATH - math.c
+t_viewport *set_viewport_plane(t_scene *scene);
 float get_discriminant(float a, float b, float c);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 
-//MATH - math.c
 int transform_to_tl(char coordinate, float value);
 float get_viewport_width(float angle_deg, float distance);
-t_coord get_viewport_coordinate(t_viewport *v, int x, int y);
+t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y);
 int shoot_rays(t_scene *scene);
 void get_viewport_corners(t_viewport *v, t_camera c);
 

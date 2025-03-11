@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/10 20:54:02 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:19:31 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ float get_discriminant(float a, float b, float c)
 
 // linear interpolation function = maps/scales points proportionate and
 // linearly to other points to keep the proportions but scaled in/out
+// would also need old_min but bcs of norminette use only when it is 0
 double	scale(double num, double new_min, double new_max, double old_max)
 {
 	return ((new_max - new_min) * (num) / ((old_max)) + new_min);
