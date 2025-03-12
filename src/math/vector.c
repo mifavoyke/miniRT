@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/11 20:04:19 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:47:06 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,18 @@ float get_dot_product(t_coord A, t_coord B)
     return (A.x * B.x + A.y * B.y + A.z * B.z);
 }
 
+// computes cross product of two normalized vectors
+// results in a vector that is perpendicular to both vectors
+t_coord get_cross_product(t_coord A, t_coord B)
+{
+    t_coord cross_product;
+    
+    cross_product.x = A.y * B.z - A.z * B.y;
+    cross_product.y = A.z * B.x - A.x * B.z;
+    cross_product.z = A.x * B.y - A.y * B.x;
+    return (cross_product);
+}
+
 // normalized vector has a magnitude (length) of 1
 // l = sqrt (x^2 + y^2 + z^2) = 1 --> must be true (deviation 0.002 accepted)
 int is_vector_normalized(t_coord v)
@@ -27,6 +39,18 @@ int is_vector_normalized(t_coord v)
 
     result = sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
     return (result > 0.998 && result < 1.002);
+}
+
+// normalizes the vector so its length is 0
+// N(normalized) = N / |N|
+void normalize(t_coord *N)
+{
+    float len;
+    
+    len = sqrt(pow(N->x, 2) + pow(N->y, 2) + pow(N->z, 2));
+    N->x = N->x / len;
+    N->y = N->y / len;
+    N->z = N->z / len;
 }
 
 // makes a vector from point A to point B
@@ -52,18 +76,6 @@ t_coord get_point_on_vector(t_coord C, t_coord v, float d)
     return (P);
 }
 
-// computes cross product of two normalized vectors
-// results in a vector that is perpendicular to both vectors
-t_coord get_cross_product(t_coord A, t_coord B)
-{
-    t_coord cross_product;
-    
-    cross_product.x = A.y * B.z - A.z * B.y;
-    cross_product.y = A.z * B.x - A.x * B.z;
-    cross_product.z = A.x * B.y - A.y * B.x;
-    return (cross_product);
-}
-
 // if  cross product of 2 vectors is (0,0,0), they are collinear
 // @returns 1 if are collinear, 0 if not
 bool are_collinear(t_coord A, t_coord B)
@@ -72,16 +84,4 @@ bool are_collinear(t_coord A, t_coord B)
     
     cross_product= get_cross_product(A, B);
     return (cross_product.x == 0.0 && cross_product.y == 0.0 && cross_product.z == 0.0);
-}
-
-// normalizes the vector so its length is 0
-// N(normalized) = N / |N|
-void normalize(t_coord *N)
-{
-    float len;
-    
-    len = sqrt(pow(N->x, 2) + pow(N->y, 2) + pow(N->z, 2));
-    N->x = N->x / len;
-    N->y = N->y / len;
-    N->z = N->z / len;
 }

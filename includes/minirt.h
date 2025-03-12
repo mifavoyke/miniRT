@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/11 23:12:02 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/03/12 12:18:30 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,7 @@ typedef struct s_viewport
     float d;
     float viewport_width;
 	float viewport_height;
-	float corner_center_distance;
-    float corner_camera_distance;
 	t_coord viewport_centre;
-    t_coord Vtl;
-	t_coord Vtr;
-    t_coord Vbl;
-    t_coord Vbr;
 }   t_viewport;
 
 typedef struct s_scene
@@ -138,9 +132,9 @@ t_coord get_cross_product(t_coord A, t_coord B);
 void normalize(t_coord *N);
 
 // MATH - basic.c
+int equals(float a, float b, float deviation);
 float get_discriminant(float a, float b, float c);
 double	scale(double num, double new_min, double new_max, double old_max);
-int transform_to_tl(char coordinate, float value);
 
 //MATH - math.c
 t_viewport *set_viewport_plane(t_scene scene);
@@ -148,11 +142,9 @@ float get_discriminant(float a, float b, float c);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 
-int transform_to_tl(char coordinate, float value);
 float get_viewport_width(float angle_deg, float distance);
 t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y);
 int shoot_rays(t_scene *scene);
-void get_viewport_corners(t_viewport *v, t_camera c);
 
 // HOOKS
 void ft_hook(void *param);

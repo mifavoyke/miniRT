@@ -6,11 +6,17 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/11 17:19:31 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:22:46 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+// checks if two floats are equal accepting a set deviation
+int equals(float a, float b, float deviation)
+{
+    return (fabs(a - b) <= deviation);
+}
 
 // self explanatory
 // if D > 0 --> 2 roots (the ray enters and exits - 2 spots)
@@ -27,16 +33,4 @@ float get_discriminant(float a, float b, float c)
 double	scale(double num, double new_min, double new_max, double old_max)
 {
 	return ((new_max - new_min) * (num) / ((old_max)) + new_min);
-}
-
-// change coordinates top-left(TL) to center(C) system 
-// TLx=ScreenWidth/2+Cx
-// TLy=SceenHeight/2−Cy
-int transform_to_tl(char coordinate, float value)
-{
-    if (coordinate == 'x')
-        return (WIDTH / 2 + value);
-    if (coordinate == 'y')
-        return (HEIGHT / 2 - value);
-    return (0);
 }

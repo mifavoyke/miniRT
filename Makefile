@@ -24,6 +24,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/parse_scene.c \
 		$(SRC_DIR)/parse_utils.c \
 		$(SRC_DIR)/math/basic.c \
+		$(SRC_DIR)/math/intersections.c \
 		$(SRC_DIR)/math/math.c \
 		$(SRC_DIR)/math/vector.c \
 		$(SRC_DIR)/math/viewport.c \

@@ -62,6 +62,8 @@ Matrix Representation (2D, counterclockwise by angle θ):
 - deciding the origin of the scene to which all objects including camera are relative
 - when to make the ransformation from the top-left system to the 2d center system - when we shoot the ray? when we color the pixel?
 - using dummies and drivers - one partner did parsing, other started working with dummy object, later replaces with real data object
+- the program calculates something but it is lot of work to check if the values are actually true
+- working with different orientation and assignment of the axis
 
 CHECK OUT
 - Bresenham-algorithm = transforms 2d coordinate to 3d space 

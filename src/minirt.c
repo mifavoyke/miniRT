@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/11 23:29:27 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/03/12 12:25:17 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void draw_line(mlx_image_t *image)
 {
-	int i = 0;
+	int i = 50;
 
-	while (i < 50)
+	while (i < 100)
 	{
-		mlx_put_pixel(image, transform_to_tl('x', (float)i), transform_to_tl('y', 0), 0xe5f89f);
+		mlx_put_pixel(image, i, i, 0xe5f89f);
 		i++;
 	}
 }
@@ -49,21 +49,15 @@ int32_t main(int argc, char *argv[])
 	t_scene scene; // TEMPORARY SCENE WITH DEFAULT VALUES, YOU CAN HOOK IT UP TO HAVE VALUES FROM .rt FILES
 
 	(void)argv;
-	scene.c.vector.x = 0.707;
-	scene.c.vector.y = 0.707;
-	scene.c.vector.z = 0.0;
+	scene.c.vector = set_coord(0.707, 0.707, 0.0);
 	scene.c.view_degree = 70.0;
-	scene.c.viewpoint.x = 25.0;
-	scene.c.viewpoint.y = 25;
-	scene.c.viewpoint.z = 25;
+	scene.c.viewpoint = set_coord(10.0, 10.0, 10.0);
 	scene.sp = (t_sphere *)malloc(sizeof(t_sphere *));
-	scene.sp->centre.x = 0;
-	scene.sp->centre.y = 50;
-	scene.sp->centre.z = 0;
+	scene.sp->centre = set_coord(0.0, 50.0, 0.0);
+	scene.sp->diameter = 10.0;
 	scene.sp->colour.r = 64;
 	scene.sp->colour.g = 224;
 	scene.sp->colour.b = 208;
-	scene.sp->diameter = 10.0;
 	scene.sp->next = NULL;
 
 	if (argc != 2)
