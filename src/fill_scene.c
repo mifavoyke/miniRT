@@ -57,6 +57,7 @@ int fill_light(t_scene *scene, char **values)
 int fill_sphere(t_scene *scene, char **values)
 {
     t_sphere *new_sphere;
+    t_sphere *tmp;
 
     if (!values[1] || !values[2] || !values[3])
         return (ft_error("Sphere missing parameters."));
@@ -72,8 +73,16 @@ int fill_sphere(t_scene *scene, char **values)
     new_sphere->colour = parse_colour(values[3]);
     if (valid_colour(&new_sphere->colour))
         return (1);
-    new_sphere->next = scene->sp;
-    scene->sp = new_sphere;
+    new_sphere->next = NULL;
+    if (!scene->sp)
+        scene->sp = new_sphere;
+    else
+    {
+        tmp = scene->sp;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = new_sphere;
+    }
     scene->sp_count++;
     return (0);
 }

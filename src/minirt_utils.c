@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 17:06:31 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/13 17:06:33 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:47:28 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,65 +14,58 @@
 
 int ft_error(const char *msg)
 {
-    printf("Error: %s\n", msg);
-    return (1);
+	printf("Error: %s\n", msg);
+	return (1);
 }
 
 void ft_free(char **arr)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (arr[i])
-    {
-        free(arr[i]);
-        i++;
-    }
-    free(arr);
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
 
 void free_scene(t_scene *scene)
 {
-	int i;
+	t_sphere *sp_tmp;
+	t_plane *pl_tmp;
+	t_cylinder *cy_tmp;
 
-	if (scene->sp)
+	while (scene->sp)
 	{
-		i = 0;
-		while (i < scene->sp_count)
-		{
-			free(scene->sp);
-			i++;
-		}
+		sp_tmp = scene->sp->next;
+		free(scene->sp);
+		scene->sp = sp_tmp;
 	}
-	if (scene->pl)
+	while (scene->pl)
 	{
-		i = 0;
-		while (i < scene->pl_count)
-		{
-			free(scene->pl);
-			i++;
-		}
+		pl_tmp = scene->pl->next;
+		free(scene->pl);
+		scene->pl = pl_tmp;
 	}
-	if (scene->cy)
+	while (scene->cy)
 	{
-		i = 0;
-		while (i < scene->cy_count)
-		{
-			free(scene->cy);
-			i++;
-		}
+		cy_tmp = scene->cy->next;
+		free(scene->cy);
+		scene->cy = cy_tmp;
 	}
 	free(scene);
 }
 
 int valid_coord(t_coord *coord)
 {
-    return (coord->x == INT_ERROR && coord->y == INT_ERROR && coord->z == INT_ERROR);
+	return (coord->x == INT_ERROR && coord->y == INT_ERROR && coord->z == INT_ERROR);
 }
 
 int valid_colour(t_colour *clr)
 {
-    return (clr->r == -1 && clr->r == -1 && clr->r == -1);
+	return (clr->r == -1 && clr->r == -1 && clr->r == -1);
 }
 
 int check_file_format(char *filename)

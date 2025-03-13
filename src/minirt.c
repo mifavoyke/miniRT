@@ -48,8 +48,10 @@ int32_t main(int argc, char *argv[])
 	if (minirt_init(&minirt))
 		return (ft_error(mlx_strerror(mlx_errno)));
 	if (parse_scene(&minirt, argv[1]))
+	{
+		mlx_delete_image(minirt.mlx, minirt.img);
+		mlx_terminate(minirt.mlx);
 		return (1);
-	//print_scene(minirt.scene);
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
 	shoot_rays(minirt.img, minirt.scene);
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
