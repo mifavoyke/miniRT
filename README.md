@@ -3,7 +3,7 @@
 ** RESOURCES **
 Ray tracing basics Stanford paper
 https://cs.stanford.edu/people/eroberts/courses/soco/projects/1997-98/ray-tracing/implementation.html
-Starter ray tracing math:
+Starter ray tracing math for object parametric equations and finding intersections:
 https://www.gabrielgambetta.com/computer-graphics-from-scratch/01-common-concepts.html
 Optimizing - not all objects are considered, only those in path of the ray:
 https://gfxcourses.stanford.edu/cs348b/spring22content/media/intersection/rt1_3GyBK6F.pdf
@@ -63,6 +63,7 @@ Matrix Representation (2D, counterclockwise by angle θ):
 ** PAIN POINTS DURING PROJECT **
 - deciding the origin of the scene to which all objects including camera are relative
 - when to make the ransformation from the top-left system to the 2d center system - when we shoot the ray? when we color the pixel?
+- so far the wort thing was finding coordinates of a screen point in the viewport and in the 3d scene when there are rotations - done with transformation matrix 
 - using dummies and drivers - one partner did parsing, other started working with dummy object, later replaces with real data object
 - the program calculates something but it is lot of work to check if the values are actually true
 - working with different orientation and assignment of the axis

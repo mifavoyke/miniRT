@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 17:07:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:16:56 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int32_t main(int argc, char *argv[])
 	draw_line(minirt.img);
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
 	shoot_rays(minirt.scene);
-
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 	free_scene(minirt.scene);
