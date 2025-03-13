@@ -23,6 +23,8 @@ int is_numerical(volatile char *str)
         }
         else if (str[i] == ',')
         {
+            if (str[i + 1] == '-')
+                i++;
             if (comma == 2)
                 return (1);
             comma++;

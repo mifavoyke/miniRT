@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 14:07:33 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:12:54 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ int minirt_init(t_minirt *minirt)
 int32_t main(int argc, char *argv[])
 {
 	t_minirt minirt;
-	t_scene scene; // TEMPORARY SCENE WITH DEFAULT VALUES, YOU CAN HOOK IT UP TO HAVE VALUES FROM .rt FILES
+	//t_scene scene; // TEMPORARY SCENE WITH DEFAULT VALUES, YOU CAN HOOK IT UP TO HAVE VALUES FROM .rt FILES
 
 	(void)argv;
-	scene.c.vector = set_coord(0.5, 0.5, 0.707);
-	scene.c.view_degree = 70.0;
-	scene.c.viewpoint = set_coord(0.0, 0.0, 0.0);
-	scene.sp = (t_sphere *)malloc(sizeof(t_sphere *));
-	scene.sp->centre = set_coord(0.0, 50.0, 0.0);
-	scene.sp->diameter = 10.0;
-	scene.sp->colour.r = 64;
-	scene.sp->colour.g = 224;
-	scene.sp->colour.b = 208;
-	scene.sp->next = NULL;
+	// scene.c.vector = set_coord(0.5, 0.5, 0.707);
+	// scene.c.view_degree = 70.0;
+	// scene.c.viewpoint = set_coord(0.0, 0.0, 0.0);
+	// scene.sp = (t_sphere *)malloc(sizeof(t_sphere *));
+	// scene.sp->centre = set_coord(0.0, 50.0, 0.0);
+	// scene.sp->diameter = 10.0;
+	// scene.sp->colour.r = 64;
+	// scene.sp->colour.g = 224;
+	// scene.sp->colour.b = 208;
+	// scene.sp->next = NULL;
 
 	if (argc != 2)
 	{
@@ -74,16 +74,17 @@ int32_t main(int argc, char *argv[])
 		return (1); // how will we handle errors? should we exit but what about the window termination?
 	if (!parse_scene(&minirt, argv[1]))
 	{
+		print_scene(minirt.scene);
 		// here will probably connect to my part right ? -Zuzana (for now i use it to check output of math functions)
 		draw_line(minirt.img);
-		scene.viewport = set_viewport_plane(scene);
-		shoot_rays(&scene);
+		minirt.scene->viewport = set_viewport_plane(*minirt.scene);
+		shoot_rays(minirt.scene);
 	}
 	else
 		return (1); // if you terminate the window it seg faults
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
-	free(scene.sp);
+	//free(scene.sp);
 	mlx_terminate(minirt.mlx);
 	return (0);
 }
