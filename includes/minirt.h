@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
 /*   Updated: 2025/03/13 17:13:06 by zpiarova         ###   ########.fr       */
@@ -42,7 +42,7 @@ typedef struct s_coord
 
 typedef struct s_ambient
 {
-    float ratio; // [0.0, 1.0]
+    float ratio;
     t_colour colour;
 } t_ambient;
 
@@ -57,7 +57,7 @@ typedef struct s_light
 {
     t_coord lightpoint;
     float brightness;
-    t_colour colour; // bonus?
+    t_colour colour; // bonus
 } t_light;
 
 typedef struct s_sphere
@@ -161,25 +161,26 @@ void ft_hook(void *param);
 
 // PARSING
 int parse_scene(t_minirt *minirt, char *rt_file);
-t_scene *fill_scene(char **rows, int size);
-int default_scene(t_scene *scene);
+int identify_objects(t_scene *scene, char *first_letter, char **values);
+int valid_input(char **values);
+
 t_coord parse_coord(char *coord);
 t_colour parse_colour(char *clr);
 t_coord set_coord(float x, float y, float z);
-t_colour set_colour(int r, int b, int g);
+t_colour set_colour(int r, int b, int g);;
+int valid_coord(t_coord *coord);
+int valid_colour(t_colour *clr);
 char	**get_lines(char *arg, int size);
 int	count_rows(char *arg);
-int valid_input(char **values);
 
 // UTILS
-void ft_error_mlx(void);
 int ft_error(const char *msg);
-void ft_free(char **arr, int size);
+void ft_free(char **arr);
+void free_scene(t_scene *scene);
 double ft_atof(const char *str);
 int check_file_format(char *filename);
 
 // TESTS - REMOVE AFTER DONE
 void print_scene(t_scene *scene);
-void create_test_sphere(t_sphere *sp);
 
 #endif

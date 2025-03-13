@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
 /*   Updated: 2025/03/13 17:16:56 by zpiarova         ###   ########.fr       */
@@ -30,61 +30,33 @@ int minirt_init(t_minirt *minirt)
 	// mlx_set_setting(MLX_MAXIMIZED, true);
 	minirt->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
 	if (!minirt->mlx)
-	{
-		ft_error_mlx();
 		return (1);
-	}
 	minirt->img = mlx_new_image(minirt->mlx, minirt->img_width, minirt->img_height);
 	if (!minirt->img || (mlx_image_to_window(minirt->mlx, minirt->img, 0, 0) < 0))
-	{
-		ft_error_mlx();
 		return (1);
-	}
 	return (0);
 }
 
 int32_t main(int argc, char *argv[])
 {
 	t_minirt minirt;
-	t_scene scene; // TEMPORARY SCENE WITH DEFAULT VALUES, YOU CAN HOOK IT UP TO HAVE VALUES FROM .rt FILES
-	t_sphere sp;
-	
-	(void)argv;
-	scene.c.vector = set_coord(0.707, 0.707, 0);
-	scene.c.view_degree = 70.0;
-	scene.c.viewpoint = set_coord(0.0, 0.0, 5.0);
-	sp.centre = set_coord(10.0, 20.0, 0.0);
-	sp.diameter = 10.0;
-	sp.colour.r = 64;
-	sp.colour.g = 224;
-	sp.colour.b = 208;
-	sp.next = NULL;
 
 	if (argc != 2)
-	{
-		printf("Error\nDon't: ./miniRT\nDo: ./miniRT [scene].rt\n");
-		return (1);
-	}
+		return (ft_error("Usage: ./miniRT [scene].rt"));
 	if (check_file_format(argv[1]))
-	{
-		printf("Wrong scene format.\n");
-		return (1);
-	}
+		return (ft_error("Wrong scene format. Expected .rt file."));
 	if (minirt_init(&minirt))
-		return (1); // how will we handle errors? should we exit but what about the window termination?
-	printf("S1[%f, %f, %f] \n", sp.centre.x, sp.centre.y, sp.centre.z);
-	if (!parse_scene(&minirt, argv[1]))
-	{
-		// here will probably connect to my part right ? -Zuzana (for now i use it to check output of math functions)
-		//draw_line(minirt.img);
-		scene.viewport = set_viewport_plane(scene);
-		shoot_rays(minirt.img, &scene, &sp);
-	}
-	else
-		return (1); // if you terminate the window it seg faults
+		return (ft_error(mlx_strerror(mlx_errno)));
+	if (parse_scene(&minirt, argv[1]))
+		return (1);
+	print_scene(minirt.scene);
+	draw_line(minirt.img);
+	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
+	shoot_rays(minirt.scene);
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
-	free(scene.sp);
+	free_scene(minirt.scene);
+	mlx_delete_image(minirt.mlx, minirt.img);
 	mlx_terminate(minirt.mlx);
 	return (0);
 }

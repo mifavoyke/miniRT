@@ -12,23 +12,67 @@
 
 #include "../includes/minirt.h"
 
-void ft_error_mlx(void)
+int ft_error(const char *msg)
 {
-	fprintf(stderr, "Error\n%s", mlx_strerror(mlx_errno)); // replace the function for the norm
-    // exit (1);
+    printf("Error: %s\n", msg);
+    return (1);
 }
 
-void ft_free(char **arr, int size)
+void ft_free(char **arr)
 {
     int i;
 
     i = 0;
-    while (i < size)
+    while (arr[i])
     {
         free(arr[i]);
         i++;
     }
     free(arr);
+}
+
+void free_scene(t_scene *scene)
+{
+	int i;
+
+	if (scene->sp)
+	{
+		i = 0;
+		while (i < scene->sp_count)
+		{
+			free(scene->sp);
+			i++;
+		}
+	}
+	if (scene->pl)
+	{
+		i = 0;
+		while (i < scene->pl_count)
+		{
+			free(scene->pl);
+			i++;
+		}
+	}
+	if (scene->cy)
+	{
+		i = 0;
+		while (i < scene->cy_count)
+		{
+			free(scene->cy);
+			i++;
+		}
+	}
+	free(scene);
+}
+
+int valid_coord(t_coord *coord)
+{
+    return (coord->x == INT_ERROR && coord->y == INT_ERROR && coord->z == INT_ERROR);
+}
+
+int valid_colour(t_colour *clr)
+{
+    return (clr->r == -1 && clr->r == -1 && clr->r == -1);
 }
 
 int check_file_format(char *filename)

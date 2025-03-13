@@ -1,6 +1,6 @@
 #include "../includes/minirt.h"
 
-int is_numerical(volatile char *str)
+static int is_numerical(volatile char *str)
 {
     int i;
     int has_dot;
@@ -18,11 +18,13 @@ int is_numerical(volatile char *str)
         if (str[i] == '.')
         {
             if (has_dot)
-                return (0);
+                return (1);
             has_dot = 1;
         }
         else if (str[i] == ',')
         {
+            if (str[i + 1] == '-')
+                i++;
             if (comma == 2)
                 return (1);
             comma++;
@@ -36,22 +38,16 @@ int is_numerical(volatile char *str)
 
 int valid_input(char **values)
 {
-    int j;
+    int i;
 
     if (!ft_isalpha(values[0][0]))
+        return (ft_error(values[0]));
+    i = 1;
+    while (values[i])
     {
-        printf("Error: Invalid identifier: %s\n", values[0]);
-        return (1);
-    }
-    j = 1;
-    while (values[j])
-    {
-        if (is_numerical(values[j]))
-        {
-            printf("Error: Invalid number format: %s\n", values[j]);
-            return (1);
-        }
-        j++;
+        if (is_numerical(values[i]))
+            return (ft_error(values[i]));
+        i++;
     }
     return (0);
 }
