@@ -34,7 +34,7 @@ t_coord parse_coord(char *coord)
 	parsed.x = ft_atof(values[0]);
 	parsed.y = ft_atof(values[1]);
 	parsed.z = ft_atof(values[2]);
-	ft_free(values, 3);
+	ft_free(values);
 	if (parsed.x == INT_MIN || parsed.y == INT_MIN || parsed.z == INT_MIN)
 	{
 		printf("Error: Coordinate out of allowed range.\n");
@@ -57,7 +57,7 @@ t_colour parse_colour(char *clr)
 	colour.r = ft_atoi(values[0]);
 	colour.g = ft_atoi(values[1]);
 	colour.b = ft_atoi(values[2]);
-	ft_free(values, 3);
+	ft_free(values);
 	if (colour.r < 0 || colour.r > 255 || colour.g < 0 || colour.g > 255 || colour.b < 0 || colour.b > 255)
 	{
 		printf("Error: Colour values out of range.\n");
