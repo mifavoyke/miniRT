@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 17:43:14 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:01:34 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void normalize(t_coord *N);
 int equals(float a, float b, float deviation);
 float get_discriminant(float a, float b, float c);
 double	scale(double num, double new_min, double new_max, double old_max);
+int32_t  ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 
 //MATH - math.c
 t_viewport *set_viewport_plane(t_scene scene);

@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/13 18:11:18 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:14:18 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	{
 	// 	printf("Pv [%f, %f, %f]\n", Pv.x, Pv.y, Pv.z);
 	// 	printf("F (%f, %f, %f)   R (%f, %f, %f)   U (%f, %f, %f)\n", Fn.x, Fn.y, Fn.z, R.x, R.y, R.z, U.x, U.y, U.z);
-		printf("Pnew [%f, %f, %f]\n", Pnew.x, Pnew.y, Pnew.z);
+		// printf("Pnew [%f, %f, %f]\n", Pnew.x, Pnew.y, Pnew.z);
 	// 	printf("ray vector [%f, %f, %f] normalized: %d\n", ray_vector.x, ray_vector.y, ray_vector.z, is_vector_normalized(ray_vector));
 	}
 	return (ray_vector);
@@ -89,31 +89,26 @@ int shoot_rays(mlx_image_t *image, t_scene *scene)
 	int			y;
 	t_matrix	Tm;
 	t_coord		ray;
+	t_sphere *temp_sp;
 
 	Tm = find_transformation_matrix(scene->c);
 	//t_coord viewport_point;
 	//t_coord intersection;
-
+	(void)image;
 	y = -1;
 	while (++y < HEIGHT)
 	{
 		x = -1;
 		while (++x < WIDTH)
 		{
-			//printf("S[%f, %f, %f] O[%f, %f, %f]\n", scene->sp->centre.x, scene->sp->centre.y, scene->sp->centre.z, scene->c.viewpoint.x, scene->c.viewpoint.y, scene->c.viewpoint.z);
+			temp_sp = scene->sp;
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
-			// if (x == 299 && y == 199)
-			// {
-			// 	printf("ray vector: r(%f, %f, %f) normalized: %d\n", ray.x, ray.y, ray.z, is_vector_normalized(ray));
-			// }
-			if (sphere_intersection(ray, scene->c, scene->sp) > 0)
-					mlx_put_pixel(image, x, y, 0xe5f89f);
-			// while (scene->sp)
-			// {
-			// 	if (sphere_intersection(ray, scene->c, scene->sp) > 0)
-			// 		mlx_put_pixel(image, x, y, 0xe5f89f);
-			// 	scene->sp = scene->sp->next;
-			// }
+			while (temp_sp)  // Ensure sp is valid
+			{
+				if (sphere_intersection(ray, scene->c, temp_sp) > 0)
+					mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, 255));
+				temp_sp = temp_sp->next;
+			}
 		}
 	}
 	return (0);
