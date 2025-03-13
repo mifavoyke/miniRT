@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/13 14:07:08 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:14:41 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	return (ray_vector);
 }
 
-int shoot_rays(t_scene *scene)
+int shoot_rays(mlx_image_t *image, t_scene *scene, t_sphere *sp)
 {
 	int			x;
 	int			y;
@@ -92,7 +92,7 @@ int shoot_rays(t_scene *scene)
 
 	Tm = find_transformation_matrix(scene->c);
 	//t_coord viewport_point;
-	// t_coord intersection;
+	//t_coord intersection;
 
 	y = -1;
 	while (++y < HEIGHT)
@@ -100,11 +100,14 @@ int shoot_rays(t_scene *scene)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			
+			//printf("S[%f, %f, %f] O[%f, %f, %f]\n", scene->sp->centre.x, scene->sp->centre.y, scene->sp->centre.z, scene->c.viewpoint.x, scene->c.viewpoint.y, scene->c.viewpoint.z);
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
-			if (x == 0 && y == 0)
-				printf("ray vector: r(%f, %f, %f) normalized: %d\n", ray.x, ray.y, ray.z, is_vector_normalized(ray));
-			//intersection = sphere_intersection(&viewport_point, &scene->c, scene->sp);
+			// if (x == 299 && y == 199)
+			// {
+			// 	printf("ray vector: r(%f, %f, %f) normalized: %d\n", ray.x, ray.y, ray.z, is_vector_normalized(ray));
+			// }
+			if (sphere_intersection(ray, scene->c, sp) > 0)
+				mlx_put_pixel(image, x, y, 0xe5f89f);
 		}
 
 	}

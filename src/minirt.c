@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 14:07:33 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:16:56 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ int32_t main(int argc, char *argv[])
 {
 	t_minirt minirt;
 	t_scene scene; // TEMPORARY SCENE WITH DEFAULT VALUES, YOU CAN HOOK IT UP TO HAVE VALUES FROM .rt FILES
-
+	t_sphere sp;
+	
 	(void)argv;
-	scene.c.vector = set_coord(0.5, 0.5, 0.707);
+	scene.c.vector = set_coord(0.707, 0.707, 0);
 	scene.c.view_degree = 70.0;
-	scene.c.viewpoint = set_coord(0.0, 0.0, 0.0);
-	scene.sp = (t_sphere *)malloc(sizeof(t_sphere *));
-	scene.sp->centre = set_coord(0.0, 50.0, 0.0);
-	scene.sp->diameter = 10.0;
-	scene.sp->colour.r = 64;
-	scene.sp->colour.g = 224;
-	scene.sp->colour.b = 208;
-	scene.sp->next = NULL;
+	scene.c.viewpoint = set_coord(0.0, 0.0, 5.0);
+	sp.centre = set_coord(10.0, 20.0, 0.0);
+	sp.diameter = 10.0;
+	sp.colour.r = 64;
+	sp.colour.g = 224;
+	sp.colour.b = 208;
+	sp.next = NULL;
 
 	if (argc != 2)
 	{
@@ -72,12 +72,13 @@ int32_t main(int argc, char *argv[])
 	}
 	if (minirt_init(&minirt))
 		return (1); // how will we handle errors? should we exit but what about the window termination?
+	printf("S1[%f, %f, %f] \n", sp.centre.x, sp.centre.y, sp.centre.z);
 	if (!parse_scene(&minirt, argv[1]))
 	{
 		// here will probably connect to my part right ? -Zuzana (for now i use it to check output of math functions)
-		draw_line(minirt.img);
+		//draw_line(minirt.img);
 		scene.viewport = set_viewport_plane(scene);
-		shoot_rays(&scene);
+		shoot_rays(minirt.img, &scene, &sp);
 	}
 	else
 		return (1); // if you terminate the window it seg faults

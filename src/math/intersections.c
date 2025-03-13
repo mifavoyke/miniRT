@@ -6,44 +6,35 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/12 10:48:27 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:10:17 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// calculates the intersection of a sphere with the ray
-// @param V is the pixel
-/*
-t_coord sphere_intersection(t_coord *V, t_camera *C, t_sphere *sp)
+int sphere_intersection(t_coord ray, t_camera cam, t_sphere *sp)
 {
-	t_coord r;
-	t_coord q;
-
+	t_coord camera_to_sphere_center;
 	float a;
 	float b;
 	float c;
-
-	float t1;
-	float t2;
 	float discriminant;
+	int roots;
 
-	r = make_vector(C->viewpoint, *V); // r = V - C --> vector in the direction from the camera to the viewpoint coordinate corresponding to a pixel in the screen
-	q = make_vector(C->viewpoint, sp->centre);  // q = C - S --> vector in the direction of the camera and the sphere centre
-
-	a = dot_product(r, r);
-	b = 2 * (dot_product(q, r));
-	c = dot_product(q, q) - sp->diameter / 2;
-
-	// this maybe has to be changed, what if the one where  we use + sqrt(D) is not root but the - sqrt(D) is the root
-	discriminant = get_discriminant(a, b, c);
-	if (discriminant >= 0)
-		t1 = (-b + sqrt(discriminant)) / (2 * a);
-	if (discriminant > 0)
-		t2 = (-b - sqrt(discriminant)) / (2 * a);
-
-
-		// dosad the t variable value that we now know to the equation P = C + t*(V - C);
-	return (*V); // TODO: for now we return V, but not correct, just to shut up the errors
+	//printf("S[%f, %f, %f] O[%f, %f, %f] ->SO: (%f, %f, %f)\n", sp.centre.x, sp.centre.y, sp.centre.z, cam.viewpoint.x, cam.viewpoint.y, cam.viewpoint.z, camera_to_sphere_center.x, camera_to_sphere_center.y, camera_to_sphere_center.z);
+	camera_to_sphere_center = make_vector(sp->centre, cam.viewpoint);
+	
+	a = get_dot_product(ray, ray); // looks ok
+	b = 2 * get_dot_product(camera_to_sphere_center, ray);
+	c = get_dot_product(camera_to_sphere_center, camera_to_sphere_center) - pow((sp->diameter) / 2, 2);
+	discriminant = pow(b, 2) - (4 * a * c);
+	if (discriminant < 0)
+		roots = 0;
+	else if (discriminant == 0)
+		roots = 1;
+	else
+		roots = 2;
+	printf("a: %f, b: %f, c: %f, D = %f, roots: %d\n", a, b, c, discriminant, roots);
+	
+	return (discriminant); // TODO: for now we return V, but not correct, just to shut up the errors
 }
-*/
