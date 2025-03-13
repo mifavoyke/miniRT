@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 17:13:06 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:43:14 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 float get_viewport_width(float angle_deg, float distance);
 t_coord get_viewport_ray(t_scene *scene, t_matrix m, int x, int y);
-int shoot_rays(mlx_image_t *image, t_scene *scene, t_sphere *sp);
+int shoot_rays(mlx_image_t *image, t_scene *scene);
 
 // MATH - intersections.c
 int sphere_intersection(t_coord ray, t_camera cam, t_sphere *sp);
