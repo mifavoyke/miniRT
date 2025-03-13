@@ -33,9 +33,16 @@ static t_scene *fill_scene(char **rows, int size)
 			return (NULL);
 		}
 		if (valid_input(values))
+		{
+			ft_free(values);
 			return (NULL);
+		}
 		if (identify_objects(scene, values[0], values))
+		{
+			ft_free(values);
 			return (NULL);
+		}
+		ft_free(values);
 		i++;
 	}
 	return (scene);
@@ -51,6 +58,7 @@ int parse_scene(t_minirt *minirt, char *rt_file)
 	if (!parsed_file)
 		return (1);
 	minirt->scene = fill_scene(parsed_file, size);
+	// ft_free(parsed_file);
 	if (!minirt->scene)
 		return (1);
 	return (0);

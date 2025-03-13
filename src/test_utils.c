@@ -12,56 +12,62 @@ static void print_coord(t_coord coord)
 
 static void print_spheres(t_sphere *sp)
 {
+	t_sphere *tmp = sp;
+
 	printf("\nSpheres:\n");
 	if (!sp)
-		printf("  No spheres in the scene.\n");
-	while (sp)
+	printf("  No spheres in the scene.\n");
+	while (tmp)
 	{
 		printf("  Centre: ");
-		print_coord(sp->centre);
-		printf("\n  Diameter: %.2f\n", sp->diameter);
+		print_coord(tmp->centre);
+		printf("\n  Diameter: %.2f\n", tmp->diameter);
 		printf("  Colour: ");
-		print_colour(sp->colour);
-		printf("\n");
-		sp = sp->next;
+		print_colour(tmp->colour);
+		printf("\n\n");
+		tmp = tmp->next;
 	}
 }
 
 static void print_planes(t_plane *pl)
 {
+	t_plane *tmp = pl;
+
 	printf("\nPlanes:\n");
 	if (!pl)
 		printf("  No planes in the scene.\n");
-	while (pl)
+	while (tmp)
 	{
 		printf("  Point: ");
-		print_coord(pl->point);
+		print_coord(tmp->point);
 		printf("\n  Normal Vector: ");
-		print_coord(pl->vector);
+		print_coord(tmp->vector);
 		printf("\n  Colour: ");
-		print_colour(pl->colour);
-		printf("\n");
-		pl = pl->next;
+		print_colour(tmp->colour);
+		printf("\n\n");
+		tmp = tmp->next;
 	}
 }
 
 static void print_cylinders(t_cylinder *cy)
 {
+	t_cylinder *tmp = cy;
+
 	printf("\nCylinders:\n");
 	if (!cy)
 		printf("  No cylinders in the scene.\n");
-	while (cy)
+	while (tmp)
 	{
 		printf("  Centre: ");
-		print_coord(cy->centre);
+		print_coord(tmp->centre);
 		printf("\n  Normal Vector: ");
-		print_coord(cy->vector);
-		printf("\n  Diameter: %.2f\n", cy->diameter);
-		printf("  Height: %.2f\n", cy->height);
+		print_coord(tmp->vector);
+		printf("\n  Diameter: %.2f\n", tmp->diameter);
+		printf("  Height: %.2f\n", tmp->height);
 		printf("  Colour: ");
-		print_colour(cy->colour);
-		printf("\n");
-		cy = cy->next;
+		print_colour(tmp->colour);
+		printf("\n\n");
+		tmp = tmp->next;
 	}
 }
 

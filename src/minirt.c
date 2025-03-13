@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 17:16:56 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 18:19:22 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,16 @@ int32_t main(int argc, char *argv[])
 	if (minirt_init(&minirt))
 		return (ft_error(mlx_strerror(mlx_errno)));
 	if (parse_scene(&minirt, argv[1]))
+	{
+		mlx_delete_image(minirt.mlx, minirt.img);
+		mlx_terminate(minirt.mlx);
 		return (1);
+	}
 	print_scene(minirt.scene);
-	draw_line(minirt.img);
+
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
-	shoot_rays(minirt.scene);
+	shoot_rays(minirt.img, minirt.scene, minirt.scene->sp);
+
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 	free_scene(minirt.scene);
