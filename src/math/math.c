@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/13 17:14:41 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 18:11:18 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	return (ray_vector);
 }
 
-int shoot_rays(mlx_image_t *image, t_scene *scene, t_sphere *sp)
+int shoot_rays(mlx_image_t *image, t_scene *scene)
 {
 	int			x;
 	int			y;
@@ -106,10 +106,15 @@ int shoot_rays(mlx_image_t *image, t_scene *scene, t_sphere *sp)
 			// {
 			// 	printf("ray vector: r(%f, %f, %f) normalized: %d\n", ray.x, ray.y, ray.z, is_vector_normalized(ray));
 			// }
-			if (sphere_intersection(ray, scene->c, sp) > 0)
-				mlx_put_pixel(image, x, y, 0xe5f89f);
+			if (sphere_intersection(ray, scene->c, scene->sp) > 0)
+					mlx_put_pixel(image, x, y, 0xe5f89f);
+			// while (scene->sp)
+			// {
+			// 	if (sphere_intersection(ray, scene->c, scene->sp) > 0)
+			// 		mlx_put_pixel(image, x, y, 0xe5f89f);
+			// 	scene->sp = scene->sp->next;
+			// }
 		}
-
 	}
 	return (0);
 }
