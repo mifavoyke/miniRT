@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/13 12:10:05 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:01:13 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,31 @@ t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y)
 	P0.y = v->d;
 	P0.z = scale(y + 0.5, v->viewport_height / 2, - v->viewport_height / 2, HEIGHT);
 	
-	translation.x = c.viewpoint.x; // - C0.x;
-	translation.y = c.viewpoint.y; // - C0.y;
-	translation.z = c.viewpoint.z; // - C0.z;
+	translation.x = c.viewpoint.x;
+	translation.y = c.viewpoint.y;
+	translation.z = c.viewpoint.z;
 
 	Fn = c.vector;
-	R = get_cross_product(Fn, global_up);
-	normalize(&R);
-	U = get_cross_product(R, Fn);
-	normalize(&U);
+	if (Fn.x == 0 && Fn.y == 0 && Fn.z == 1)
+	{
+		// if F (0, 0, 1) - we would be making cross product of colinera vectors which is wrong
+		U = set_coord(0, -1, 0);
+		R = set_coord(1, 0, 0);
+		
+	}
+	else if (Fn.x == 0 && Fn.y == 0 && Fn.z == -1)
+	{
+		// if F (0, 0, -1)
+		U = set_coord(0, 1, 0);
+		R = set_coord(1, 0, 0);
+	}
+	else
+	{
+		R = get_cross_product(Fn, global_up);
+		normalize(&R);
+		U = get_cross_product(R, Fn);
+		normalize(&U);
+	}
 	
 	// then we can apply the transformation matrix by adding Tx Ty Tz to last collumn adn 0 to last row, with 2 being the last element 
 	Pnew.x = R.x * P0.x + Fn.x * P0.y + U.x * P0.z + translation.x;
