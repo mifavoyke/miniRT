@@ -6,11 +6,88 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/12 18:21:59 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:10:05 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+
+// TODO: MUST CHECK FOR CORRECTNESS AND IF THE MATRIX IS OK BUT I THINK IT LOOKS GOOD
+// ALREADY MAPS ALL PIXELS DESCRIBED BY x AND y FROM SCREEN SPACE TO CAMERA SPACE TO 3D SPACE! <3
+// maps coordinate from top-left 2d screen to the viewport plane in 3d
+// in screen, one pixel is one unit defined by x and y, but they specify start of the pixel
+// the middle of it is [x + 0.5, y + 0.5]
+t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y)
+{
+	// data needed to find transformation matrix
+	t_coord P0; // this is variable for each ray
+	t_coord Pnew;
+	t_coord C0; // initial camera point for simplicity, C.new = camera.viewpoint
+	t_coord v0; // initial camera vector for simplicity, vnew = camera.vector
+	t_coord translation; // translation vector: Cnew - C0
+	t_coord ray_vector; // resulting vector
+
+	t_coord Fn; // Fnew is the new 
+	t_coord R;
+	t_coord U;
+	t_coord global_up;
+	
+	// initial simple position and direction of camera
+	C0 = set_coord(0.0, 0.0, 0.0);
+	v0 = set_coord(0.0, 1.0, 0.0);
+	global_up = set_coord(0.0, 0.0, 1.0);
+	// P0 are world coordinates of point but when camera is in the default position: C[0, 0, 0], ->v(0, 0, 1)
+	P0.x = scale(x + 0.5, - v->viewport_width / 2, v->viewport_width / 2, WIDTH);
+	P0.y = v->d;
+	P0.z = scale(y + 0.5, v->viewport_height / 2, - v->viewport_height / 2, HEIGHT);
+	
+	translation.x = c.viewpoint.x; // - C0.x;
+	translation.y = c.viewpoint.y; // - C0.y;
+	translation.z = c.viewpoint.z; // - C0.z;
+
+	Fn = c.vector;
+	R = get_cross_product(Fn, global_up);
+	normalize(&R);
+	U = get_cross_product(R, Fn);
+	normalize(&U);
+	
+	// then we can apply the transformation matrix by adding Tx Ty Tz to last collumn adn 0 to last row, with 2 being the last element 
+	Pnew.x = R.x * P0.x + Fn.x * P0.y + U.x * P0.z + translation.x;
+	Pnew.y = R.y * P0.x + Fn.y * P0.y + U.y * P0.z + translation.y;
+	Pnew.z = R.z * P0.x + Fn.z * P0.y + U.z * P0.z + translation.z;
+	ray_vector = make_vector(c.viewpoint, Pnew);
+	if (x == 0 && y == 0)
+	{
+		printf("P0 [%f, %f, %f]\n", P0.x, P0.y, P0.z);
+		printf("F (%f, %f, %f)   R (%f, %f, %f)   U (%f, %f, %f)\n", Fn.x, Fn.y, Fn.z, R.x, R.y, R.z, U.x, U.y, U.z);
+		printf("Pnew [%f, %f, %f]\n", Pnew.x, Pnew.y, Pnew.z);
+	}
+	return (ray_vector);
+}
+
+int shoot_rays(t_scene *scene)
+{
+	int     x;
+	int     y;
+
+	//t_coord viewport_point;
+	//t_coord ray;
+	// t_coord intersection;
+
+	y = -1;
+	while (++y < HEIGHT)
+	{
+		x = -1;
+		while (++x < WIDTH)
+		{
+			get_viewport_ray(scene->c, scene->viewport, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
+			//intersection = sphere_intersection(&viewport_point, &scene->c, scene->sp);
+		}
+
+	}
+	return (0);
+}
 
 // make a function to get the 4x4 translation matrix
 // t_coord translation_matrix[][]()
@@ -89,7 +166,7 @@
 	Pnew.z = up.x * P0.x + up.y * P0.y + up.z * P0.z + translation.z;
 	
 	*/
-// TODO: MUST CHECK FOR CORRECTNESS AND IF THE MATRIX IS OK BUT I THINK IT LOOKS GOOD
+/* // TODO: MUST CHECK FOR CORRECTNESS AND IF THE MATRIX IS OK BUT I THINK IT LOOKS GOOD
 // ALREADY MAPS ALL PIXELS DESCRIBED BY x AND y FROM SCREEN SPACE TO CAMERA SPACE TO 3D SPACE! <3
 // maps coordinate from top-left 2d screen to the viewport plane in 3d
 // in screen, one pixel is one unit defined by x and y, but they specify start of the pixel
@@ -158,32 +235,12 @@ t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y)
 	ray_vector = make_vector(c.viewpoint, Pnew);
 	if (x == 0 && y == 0)
 	{
+		printf("C[%f, %f, %f]  S[%f, %f, %f]  v(%f, %f, %f)\n", c.viewpoint.x, c.viewpoint.y, c.viewpoint.z, v->viewport_centre.x, v->viewport_centre.y, v->viewport_centre.z, c.vector.x, c.vector.y, c.vector.z);
 		printf("[%f\t%f\t%f\t%f\t]\n[%f\t%f\t%f\t%f\t]\n[%f\t%f\t%f\t%f\t]\n[%f\t%f\t%f\t%f\t]\n", Tm[0][0], Tm[0][1], Tm[0][2], Tm[0][3], Tm[1][0], Tm[1][1], Tm[1][2], Tm[1][3], Tm[2][0], Tm[2][1], Tm[2][2], Tm[2][3], Tm[3][0], Tm[3][1], Tm[3][2], Tm[3][3]);
 		printf("P0 [%f, %f, %f] theta %f\nPnew [%f, %f, %f]\n -> final point vector v (%f, %f, %f)\n", P0.x, P0.y, P0.z, theta, Pnew.x, Pnew.y, Pnew.z, ray_vector.x, ray_vector.y, ray_vector.z);
 		// printf("P0 [%f, %f, %f]\nF (%f, %f, %f)\nR (%f, %f, %f)\nU (%f, %f, %f)\nT (%f, %f, %f)\nPnew [%f, %f, %f]\n -> final point vector v (%f, %f, %f)\n", P0.x, P0.y, P0.z, forward.x, forward.y, forward.z, right.x, right.y, right.z, up.x, up.y, up.z, translation.x, translation.y, translation.z, Pnew.x, Pnew.y, Pnew.z, ray_vector.x, ray_vector.y, ray_vector.z);
 	}
 	return (ray_vector);
-}
+} */
 
-int shoot_rays(t_scene *scene)
-{
-	int     x;
-	int     y;
 
-	//t_coord viewport_point;
-	//t_coord ray;
-	// t_coord intersection;
-
-	y = -1;
-	while (++y < HEIGHT)
-	{
-		x = -1;
-		while (++x < WIDTH)
-		{
-			get_viewport_ray(scene->c, scene->viewport, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
-			//intersection = sphere_intersection(&viewport_point, &scene->c, scene->sp);
-		}
-
-	}
-	return (0);
-}

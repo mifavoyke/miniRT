@@ -12,7 +12,8 @@ https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-
 https://www.ogldev.org/www/tutorial13/tutorial13.html
 Ray tracing pdf handbook:
 https://www.researchgate.net/publication/230583216_Ray_Tracing_Algorithms_-_Theory_and_Practice
-
+creating rotation matrices and general 3d rotation matrix:
+https://en.wikipedia.org/wiki/Rotation_matrix
 
 
 * FOR YEVA *
