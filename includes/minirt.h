@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/12 12:18:30 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:48:01 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,14 @@ typedef struct s_cylinder
     struct s_cylinder *next;
 } t_cylinder;
 
+typedef struct s_matrix
+{
+    t_coord R;
+    t_coord F;
+    t_coord U;
+    t_coord Tr;
+}               t_matrix;
+
 typedef struct s_viewport
 {
     float d;
@@ -143,7 +151,7 @@ t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 
 float get_viewport_width(float angle_deg, float distance);
-t_coord get_viewport_ray(t_camera c, t_viewport *v, int x, int y);
+t_coord get_viewport_ray(t_scene *scene, t_matrix m, int x, int y);
 int shoot_rays(t_scene *scene);
 
 // HOOKS
