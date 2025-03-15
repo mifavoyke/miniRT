@@ -11,7 +11,7 @@ static void init_scene(t_scene *scene)
 	scene->sp_count = 0;
 	scene->pl_count = 0;
 	scene->cy_count = 0;
-    scene->background = set_colour(0, 0, 0, 255);
+    scene->background = set_colour(200, 200, 200, 255); // light gray
 }
 
 static int ft_isspace(char c)
