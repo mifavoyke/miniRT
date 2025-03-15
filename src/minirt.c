@@ -1,27 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minirt.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/03 16:37:45 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 18:22:46 by zpiarova         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minirt.h"
-
-void draw_line(mlx_image_t *image)
-{
-	int i = 50;
-
-	while (i < 100)
-	{
-		mlx_put_pixel(image, i, i, 0xe5f89f);
-		i++;
-	}
-}
 
 int minirt_init(t_minirt *minirt)
 {
@@ -45,19 +22,29 @@ int32_t main(int argc, char *argv[])
 		return (ft_error("Usage: ./miniRT [scene].rt"));
 	if (check_file_format(argv[1]))
 		return (ft_error("Wrong scene format. Expected .rt file."));
+	if (parse_scene(&minirt, argv[1]))
+		return (1);
 	if (minirt_init(&minirt))
 		return (ft_error(mlx_strerror(mlx_errno)));
-	if (parse_scene(&minirt, argv[1]))
-	{
-		mlx_delete_image(minirt.mlx, minirt.img);
-		mlx_terminate(minirt.mlx);
+
+	minirt.pixels = allocate_pixels(minirt.img_width, minirt.img_height);
+	if (!minirt.pixels)
 		return (1);
-	}
+	init_pixels(&minirt);
+	print_scene(minirt.scene);
+	brighten_up(minirt.scene); // apply ambience
+
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
-	shoot_rays(minirt.img, minirt.scene);
+	shoot_rays(&minirt, minirt.img, minirt.scene);
+
+	// print_pixels(&minirt);
+	render_pixels(&minirt);
+
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
+
 	free_scene(minirt.scene);
+	free_pixels(minirt.pixels, HEIGHT);
 	mlx_delete_image(minirt.mlx, minirt.img);
 	mlx_terminate(minirt.mlx);
 	return (0);

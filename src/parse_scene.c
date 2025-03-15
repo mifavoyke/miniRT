@@ -11,12 +11,40 @@ static void init_scene(t_scene *scene)
 	scene->sp_count = 0;
 	scene->pl_count = 0;
 	scene->cy_count = 0;
+    scene->background = set_colour(0, 0, 0, 255);
+}
+
+static int ft_isspace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == '\v');
+}
+
+static char *normalise_whitespace(char *str)
+{
+	char *new_str;
+	int i;
+
+	new_str = malloc(ft_strlen(str) + 1);
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			new_str[i] = ' ';
+		else
+			new_str[i] = str[i];
+		i++;
+	}
+	new_str[i] = '\0';
+	return (new_str);
 }
 
 static t_scene *fill_scene(char **rows, int size)
 {
 	t_scene *scene;
 	char **values;
+	char *normalised;
 	int i;
 
 	scene = malloc(sizeof(t_scene));
@@ -26,11 +54,21 @@ static t_scene *fill_scene(char **rows, int size)
 	i = 0;
 	while (i < size)
 	{
-		values = ft_split(rows[i], ' ');
+		normalised = normalise_whitespace(rows[i]);
+		if (!normalised)
+			return (NULL);
+		values = ft_split(normalised, ' ');
+		free(normalised);
 		if (!values)
 		{
 			printf("Error: ft_split failed.\n");
 			return (NULL);
+		}
+		if (!*values)
+		{
+			i++;
+			free(values);
+			continue;
 		}
 		if (valid_input(values))
 		{

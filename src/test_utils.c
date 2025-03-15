@@ -16,7 +16,7 @@ static void print_spheres(t_sphere *sp)
 
 	printf("\nSpheres:\n");
 	if (!sp)
-	printf("  No spheres in the scene.\n");
+		printf("  No spheres in the scene.\n");
 	while (tmp)
 	{
 		printf("  Centre: ");
@@ -110,4 +110,27 @@ void print_scene(t_scene *scene)
 	print_planes(scene->pl);
 	print_cylinders(scene->cy);
 	printf("\n");
+}
+
+void print_pixels(t_minirt *minirt)
+{
+	int x;
+	int y;
+	
+	y = 0;
+	while (y < minirt->img_height)
+	{
+		x = 0;
+		while (x < minirt->img_width)
+		{
+			t_pixel *pixel = &minirt->pixels[y][x];
+			printf("Pixel at (%d, %d):\n", x, y);
+			printf("  Colour: (r: %d, g: %d, b: %d, a: %d)\n", pixel->cl.r, pixel->cl.g, pixel->cl.b, pixel->cl.a);
+			printf("  Object Type: %d\n", pixel->obj_type);
+			printf("  Distance: %.2f\n", pixel->distance);
+			printf("\n");
+			x++;
+		}
+		y++;
+	}
 }

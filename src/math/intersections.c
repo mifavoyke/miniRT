@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/13 19:11:37 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/15 13:49:20 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // based on parametric equations for sphere and ray
 // P = C + t*ray
 // |
-int sphere_intersection(t_coord ray, t_camera cam, t_sphere *sp)
+int sphere_intersection(t_coord ray, t_camera cam, t_sphere *sp) // i need a lil more explanation on that - yeva
 {
 	t_coord camera_to_sphere_center;
 	float a;

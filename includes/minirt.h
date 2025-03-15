@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/13 19:01:34 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:23:38 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_colour
     int r;
     int g;
     int b;
+    int a;
 } t_colour;
 
 typedef struct s_coord
@@ -116,8 +117,25 @@ typedef struct s_scene
     int sp_count;
     int pl_count;
     int cy_count;
-    t_viewport *viewport;
+    t_viewport *viewport; // maybe its better to move it to minirt struct? - yeva
+    t_colour background;
 } t_scene;
+
+enum e_obj_t
+{
+	SPHERE, // 0
+    PLANE, // 1
+    CYLINDER, // 2
+    NO_OBJ,
+};
+
+typedef struct s_pixel
+{
+    t_colour cl;
+    void *obj;
+    enum e_obj_t obj_type;
+    float distance;
+}   t_pixel;
 
 typedef struct s_minirt
 {
@@ -126,9 +144,18 @@ typedef struct s_minirt
     int img_width;
     int img_height;
     t_scene *scene;
+    t_pixel **pixels;
 } t_minirt;
 
-// MAIN
+// AMBIENT
+void brighten_up(t_scene *scene);
+t_colour apply_ambience(t_colour *obj_clr, t_colour *amb_clr, float lighting_ratio);
+
+// PIXELS | RENDERING
+int store_pixel(t_pixel *p, t_colour cl, void *obj, int obj_t);
+t_pixel **allocate_pixels(int width, int height);
+void init_pixels(t_minirt *minirt);
+void render_pixels(t_minirt *minirt);
 
 // MATH - vector.c
 float get_dot_product(t_coord A, t_coord B);
@@ -152,7 +179,7 @@ t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 float get_viewport_width(float angle_deg, float distance);
 t_coord get_viewport_ray(t_scene *scene, t_matrix m, int x, int y);
-int shoot_rays(mlx_image_t *image, t_scene *scene);
+int shoot_rays(t_minirt *minirt, mlx_image_t *image, t_scene *scene);
 
 // MATH - intersections.c
 int sphere_intersection(t_coord ray, t_camera cam, t_sphere *sp);
@@ -168,7 +195,7 @@ int valid_input(char **values);
 t_coord parse_coord(char *coord);
 t_colour parse_colour(char *clr);
 t_coord set_coord(float x, float y, float z);
-t_colour set_colour(int r, int b, int g);;
+t_colour set_colour(int r, int b, int g, int a);
 int valid_coord(t_coord *coord);
 int valid_colour(t_colour *clr);
 char	**get_lines(char *arg, int size);
@@ -178,8 +205,10 @@ int	count_rows(char *arg);
 int ft_error(const char *msg);
 void ft_free(char **arr);
 void free_scene(t_scene *scene);
-double ft_atof(const char *str);
+double ft_atof(char *str);
 int check_file_format(char *filename);
+void free_pixels(t_pixel **p, int h);
+void print_pixels(t_minirt *minirt);
 
 // TESTS - REMOVE AFTER DONE
 void print_scene(t_scene *scene);

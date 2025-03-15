@@ -27,8 +27,8 @@ int fill_camera(t_scene *scene, char **values)
     if (valid_coord(&scene->c.viewpoint))
         return (1);
     scene->c.vector = parse_coord(values[2]);
-    if (!is_vector_normalized(scene->c.vector))
-        return (ft_error("Camera orientation vector is not normalised."));
+    // if (!is_vector_normalized(scene->c.vector))
+    //     return (ft_error("Camera orientation vector is not normalised."));
     scene->c.view_degree = ft_atoi(values[3]);
     if (scene->c.view_degree < 0 || scene->c.view_degree > 180)
         return (ft_error("Camera field of view out of range."));
@@ -100,8 +100,8 @@ int fill_plane(t_scene *scene, char **values)
     if (valid_coord(&new_plane->point))
         return (1);
     new_plane->vector = parse_coord(values[2]);
-    if (!is_vector_normalized(new_plane->vector))
-        return (ft_error("Plane normal vector is not normalised."));
+    // if (!is_vector_normalized(new_plane->vector))
+    //     return (ft_error("Plane normal vector is not normalised."));
     new_plane->colour = parse_colour(values[3]);
     if (valid_colour(&new_plane->colour))
         return (1);
@@ -124,8 +124,8 @@ int fill_cylinder(t_scene *scene, char **values)
     if (valid_coord(&new_cylinder->centre))
         return (1);
     new_cylinder->vector = parse_coord(values[2]);
-    if (!is_vector_normalized(new_cylinder->vector))
-        return (ft_error("Cylinder orientation vector is not normalised."));
+    // if (!is_vector_normalized(new_cylinder->vector))
+    //     return (ft_error("Cylinder orientation vector is not normalised."));
     new_cylinder->diameter = ft_atof(values[3]);
     if (new_cylinder->diameter <= 0)
         return (ft_error("Cylinder diameter must be greater than zero."));
@@ -141,7 +141,7 @@ int fill_cylinder(t_scene *scene, char **values)
     return (0);
 }
 
-int identify_objects(t_scene *scene, char *first_letter, char **values) // free
+int identify_objects(t_scene *scene, char *first_letter, char **values)
 {
     if (!ft_strncmp(first_letter, "A", 1))
         return (fill_ambient(scene, values));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/13 19:01:31 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/15 13:04:25 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ double	scale(double num, double new_min, double new_max, double old_max)
 int32_t  ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
     int32_t pixel;
+    
     pixel = r << 24;
     pixel |= g << 16;
     pixel |= b << 8;

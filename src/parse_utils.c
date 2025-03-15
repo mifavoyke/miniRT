@@ -10,13 +10,14 @@ t_coord set_coord(float x, float y, float z)
 	return (coord);
 }
 
-t_colour set_colour(int r, int b, int g)
+t_colour set_colour(int r, int b, int g, int a)
 {
 	t_colour clr;
 
 	clr.r = r;
 	clr.b = b;
 	clr.g = g;
+	clr.a = a;
 	return (clr);
 }
 
@@ -52,16 +53,17 @@ t_colour parse_colour(char *clr)
 	if (!values || !values[0] || !values[1] || !values[2])
 	{
 		printf("Error: Invalid colour format.\n");
-		return (set_colour(-1, -1, -1));
+		return (set_colour(-1, -1, -1, -1));
 	}
 	colour.r = ft_atoi(values[0]);
 	colour.g = ft_atoi(values[1]);
 	colour.b = ft_atoi(values[2]);
+	colour.a = 255;
 	ft_free(values);
 	if (colour.r < 0 || colour.r > 255 || colour.g < 0 || colour.g > 255 || colour.b < 0 || colour.b > 255)
 	{
 		printf("Error: Colour values out of range.\n");
-		return (set_colour(-1, -1, -1));
+		return (set_colour(-1, -1, -1, -1));
 	}
 	return (colour);
 }

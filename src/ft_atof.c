@@ -1,6 +1,6 @@
 #include "../includes/minirt.h"
 
-double ft_atof(const char *str)
+double ft_atof(char *str)
 {
     double result;
     double fraction;
