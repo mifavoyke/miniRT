@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 17:59:54 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:34:07 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ int32_t main(int argc, char *argv[])
 
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
 	shoot_rays(&minirt, minirt.scene);
-	reflected_vector();
-	// print_pixels(&minirt);
+	// lighting(&minirt);
 	render_pixels(&minirt);
 
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);

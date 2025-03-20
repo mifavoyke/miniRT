@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 19:28:00 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:33:29 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,25 +122,4 @@ void print_scene(t_scene *scene)
 	print_planes(scene->pl);
 	print_cylinders(scene->cy);
 	printf("\n");
-}
-
-void print_pixels(t_minirt *minirt)
-{
-	int x;
-	int y;
-	
-	y = 0;
-	while (y < minirt->img_height)
-	{
-		x = 0;
-		while (x < minirt->img_width)
-		{
-			t_colour *pixel = &minirt->pixels[y][x];
-			printf("Pixel at (%d, %d):\n", x, y);
-			printf("  Colour: (r: %d, g: %d, b: %d, a: %d)\n", pixel->r, pixel->g, pixel->b, pixel->a);
-			printf("\n");
-			x++;
-		}
-		y++;
-	}
 }

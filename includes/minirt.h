@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/20 16:27:09 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:25:00 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_inter
 {
     t_coord inter_point;
     enum e_obj_t type;
+    t_colour colour;
     void *obj;
     float distance;
     struct s_inter *next;
@@ -148,12 +149,11 @@ typedef struct s_minirt
     int img_height;
     t_scene *scene;
     t_colour **pixels;
+    t_inter ***intersection;
 } t_minirt;
 
 // LIGHT
-t_coord reflected_vector();
-float phong_reflection_model();
-t_colour apply_light();
+int lighting(t_minirt *minirt);
 
 // AMBIENT
 void brighten_up(t_scene *scene);
