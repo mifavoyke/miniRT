@@ -36,7 +36,7 @@ int32_t main(int argc, char *argv[])
 
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
 	shoot_rays(&minirt, minirt.img, minirt.scene);
-
+	reflected_vector();
 	// print_pixels(&minirt);
 	render_pixels(&minirt);
 

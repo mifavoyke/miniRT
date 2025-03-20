@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/20 14:04:03 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:25:39 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,11 @@ typedef struct s_minirt
     t_scene *scene;
     t_colour **pixels;
 } t_minirt;
+
+// LIGHT
+t_coord reflected_vector();
+float phong_reflection_model();
+t_colour apply_light();
 
 // AMBIENT
 void brighten_up(t_scene *scene);

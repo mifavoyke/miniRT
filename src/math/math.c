@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 14:02:58 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:57:28 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int shoot_rays(t_minirt *minirt, mlx_image_t *image, t_scene *scene)
 				if (sphere_intersection(ray, scene->c, temp_sp) > 0)
 				{
 					minirt->pixels[y][x] = temp_sp->colour;
+					// printf("Point of intersection with the sphere: P(%d, %d)\n", x, y);
 					// add to intersection list
 					// mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, temp_sp->colour.a));
 				}
