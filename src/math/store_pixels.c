@@ -4,6 +4,9 @@ int store_pixel(t_pixel *p, t_colour cl, void *obj, int obj_t)
 {
     p->cl = cl;
     p->obj = obj;
+	// (t_sphere *)obj;
+	// t_sphere *sp;
+	// sp = (t_sphere *)obj;
     p->obj_type = obj_t;
     // p->distance = ???;
     return (0);

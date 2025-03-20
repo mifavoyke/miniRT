@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/15 15:23:38 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:39:54 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 #include <ctype.h>
 #include "../lib/libft/libft.h"
 #include "../lib/MLX42/include/MLX42/MLX42.h"
-#define WIDTH 600
-#define HEIGHT 400
+#define WIDTH 500
+#define HEIGHT 500
 #define INT_ERROR INT_MIN
 
 typedef struct s_colour
@@ -128,6 +128,14 @@ enum e_obj_t
     CYLINDER, // 2
     NO_OBJ,
 };
+
+typedef struct s_inter
+{
+    t_coord inter_point;
+    enum e_obj_t type;
+    void *obj;
+    struct s_inter *next;
+} t_inter;
 
 typedef struct s_pixel
 {

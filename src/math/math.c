@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/15 15:47:54 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:41:37 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,38 @@ int shoot_rays(t_minirt *minirt, mlx_image_t *image, t_scene *scene)
 		{
 			temp_sp = scene->sp;
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
+			// create intersection list
 			while (temp_sp)							 // Ensure sp is valid
 			{
 				if (sphere_intersection(ray, scene->c, temp_sp) > 0)
 				{
 					store_pixel(&minirt->pixels[y][x], temp_sp->colour, temp_sp, SPHERE);
+					// add to intersection list
 					// mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, temp_sp->colour.a));
 				}
 				temp_sp = temp_sp->next;
 			}
+			// while (temp_pl)							 // Ensure sp is valid
+			// {
+			// 	if (plane_intersection(ray, scene->c, temp_sp) > 0)
+			// 	{
+			// 		// add to intersection list
+			// 		// mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, temp_sp->colour.a));
+			// 	}
+			// 	temp_pl = temp_pl->next;
+			// }
+			// while (temp_cy)							 // Ensure sp is valid
+			// {
+			// 	if (cylinder_intersection(ray, scene->c, temp_sp) > 0)
+			// 	{
+			// 		// add to intersection list
+			// 		// mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, temp_sp->colour.a));
+			// 	}
+			// 	temp_cy = temp_cy->next;
+			// }
+			// order intersection list
+			// apply lightning on the first one (for now)
+			// store_pixel(&minirt->pixels[y][x], temp_sp->colour, temp_sp, SPHERE);
 		}
 	}
 	return (0);

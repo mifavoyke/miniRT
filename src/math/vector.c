@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/12 10:47:06 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/20 12:13:56 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int is_vector_normalized(t_coord v)
     float   result;
 
     result = sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
-    return (result > 0.998 && result < 1.002);
+    return (result > 0.97 && result < 1.03);
 }
 
 // normalizes the vector so its length is 0
