@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 17:06:31 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 14:00:06 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:18:00 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int ft_error(const char *msg)
 {
 	printf("Error: %s\n", msg);
-	return (1);
+	return (ERROR);
 }
 
 void ft_free(char **arr)
