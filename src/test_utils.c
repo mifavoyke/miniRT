@@ -123,11 +123,9 @@ void print_pixels(t_minirt *minirt)
 		x = 0;
 		while (x < minirt->img_width)
 		{
-			t_pixel *pixel = &minirt->pixels[y][x];
+			t_colour *pixel = &minirt->pixels[y][x];
 			printf("Pixel at (%d, %d):\n", x, y);
-			printf("  Colour: (r: %d, g: %d, b: %d, a: %d)\n", pixel->cl.r, pixel->cl.g, pixel->cl.b, pixel->cl.a);
-			printf("  Object Type: %d\n", pixel->obj_type);
-			printf("  Distance: %.2f\n", pixel->distance);
+			printf("  Colour: (r: %d, g: %d, b: %d, a: %d)\n", pixel->r, pixel->g, pixel->b, pixel->a);
 			printf("\n");
 			x++;
 		}

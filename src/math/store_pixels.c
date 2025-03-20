@@ -1,29 +1,17 @@
 #include "../../includes/minirt.h"
 
-int store_pixel(t_pixel *p, t_colour cl, void *obj, int obj_t)
+t_colour **allocate_pixels(int width, int height)
 {
-    p->cl = cl;
-    p->obj = obj;
-	// (t_sphere *)obj;
-	// t_sphere *sp;
-	// sp = (t_sphere *)obj;
-    p->obj_type = obj_t;
-    // p->distance = ???;
-    return (0);
-}
-
-t_pixel **allocate_pixels(int width, int height)
-{
-	t_pixel **pixels;
+	t_colour **pixels;
 	int y;
 
-	pixels = (t_pixel **)malloc(height * sizeof(t_pixel *));
+	pixels = (t_colour **)malloc(height * sizeof(t_colour *));
 	if (!pixels)
 		return (NULL);
 	y = -1;
 	while (++y < height)
 	{
-		pixels[y] = (t_pixel *)malloc(width * sizeof(t_pixel));
+		pixels[y] = (t_colour *)malloc(width * sizeof(t_colour));
 		if (!pixels[y])
 			return (NULL);
 	}
@@ -41,10 +29,7 @@ void init_pixels(t_minirt *minirt)
 		x = -1;
 		while (++x < minirt->img_width)
 		{
-			minirt->pixels[y][x].cl = apply_ambience(&minirt->scene->background, &minirt->scene->a.colour, minirt->scene->a.ratio);
-			// minirt->pixels[y][x].obj = ;
-			minirt->pixels[y][x].obj_type = NO_OBJ;
-			// minirt->pixels[y][x].distance = ???;
+			minirt->pixels[y][x] = apply_ambience(&minirt->scene->background, &minirt->scene->a.colour, minirt->scene->a.ratio);
 		}
 	}
 }

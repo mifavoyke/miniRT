@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/20 13:39:54 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:04:03 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,14 +137,6 @@ typedef struct s_inter
     struct s_inter *next;
 } t_inter;
 
-typedef struct s_pixel
-{
-    t_colour cl;
-    void *obj;
-    enum e_obj_t obj_type;
-    float distance;
-}   t_pixel;
-
 typedef struct s_minirt
 {
     mlx_t *mlx;
@@ -152,7 +144,7 @@ typedef struct s_minirt
     int img_width;
     int img_height;
     t_scene *scene;
-    t_pixel **pixels;
+    t_colour **pixels;
 } t_minirt;
 
 // AMBIENT
@@ -160,8 +152,7 @@ void brighten_up(t_scene *scene);
 t_colour apply_ambience(t_colour *obj_clr, t_colour *amb_clr, float lighting_ratio);
 
 // PIXELS | RENDERING
-int store_pixel(t_pixel *p, t_colour cl, void *obj, int obj_t);
-t_pixel **allocate_pixels(int width, int height);
+t_colour **allocate_pixels(int width, int height);
 void init_pixels(t_minirt *minirt);
 void render_pixels(t_minirt *minirt);
 
@@ -215,7 +206,7 @@ void ft_free(char **arr);
 void free_scene(t_scene *scene);
 double ft_atof(char *str);
 int check_file_format(char *filename);
-void free_pixels(t_pixel **p, int h);
+void free_pixels(t_colour **p, int h);
 void print_pixels(t_minirt *minirt);
 
 // TESTS - REMOVE AFTER DONE

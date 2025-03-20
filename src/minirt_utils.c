@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 17:06:31 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/15 15:23:01 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:00:06 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void free_scene(t_scene *scene)
 	free(scene);
 }
 
-void free_pixels(t_pixel **p, int h)
+void free_pixels(t_colour **p, int h)
 {
 	int y;
 
