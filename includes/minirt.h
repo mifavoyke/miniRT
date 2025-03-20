@@ -150,6 +150,11 @@ typedef struct s_minirt
     t_colour **pixels;
 } t_minirt;
 
+// LIGHT
+t_coord reflected_vector();
+float phong_reflection_model();
+t_colour apply_light();
+
 // AMBIENT
 void brighten_up(t_scene *scene);
 t_colour apply_ambience(t_colour *obj_clr, t_colour *amb_clr, float lighting_ratio);

@@ -47,8 +47,8 @@ int32_t main(int argc, char *argv[])
 	brighten_up(minirt.scene); // apply ambience
 
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
-	shoot_rays(&minirt, minirt.scene);
-
+	shoot_rays(&minirt, minirt.img, minirt.scene);
+	reflected_vector();
 	// print_pixels(&minirt);
 	render_pixels(&minirt);
 
