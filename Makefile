@@ -20,22 +20,22 @@ endif
 SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/minirt_utils.c \
 		$(SRC_DIR)/hooks.c \
+		$(SRC_DIR)/ft_atof.c \
 		$(SRC_DIR)/render.c \
-		$(SRC_DIR)/parse_scene.c \
-		$(SRC_DIR)/parse_utils.c \
 		$(SRC_DIR)/ambient.c \
 		$(SRC_DIR)/light.c \
+		$(SRC_DIR)/test_utils.c \
 		$(SRC_DIR)/math/basic.c \
 		$(SRC_DIR)/math/intersections.c \
 		$(SRC_DIR)/math/math.c \
 		$(SRC_DIR)/math/vector.c \
 		$(SRC_DIR)/math/viewport.c \
 		$(SRC_DIR)/math/extra.c \
-		$(SRC_DIR)/fill_scene.c \
-		$(SRC_DIR)/ft_atof.c \
-		$(SRC_DIR)/parse_checks.c \
 		$(SRC_DIR)/math/store_pixels.c \
-		$(SRC_DIR)/test_utils.c # remove after done
+		$(SRC_DIR)/parsing/fill_scene.c \
+		$(SRC_DIR)/parsing/parse_scene.c \
+		$(SRC_DIR)/parsing/parse_utils.c \
+		$(SRC_DIR)/parsing/parse_checks.c \
 OBJS	:= ${SRCS:.c=.o}
 #OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
