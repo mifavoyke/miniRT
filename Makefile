@@ -35,7 +35,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/parsing/fill_scene.c \
 		$(SRC_DIR)/parsing/parse_scene.c \
 		$(SRC_DIR)/parsing/parse_utils.c \
-		$(SRC_DIR)/parsing/parse_checks.c \
+		$(SRC_DIR)/parsing/parse_checks.c
 OBJS	:= ${SRCS:.c=.o}
 #OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
