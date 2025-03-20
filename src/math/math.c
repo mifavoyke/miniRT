@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 16:33:04 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:17:29 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 void append_node(t_inter *new_node, t_inter **head)
 {
 	t_inter *temp;
-	
+
 	if (!new_node)
-		return ;
+		return;
 	if (!head || !*head)
 	{
 		*head = new_node;
-		return ;
+		return;
 	}
 	temp = *head;
 	while (temp->next)
@@ -105,9 +105,12 @@ void append_node(t_inter *new_node, t_inter **head)
 void print_list(t_inter *head, int x, int y)
 {
 	t_sphere *sp;
-	
+
 	if (!head)
-		return ;
+	{
+		printf("nothing here\n");
+		return;
+	}
 	int i = 0;
 	while (head)
 	{
@@ -120,6 +123,7 @@ void print_list(t_inter *head, int x, int y)
 
 // iterates over all object lists
 // creates list of all intersections of a ray with all scene objects
+// HAS TO BE FREED 
 t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 {
 	t_sphere *temp_sp; // maybe create a void * list of objects - spheres,planes, cylinders
@@ -130,7 +134,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 
 	head = NULL;
 	new_node = NULL;
-	
+
 	temp_sp = scene->sp;
 	temp_cy = scene->cy;
 	temp_pl = scene->pl;
@@ -138,7 +142,10 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	{
 		new_node = sphere_intersections(ray, scene->c, temp_sp);
 		if (new_node != NULL)
+		{
+			new_node->colour = temp_sp->colour;
 			append_node(new_node, &head);
+		}
 		temp_sp = temp_sp->next;
 	}
 	while (temp_cy)
@@ -158,15 +165,45 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	return (head);
 }
 
+t_inter ***allocate_inter(int width, int height)
+{
+	t_inter ***section;
+	int y;
+
+	section = (t_inter ***)malloc(height * sizeof(t_inter **));
+	if (!section)
+		return (NULL);
+	y = -1;
+	while (++y < height)
+	{
+		section[y] = (t_inter **)malloc(width * sizeof(t_inter *));
+		if (!section[y])
+			return (NULL);
+	}
+	return (section);
+}
+
+// t_inter **allocate_inter(int width, int height)
+// {
+// 	t_inter **section;
+
+// 	section = (t_inter **)malloc(height * width * sizeof(t_inter *));
+// 	if (!section)
+// 		return (NULL);
+// 	return (section);
+// }
+
 int shoot_rays(t_minirt *minirt, t_scene *scene)
 {
 	int x;
 	int y;
 	t_matrix Tm;
 	t_coord ray;
-	t_inter *intersection_list;
+	t_inter *intersection;
 
-	intersection_list = NULL;
+	minirt->intersection = allocate_inter(minirt->img_width, minirt->img_height);
+	if (!minirt->intersection)
+		return (1);
 	Tm = find_transformation_matrix(scene->c); // probably change this to a 2d array 4x4
 	y = -1;
 	while (++y < minirt->img_height) // idk why replacing HEIGHT with minirt->img_height didnt help
@@ -175,12 +212,16 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 		while (++x < minirt->img_width)
 		{
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
-			intersection_list = create_intersection_list(scene, ray);
-			print_list(intersection_list, x, y);
+			intersection = create_intersection_list(scene, ray);
+			if (intersection)
+				minirt->pixels[y][x] = intersection->colour;
+			else
+				minirt->pixels[y][x] = minirt->scene->background;
+			minirt->intersection[y][x] = intersection;
 			// order intersection list
 			// apply lightning on the first one (for now)
-			// store_pixel(&minirt->pixels[y][x], temp_sp->colour, temp_sp, SPHERE); // put this instead: minirt->pixels[y][x] = temp_sp->colour;
 		}
 	}
+	print_list(minirt->intersection[235][265], 265, 235);
 	return (0);
 }
