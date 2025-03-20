@@ -18,13 +18,14 @@ LIBS := $(MLX42_BUILD)/libmlx42.a -ldl -lglfw -pthread -lm
 endif
 
 SRCS := $(SRC_DIR)/minirt.c \
-		$(SRC_DIR)/minirt_utils.c \
 		$(SRC_DIR)/hooks.c \
-		$(SRC_DIR)/ft_atof.c \
 		$(SRC_DIR)/render.c \
 		$(SRC_DIR)/ambient.c \
 		$(SRC_DIR)/light.c \
-		$(SRC_DIR)/test_utils.c \
+		$(SRC_DIR)/utils/minirt_utils.c \
+		$(SRC_DIR)/utils/ft_atof.c \
+		$(SRC_DIR)/utils/test_utils.c \
+		$(SRC_DIR)/utils/mergesort.c \
 		$(SRC_DIR)/math/basic.c \
 		$(SRC_DIR)/math/intersections.c \
 		$(SRC_DIR)/math/math.c \

@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 16:33:04 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:29:44 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,23 @@ void print_list(t_inter *head, int x, int y)
 		head = head->next;
 	}
 }
+
+// void sort_list(t_inter **head)
+// {
+// 	t_inter *temp;
+// 	t_inter *head_copy;
+
+// 	if (!head || !*head)
+// 		return ;
+// 	head_copy = *head;
+// 	while (head_copy->next)
+// 	{
+// 		if (head_copy->next->distance < head_)
+			
+		
+// 	}
+// 	return (head);
+// }
 
 // iterates over all object lists
 // creates list of all intersections of a ray with all scene objects
