@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 14:13:16 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:23:12 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int32_t main(int argc, char *argv[])
 	brighten_up(minirt.scene); // apply ambience
 
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
-	shoot_rays(&minirt, minirt.img, minirt.scene);
+	shoot_rays(&minirt, minirt.scene);
 
 	// print_pixels(&minirt);
 	render_pixels(&minirt);

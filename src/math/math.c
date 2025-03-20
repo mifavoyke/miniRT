@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 14:02:58 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:33:04 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,55 +83,100 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	return (ray_vector);
 }
 
-int shoot_rays(t_minirt *minirt, mlx_image_t *image, t_scene *scene)
+// appends new_node to the end of the list
+// new_node MUST have a next - either it has NULL or another t_inter node appended
+void append_node(t_inter *new_node, t_inter **head)
+{
+	t_inter *temp;
+	
+	if (!new_node)
+		return ;
+	if (!head || !*head)
+	{
+		*head = new_node;
+		return ;
+	}
+	temp = *head;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new_node;
+}
+
+void print_list(t_inter *head, int x, int y)
+{
+	t_sphere *sp;
+	
+	if (!head)
+		return ;
+	int i = 0;
+	while (head)
+	{
+		sp = (t_sphere *)head->obj;
+		printf("x: %d y: %d  IN%d: t: %f, [%f, %f, %f], sp[%f, %f, %f]\n", x, y, i, head->distance, head->inter_point.x, head->inter_point.y, head->inter_point.z, sp->centre.x, sp->centre.y, sp->centre.z);
+		i++;
+		head = head->next;
+	}
+}
+
+// iterates over all object lists
+// creates list of all intersections of a ray with all scene objects
+t_inter *create_intersection_list(t_scene *scene, t_coord ray)
+{
+	t_sphere *temp_sp; // maybe create a void * list of objects - spheres,planes, cylinders
+	t_plane *temp_pl;
+	t_cylinder *temp_cy;
+	t_inter *head;
+	t_inter *new_node;
+
+	head = NULL;
+	new_node = NULL;
+	
+	temp_sp = scene->sp;
+	temp_cy = scene->cy;
+	temp_pl = scene->pl;
+	while (temp_sp)
+	{
+		new_node = sphere_intersections(ray, scene->c, temp_sp);
+		if (new_node != NULL)
+			append_node(new_node, &head);
+		temp_sp = temp_sp->next;
+	}
+	while (temp_cy)
+	{
+		new_node = cylinder_intersections(ray, scene->c, temp_cy);
+		if (new_node != NULL)
+			append_node(new_node, &head);
+		temp_cy = temp_cy->next;
+	}
+	while (temp_pl)
+	{
+		new_node = plane_intersections(ray, scene->c, temp_pl);
+		if (new_node != NULL)
+			append_node(new_node, &head);
+		temp_pl = temp_pl->next;
+	}
+	return (head);
+}
+
+int shoot_rays(t_minirt *minirt, t_scene *scene)
 {
 	int x;
 	int y;
 	t_matrix Tm;
 	t_coord ray;
-	t_sphere *temp_sp;
+	t_inter *intersection_list;
 
-	Tm = find_transformation_matrix(scene->c);
-	// t_coord viewport_point;
-	// t_coord intersection;
-	(void)image;
+	intersection_list = NULL;
+	Tm = find_transformation_matrix(scene->c); // probably change this to a 2d array 4x4
 	y = -1;
 	while (++y < minirt->img_height) // idk why replacing HEIGHT with minirt->img_height didnt help
 	{
 		x = -1;
 		while (++x < minirt->img_width)
 		{
-			temp_sp = scene->sp;
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
-			// create intersection list
-			while (temp_sp)							 // Ensure sp is valid
-			{
-				if (sphere_intersection(ray, scene->c, temp_sp) > 0)
-				{
-					minirt->pixels[y][x] = temp_sp->colour;
-					// add to intersection list
-					// mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, temp_sp->colour.a));
-				}
-				temp_sp = temp_sp->next;
-			}
-			// while (temp_pl)							 // Ensure sp is valid
-			// {
-			// 	if (plane_intersection(ray, scene->c, temp_sp) > 0)
-			// 	{
-			// 		// add to intersection list
-			// 		// mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, temp_sp->colour.a));
-			// 	}
-			// 	temp_pl = temp_pl->next;
-			// }
-			// while (temp_cy)							 // Ensure sp is valid
-			// {
-			// 	if (cylinder_intersection(ray, scene->c, temp_sp) > 0)
-			// 	{
-			// 		// add to intersection list
-			// 		// mlx_put_pixel(image, x, y, ft_pixel(temp_sp->colour.r, temp_sp->colour.g, temp_sp->colour.b, temp_sp->colour.a));
-			// 	}
-			// 	temp_cy = temp_cy->next;
-			// }
+			intersection_list = create_intersection_list(scene, ray);
+			print_list(intersection_list, x, y);
 			// order intersection list
 			// apply lightning on the first one (for now)
 			// store_pixel(&minirt->pixels[y][x], temp_sp->colour, temp_sp, SPHERE); // put this instead: minirt->pixels[y][x] = temp_sp->colour;

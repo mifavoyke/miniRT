@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/20 14:04:03 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:27:09 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 #define WIDTH 500
 #define HEIGHT 500
 #define INT_ERROR INT_MIN
+#define ERROR 1
+#define SUCCESS 0
 
 typedef struct s_colour
 {
@@ -134,6 +136,7 @@ typedef struct s_inter
     t_coord inter_point;
     enum e_obj_t type;
     void *obj;
+    float distance;
     struct s_inter *next;
 } t_inter;
 
@@ -178,10 +181,12 @@ t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 float get_viewport_width(float angle_deg, float distance);
 t_coord get_viewport_ray(t_scene *scene, t_matrix m, int x, int y);
-int shoot_rays(t_minirt *minirt, mlx_image_t *image, t_scene *scene);
+int shoot_rays(t_minirt *minirt, t_scene *scene);
 
 // MATH - intersections.c
-int sphere_intersection(t_coord ray, t_camera cam, t_sphere *sp);
+t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
+t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
+t_inter *cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 
 // HOOKS
 void ft_hook(void *param);
