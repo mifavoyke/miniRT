@@ -27,6 +27,15 @@
 #define INT_ERROR INT_MIN
 #define ERROR 1
 #define SUCCESS 0
+#define MATTE 4
+#define PLASTIC 30
+#define GLASS 100
+/*
+α (e.g., 1–10) → Wide, soft highlights → Looks like rough or matte surfaces (e.g., chalk, clay, rubber).
+α (e.g., 10–50) → Normal specular reflection (e.g., polished wood, plastic).
+α (e.g., 50–200) → Small, sharp highlights → Looks like metal or glass.
+α (e.g., 200+) → Unrealistically sharp highlights (can look artificial).
+*/
 
 typedef struct s_colour
 {
@@ -63,6 +72,15 @@ typedef struct s_light
     t_colour colour; // bonus
 } t_light;
 
+typedef struct s_light_components
+{
+    t_coord normal;
+    t_coord incident_l;
+    t_coord reflected;
+    float reflectivity;
+    float scalar_normal_light;
+} t_light_components;
+
 typedef struct s_sphere
 {
     t_coord centre;
@@ -95,15 +113,15 @@ typedef struct s_matrix
     t_coord F;
     t_coord U;
     t_coord Tr;
-}               t_matrix;
+} t_matrix;
 
 typedef struct s_viewport
 {
     float d;
     float viewport_width;
-	float viewport_height;
-	t_coord viewport_centre;
-}   t_viewport;
+    float viewport_height;
+    t_coord viewport_centre;
+} t_viewport;
 
 typedef struct s_scene
 {
@@ -125,8 +143,8 @@ typedef struct s_scene
 
 enum e_obj_t
 {
-	SPHERE, // 0
-    PLANE, // 1
+    SPHERE,   // 0
+    PLANE,    // 1
     CYLINDER, // 2
     NO_OBJ,
 };
@@ -154,8 +172,6 @@ typedef struct s_minirt
 
 // LIGHT
 int lighting(t_minirt *minirt);
-
-// AMBIENT
 void brighten_up(t_scene *scene);
 t_colour apply_ambience(t_colour *obj_clr, t_colour *amb_clr, float lighting_ratio);
 
@@ -172,14 +188,16 @@ t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 bool are_collinear(t_coord A, t_coord B);
 t_coord get_cross_product(t_coord A, t_coord B);
 void normalize(t_coord *N);
+t_coord multiply_vector(t_coord v, float n);
+t_coord subtract_vectors(t_coord from, t_coord to);
 
 // MATH - basic.c
 int equals(float a, float b, float deviation);
 float get_discriminant(float a, float b, float c);
-double	scale(double num, double new_min, double new_max, double old_max);
-int32_t  ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+double scale(double num, double new_min, double new_max, double old_max);
+int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 
-//MATH - math.c
+// MATH - math.c
 t_viewport *set_viewport_plane(t_scene scene);
 float get_discriminant(float a, float b, float c);
 t_coord make_vector(t_coord from, t_coord to);
@@ -207,8 +225,8 @@ t_coord set_coord(float x, float y, float z);
 t_colour set_colour(int r, int b, int g, int a);
 int valid_coord(t_coord *coord);
 int valid_colour(t_colour *clr);
-char	**get_lines(char *arg, int size);
-int	count_rows(char *arg);
+char **get_lines(char *arg, int size);
+int count_rows(char *arg);
 
 // UTILS
 int ft_error(const char *msg);
@@ -217,7 +235,7 @@ void free_scene(t_scene *scene);
 double ft_atof(char *str);
 int check_file_format(char *filename);
 void free_pixels(t_colour **p, int h);
-void print_pixels(t_minirt *minirt);
+void free_inter(t_inter ***section, int h, int w);
 
 // TESTS - REMOVE AFTER DONE
 void print_scene(t_scene *scene);

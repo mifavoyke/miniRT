@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 19:34:07 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:52:01 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,18 @@ int32_t main(int argc, char *argv[])
 		return (1);
 	init_pixels(&minirt);
 	print_scene(minirt.scene);
-	brighten_up(minirt.scene); // apply ambience
 
 	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
 	shoot_rays(&minirt, minirt.scene);
-	// lighting(&minirt);
+	lighting(&minirt);
 	render_pixels(&minirt);
 
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 
+	free_inter(minirt.intersection, minirt.img_height, minirt.img_width);
 	free_scene(minirt.scene);
-	free_pixels(minirt.pixels, HEIGHT);
+	free_pixels(minirt.pixels, minirt.img_height);
 	mlx_delete_image(minirt.mlx, minirt.img);
 	mlx_terminate(minirt.mlx);
 	return (0);

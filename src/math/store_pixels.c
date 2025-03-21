@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   store_pixels.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:28 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 14:13:29 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:49:39 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void init_pixels(t_minirt *minirt)
 		x = -1;
 		while (++x < minirt->img_width)
 		{
-			minirt->pixels[y][x] = apply_ambience(&minirt->scene->background, &minirt->scene->a.colour, minirt->scene->a.ratio);
+			minirt->pixels[y][x] = minirt->scene->background;
 		}
 	}
 }

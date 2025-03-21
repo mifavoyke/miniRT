@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 17:06:31 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 19:27:56 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:16:23 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,20 @@ void free_scene(t_scene *scene)
 		scene->cy = cy_tmp;
 	}
 	free(scene);
+}
+
+void free_inter(t_inter ***section, int h, int w)
+{
+	int y;
+	(void)w;
+
+	y = 0;
+	while (y < h)
+	{
+		free(section[y]);
+		y++;
+	}
+	free(section);
 }
 
 void free_pixels(t_colour **p, int h)
