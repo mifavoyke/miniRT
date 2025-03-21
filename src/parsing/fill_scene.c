@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 14:11:31 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:56:24 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int fill_camera(t_scene *scene, char **values)
         return (ft_error("Dublicate Camera has been detected."));
     if (!values[1] || !values[2] || !values[3])
         return (ft_error("Camera missing parameters."));
-    scene->c.viewpoint = parse_coord(values[1]);
-    if (valid_coord(&scene->c.viewpoint))
+    scene->c.point = parse_coord(values[1]);
+    if (valid_coord(&scene->c.point))
         return (1);
     scene->c.vector = parse_coord(values[2]);
     if (!is_vector_normalized(scene->c.vector))

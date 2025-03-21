@@ -73,3 +73,9 @@ CHECK OUT
 - camera-to-world transformation matrix
 - gimbal lock and code rotations for rotations of camera
 - are we gonna do preprocessing?
+
+
+* TEST CASES *
+1. order of the objects and intersections is correct from the camera view
+2. object behind the camera
+3. when rendering plane, ray and plane are parallel or even contained (plane normal  * ray = 0)

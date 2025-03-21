@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 19:34:55 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:16:48 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_matrix find_transformation_matrix(t_camera c)
 	t_coord global_up; // global up to be able to create cross product
 
 	global_up = set_coord(0.0, 0.0, 1.0);
-	Tm.Tr = set_coord(c.viewpoint.x, c.viewpoint.y, c.viewpoint.z);
+	Tm.Tr = set_coord(c.point.x, c.point.y, c.point.z);
 	Tm.F = c.vector;
 	if (Tm.F.x == 0 && Tm.F.y == 0 && Tm.F.z == 1) // if F (0, 0, 1) - we would be making cross product of colinera vectors which is wrong
 	{
@@ -72,7 +72,7 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	Pnew.x = Tm.R.x * Pv.x + Tm.F.x * Pv.y + Tm.U.x * Pv.z + Tm.Tr.x;
 	Pnew.y = Tm.R.y * Pv.x + Tm.F.y * Pv.y + Tm.U.y * Pv.z + Tm.Tr.y;
 	Pnew.z = Tm.R.z * Pv.x + Tm.F.z * Pv.y + Tm.U.z * Pv.z + Tm.Tr.z;
-	ray_vector = make_vector(scene->c.viewpoint, Pnew);
+	ray_vector = make_vector(scene->c.point, Pnew);
 	if (x == 0 && y == 0)
 	{
 		// 	printf("Pv [%f, %f, %f]\n", Pv.x, Pv.y, Pv.z);
@@ -115,7 +115,7 @@ void print_list(t_inter *head, int x, int y)
 	while (head)
 	{
 		sp = (t_sphere *)head->obj;
-		printf("x: %d y: %d  IN%d: t: %f, [%f, %f, %f], sp[%f, %f, %f]\n", x, y, i, head->distance, head->inter_point.x, head->inter_point.y, head->inter_point.z, sp->centre.x, sp->centre.y, sp->centre.z);
+		printf("x: %d y: %d  IN%d: t: %f, [%f, %f, %f], sp[%f, %f, %f]\n", x, y, i, head->distance, head->point.x, head->point.y, head->point.z, sp->centre.x, sp->centre.y, sp->centre.z);
 		i++;
 		head = head->next;
 	}
@@ -169,14 +169,20 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	{
 		new_node = cylinder_intersections(ray, scene->c, temp_cy);
 		if (new_node != NULL)
+		{
+			new_node->colour = temp_cy->colour;
 			append_node(new_node, &head);
+		}
 		temp_cy = temp_cy->next;
 	}
 	while (temp_pl)
 	{
 		new_node = plane_intersections(ray, scene->c, temp_pl);
 		if (new_node != NULL)
+		{
+			new_node->colour = temp_pl->colour;
 			append_node(new_node, &head);
+		}
 		temp_pl = temp_pl->next;
 	}
 	return (head);
@@ -230,6 +236,8 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 		{
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			intersection = create_intersection_list(scene, ray);
+			// if (intersection && intersection->type == PLANE)
+			// 	print_list(intersection, x, y);
 			if (intersection)
 				minirt->pixels[y][x] = intersection->colour;
 			else
@@ -239,6 +247,6 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 			// apply lightning on the first one (for now)
 		}
 	}
-	print_list(minirt->intersection[235][265], 265, 235);
+	//print_list(minirt->intersection[235][265], 265, 235);
 	return (0);
 }

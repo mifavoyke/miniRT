@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/21 14:46:02 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:56:11 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-    t_coord viewpoint;
+    t_coord point;
     t_coord vector;
     int view_degree;
 } t_camera;
@@ -151,7 +151,7 @@ enum e_obj_t
 
 typedef struct s_inter
 {
-    t_coord inter_point;
+    t_coord point;
     enum e_obj_t type;
     t_colour colour;
     void *obj;

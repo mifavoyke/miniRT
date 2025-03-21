@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 19:33:29 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:56:17 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void print_scene(t_scene *scene)
 	// Camera
 	printf("\nCamera:\n");
 	printf("  Viewpoint: ");
-	print_coord(scene->c.viewpoint);
+	print_coord(scene->c.point);
 	printf("\n  Vector: ");
 	print_coord(scene->c.vector);
 	printf("\n  View Degree: %d\n", scene->c.view_degree);
