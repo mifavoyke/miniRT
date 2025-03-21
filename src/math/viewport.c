@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   viewport.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:53:45 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 15:42:40 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:56:36 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ t_viewport *set_viewport_plane(t_scene scene)
 	v->d = 1.0;
 	v->viewport_width = get_viewport_width(scene.c.view_degree, v->d);
 	v->viewport_height = get_viewport_height(v->viewport_width);
-	v->viewport_centre = get_point_on_vector(scene.c.viewpoint, scene.c.vector, v->d);
+	v->viewport_centre = get_point_on_vector(scene.c.point, scene.c.vector, v->d);
     printf("viewport:\nWIDTH: %f, HEIGHT: %f\nC[%f, %f, %f]\nv(%f, %f, %f)\nS[%f, %f, %f]\nv normalized: %d\n",
-            v->viewport_width, v->viewport_height, scene.c.viewpoint.x, scene.c.viewpoint.y, scene.c.viewpoint.z, 
+            v->viewport_width, v->viewport_height, scene.c.point.x, scene.c.point.y, scene.c.point.z, 
 			scene.c.vector.x, scene.c.vector.y, scene.c.vector.z,
 			v->viewport_centre.x, v->viewport_centre.y, v->viewport_centre.z, is_vector_normalized(scene.c.vector));
 	return (v);

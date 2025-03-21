@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 16:26:45 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:10:38 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 	t_inter *inter2;
 
 	// underlying math
-	camera_to_sphere_center = make_vector(sp->centre, cam.viewpoint);
+	camera_to_sphere_center = make_vector(sp->centre, cam.point);
 	a = get_dot_product(ray, ray);
 	b = 2 * get_dot_product(camera_to_sphere_center, ray);
 	c = get_dot_product(camera_to_sphere_center, camera_to_sphere_center) - pow((sp->diameter) / 2, 2);
@@ -57,9 +57,7 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 		inter1->obj = (void *)sp;
 		inter1->type = SPHERE;
 		inter1->distance = t1;
-		inter1->inter_point.x = cam.viewpoint.x + t1 * ray.x;
-		inter1->inter_point.y = cam.viewpoint.y + t1 * ray.y;
-		inter1->inter_point.z = cam.viewpoint.z + t1 * ray.z;
+		inter1->point = set_coord(cam.point.x + t1 * ray.x, cam.point.y + t1 * ray.y, cam.point.z + t1 * ray.z);
 		inter1->next = NULL;
 	}
 
@@ -71,9 +69,7 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 		inter2->obj = (void *)sp;
 		inter2->type = SPHERE;
 		inter2->distance = t2;
-		inter2->inter_point.x = cam.viewpoint.x + t2 * ray.x;
-		inter2->inter_point.y = cam.viewpoint.y + t2 * ray.y;
-		inter2->inter_point.z = cam.viewpoint.z + t2 * ray.z;
+		inter2->point = set_coord(cam.point.x + t2 * ray.x, cam.point.y + t2 * ray.y, cam.point.z + t2 * ray.z);
 		inter2->next = NULL;
 	}
 
@@ -87,18 +83,45 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 	return (NULL);
 }
 
+// any point in plane: (P - Q ) * n = 0 --> Q = given point in plane, P = intersection point, n = surface normal
+// any point in ray: P = C + t*ray 
+// t = ((Q - C) * n) / (ray * n)
+// t = ((point in plane - point on line=camera) * normal) / (ray * normal)
+t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
+{
+	float t;
+	t_inter *inter;
+	t_coord temp_vector; // Q - C 
+
+	temp_vector = make_vector(pl->point, cam.point);
+	t = get_dot_product(temp_vector, pl->vector) / get_dot_product(ray, pl->vector);
+
+	if (get_dot_product(ray, pl->vector) == 0.0)
+	{
+		if (get_dot_product(temp_vector, pl->vector) == 0.0)
+			printf("ray is contained in the plane");
+		else
+			printf("ray and plane are parallel\n");
+	}
+	inter = (t_inter *)malloc(sizeof(t_inter));
+	inter->obj = (void *)pl;
+	inter->type = PLANE;
+	inter->distance = t;
+	inter->point = set_coord(cam.point.x + t * ray.x, cam.point.y + t * ray.y, cam.point.z + t * ray.z);
+	inter->next = NULL;
+	return (inter);
+}
+
 t_inter *cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 {
 	(void)ray;
 	(void)cam;
 	(void)cy;
-	return (NULL);
-}
 
-t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
-{
-	(void)ray;
-	(void)cam;
-	(void)pl;
+	// 1. find plane in point cy->point that is perpendicular to cy->vector
+	// 2. point is in the middle and we represent a circle in that plane with function x^2 + y^2 = cy->d/2
+	// 3. move this circle along this vector up and down by cy->height/2
+
+	
 	return (NULL);
 }

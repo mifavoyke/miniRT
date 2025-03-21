@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 19:28:01 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:57:25 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ t_coord reflected_vector(t_light *light, t_inter *section) // BRDF
     sp = (t_sphere *)section->obj;
     // REFLECTION RAY R = I − 2*(I*N)*N
     // 1.1 find incident light vector
-    incident_l = make_vector(light->lightpoint, section->inter_point);
+    incident_l = make_vector(light->lightpoint, section->point);
     normalize(&incident_l);
     // 1.2 compute the normal at the intersection
-    normal = make_vector(sp->centre, section->inter_point);
+    normal = make_vector(sp->centre, section->point);
     normalize(&normal);
     // 1.3 find the scalar from I and N
     scalar = get_dot_product(incident_l, normal);
@@ -80,7 +80,7 @@ float specular_light(t_camera *cam, t_light *light, t_inter *section, t_coord re
     float specular_intensity;
 
     // find V = C - P = camera position - intersection point
-    incident_c = make_vector(cam->viewpoint, section->inter_point);
+    incident_c = make_vector(cam->point, section->point);
     normalize(&incident_c);
     // PHONG FORMULA Iv = k(R*V)pow(a)
     cosine_reflected_viewpoint = get_dot_product(reflected, incident_c);
