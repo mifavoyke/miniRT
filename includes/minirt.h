@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/21 14:56:11 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/22 16:03:15 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,16 @@ typedef struct s_light
     t_colour colour; // bonus
 } t_light;
 
-typedef struct s_light_components
+typedef struct s_light_math
 {
-    t_coord normal;
-    t_coord incident_l;
-    t_coord reflected;
+    t_coord normal; // calculated differently for every object
+    t_coord incident_l; // incident light vector
+    float scalar_nl; // cosine between the normal and incident light vector
+    t_coord incident_v; // incident vector starting from the camera (viewpoint) to P
+    t_coord reflected_vector;
+    float scalar_vr; // cosine between the viewpoint (camera) and reflection vector
     float reflectivity;
-    float scalar_normal_light;
-} t_light_components;
+} t_light_math;
 
 typedef struct s_sphere
 {
@@ -172,8 +174,6 @@ typedef struct s_minirt
 
 // LIGHT
 int lighting(t_minirt *minirt);
-void brighten_up(t_scene *scene);
-t_colour apply_ambience(t_colour *obj_clr, t_colour *amb_clr, float lighting_ratio);
 
 // PIXELS | RENDERING
 t_colour **allocate_pixels(int width, int height);
@@ -227,6 +227,7 @@ int valid_coord(t_coord *coord);
 int valid_colour(t_colour *clr);
 char **get_lines(char *arg, int size);
 int count_rows(char *arg);
+int fill_sphere(t_scene *scene, char **values);
 
 // UTILS
 int ft_error(const char *msg);
@@ -239,5 +240,6 @@ void free_inter(t_inter ***section, int h, int w);
 
 // TESTS - REMOVE AFTER DONE
 void print_scene(t_scene *scene);
+void print_light_math_inputs(t_light_math *inputs);
 
 #endif

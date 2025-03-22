@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/21 14:56:24 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/22 16:05:15 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int fill_light(t_scene *scene, char **values)
     scene->l.colour = parse_colour(values[3]);
     if (valid_colour(&scene->l.colour))
         return (1);
+    if (fill_sphere(scene, values))
+        return (1);
     return (0);
 }
 
@@ -102,6 +104,7 @@ int fill_sphere(t_scene *scene, char **values)
 int fill_plane(t_scene *scene, char **values)
 {
     t_plane *new_plane;
+    t_plane *tmp;
 
     if (!values[1] || !values[2] || !values[3])
         return (ft_error("Plane missing parameters."));
@@ -117,8 +120,20 @@ int fill_plane(t_scene *scene, char **values)
     new_plane->colour = parse_colour(values[3]);
     if (valid_colour(&new_plane->colour))
         return (1);
-    new_plane->next = scene->pl;
-    scene->pl = new_plane;
+
+    new_plane->next = NULL;
+    if (!scene->pl)
+        scene->pl = new_plane;
+    else
+    {
+        tmp = scene->pl;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = new_plane;
+    }
+
+    // new_plane->next = scene->pl;
+    // scene->pl = new_plane;
     scene->pl_count++;
     return (0);
 }
@@ -126,6 +141,7 @@ int fill_plane(t_scene *scene, char **values)
 int fill_cylinder(t_scene *scene, char **values)
 {
     t_cylinder *new_cylinder;
+    t_cylinder *tmp;
 
     if (!values[1] || !values[2] || !values[3] || !values[4] || !values[5])
         return (ft_error("Cylinder missing parameters."));
@@ -147,8 +163,20 @@ int fill_cylinder(t_scene *scene, char **values)
     new_cylinder->colour = parse_colour(values[5]);
     if (valid_colour(&new_cylinder->colour))
         return (1);
-    new_cylinder->next = scene->cy;
-    scene->cy = new_cylinder;
+
+    new_cylinder->next = NULL;
+    if (!scene->cy)
+        scene->cy = new_cylinder;
+    else
+    {
+        tmp = scene->cy;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = new_cylinder;
+    }
+
+    // new_cylinder->next = scene->cy;
+    // scene->cy = new_cylinder;
     scene->cy_count++;
     return (0);
 }

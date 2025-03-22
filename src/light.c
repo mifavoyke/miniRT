@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/21 14:57:25 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/22 16:11:57 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,49 +25,63 @@
 // For semi-reflective surfaces, blend the reflection with the object's base color using the Phong Reflection Model or Fresnel equations.
 // For blurred reflections, slightly randomize R within a small cone to create a rough surface effect. - bonus?
 
-// Reflected vector: R = I − 2*(I*N)*N
+// mesh objects?
 
-t_coord reflected_vector(t_light_components *l_component, t_light *light, t_inter *section) // BRDF
+void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, t_coord viewpoint)
 {
     t_sphere *sp;
-    t_coord normal;     // normal of the sphere which is always the vector from the centre of the sphere to the intersection point
-    t_coord incident_l; // incident light vector
-    t_coord reflected;
+    t_plane *pl;
+    t_cylinder *cy;
 
-    sp = (t_sphere *)section->obj;
-    // REFLECTION RAY R = I − 2*(I*N)*N
-    // 1.1 find incident light vector
-    incident_l = make_vector(light->lightpoint, section->point);
-    normalize(&incident_l);
-    // 1.2 compute the normal at the intersection
-    normal = make_vector(sp->centre, section->point);
-    normalize(&normal);
-    // 1.3 find the scalar from I and N
-    l_component->scalar_normal_light = get_dot_product(incident_l, normal);
-    // 1.4 FINAL substitute into the formula for the reflected vector
-    // reflected = I - 2 * cosine_IN * N;
-    reflected = subtract_vectors(incident_l, multiply_vector(normal, 2 * l_component->scalar_normal_light));
-    // printf("\nReflected vector is: R(%f, %f, %f)\n", reflected.x, reflected.y, reflected.z);
-    // if this reflected ray hits another obj, repeat the process ???
-    return (reflected);
+    if (intersection->type == SPHERE)
+    {
+        sp = (t_sphere *)intersection->obj;
+        vars->normal = make_vector(sp->centre, intersection->point); // normal of the sphere which is always the vector from the centre of the sphere to the intersection point
+    }
+    else if (intersection->type == PLANE)
+    {
+        pl = (t_plane *)intersection->obj;
+        vars->normal = set_coord(pl->vector.x, pl->vector.y, pl->vector.z);
+    }
+    else if (intersection->type == CYLINDER)
+    {
+        cy = (t_cylinder *)intersection->obj;
+        // vars->normal = ;
+    }
+    normalize(&vars->normal);
+    vars->incident_l = make_vector(lightpoint, intersection->point);
+    normalize(&vars->incident_l);
+    vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
+    vars->incident_v = make_vector(viewpoint, intersection->point);
+    normalize(&vars->incident_v);
 }
 
-float specular_light(t_camera *cam, t_light *light, t_inter *section, t_coord reflected) // Phong reflection model
+// bidirectional reflectance distribution function (BRDF)
+// reflected vector: R = I − 2*N *(I*N)
+t_coord reflected_vector(t_light_math *inputs)
 {
-    float cosine_reflected_viewpoint;
-    t_coord incident_c; // incident vector from the camera
-    float specular_intensity;
+    t_coord scaled_normal_vector;
 
-    // find V = C - P = camera position - intersection point
-    incident_c = make_vector(cam->point, section->point);
-    normalize(&incident_c);
-    // PHONG FORMULA Iv = k(R*V)pow(a)
-    cosine_reflected_viewpoint = get_dot_product(reflected, incident_c);
-    specular_intensity = light->brightness * pow(fmax(0, cosine_reflected_viewpoint), GLASS);
-    // printf("Interim result (the cosine) before power: %f\nand after: %f\nresult: %f\n", cosine_reflected_viewpoint, pow(fmax(0, cosine_reflected_viewpoint), GLASS), specular_intensity);
-    return (specular_intensity);
+    scaled_normal_vector = multiply_vector(inputs->normal, 2 * inputs->scalar_nl);
+    inputs->reflected_vector = subtract_vectors(inputs->incident_l, scaled_normal_vector);
+    return (inputs->reflected_vector);
 }
 
+// Phong reflection model for specular light: Is = max{0, k * (R*V)^n}
+float specular_light(t_light_math *inputs, float light_brightness) // Phong reflection model
+{
+    inputs->scalar_vr = get_dot_product(inputs->reflected_vector, inputs->incident_v);
+    inputs->reflectivity = fmax(0, (light_brightness * pow(inputs->scalar_vr, PLASTIC)));
+    return (inputs->reflectivity);
+}
+
+// Lambertian reflectance for diffuse light: Id = max{0, k * (N*L)}
+float diffuse_light(float scalar_nl, float light_ratio)
+{
+    return (fmax(0, light_ratio * scalar_nl));
+}
+
+// final colour = original colour * (1 - reflectivity) + light colour * reflectivity
 t_colour apply_light(t_colour original, t_colour light, float reflectivity)
 {
     t_colour final_color;
@@ -76,27 +90,17 @@ t_colour apply_light(t_colour original, t_colour light, float reflectivity)
     final_color.g = fmax(0, fmin(255, original.g * (1 - reflectivity) + light.g * reflectivity));
     final_color.b = fmax(0, fmin(255, original.b * (1 - reflectivity) + light.b * reflectivity));
     final_color.a = 255;
-    // printf("Colour after the light (%d, %d, %d)\n", final_color.r, final_color.g, final_color.b);
     return (final_color);
 }
 
-// Lambertian reflectance Id = k*(N*L)
-float diffuse_ambient_light(float scalar_nl, float light_ratio, float ambient)
-{
-    float final_lighting;
-
-    final_lighting = 0;
-    if (scalar_nl > 0)
-        final_lighting = light_ratio * scalar_nl;
-    final_lighting += ambient;
-    return (final_lighting);
-}
-
+// 1 Calculate normal, incident vectors a) from the lightpoint to the intersection point; b) from viewpoint (camera) to the intersection point
+// 2 Calculate reflected vector
+// 3 Calculate the specular light with a Phong model
+// 4 Add the diffuse and ambient light
+// 5 Apply the reflectivity to a pixel
 int lighting(t_minirt *minirt)
 {
-    t_coord reflected;
-    float reflectivity;
-    t_light_components l_components;
+    t_light_math light_inputs;
     int y;
     int x;
 
@@ -108,10 +112,11 @@ int lighting(t_minirt *minirt)
         {
             if (minirt->intersection[y][x])
             {
-                reflected = reflected_vector(&l_components, &minirt->scene->l, minirt->intersection[y][x]);
-                reflectivity = specular_light(&minirt->scene->c, &minirt->scene->l, minirt->intersection[y][x], reflected);
-                reflectivity += diffuse_ambient_light(l_components.scalar_normal_light, minirt->scene->l.brightness, minirt->scene->a.ratio);
-                minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, reflectivity);
+                init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
+                reflected_vector(&light_inputs);
+                specular_light(&light_inputs, minirt->scene->l.brightness);
+                light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
+                minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
             }
             // else
             // {

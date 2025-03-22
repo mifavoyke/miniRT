@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/21 14:56:17 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:32:47 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,15 @@ void print_scene(t_scene *scene)
 	print_planes(scene->pl);
 	print_cylinders(scene->cy);
 	printf("\n");
+}
+
+void print_light_math_inputs(t_light_math *inputs)
+{
+    printf("Normal Vector: (%f, %f, %f)\n", inputs->normal.x, inputs->normal.y, inputs->normal.z);
+    printf("Incident Light Vector: (%f, %f, %f)\n", inputs->incident_l.x, inputs->incident_l.y, inputs->incident_l.z);
+    printf("Scalar NL: %f\n", inputs->scalar_nl);
+    printf("Incident View Vector: (%f, %f, %f)\n", inputs->incident_v.x, inputs->incident_v.y, inputs->incident_v.z);
+    printf("Reflected Vector: (%f, %f, %f)\n", inputs->reflected_vector.x, inputs->reflected_vector.y, inputs->reflected_vector.z);
+    printf("Scalar VR: %f\n", inputs->scalar_vr);
+    printf("Reflectivity: %f\n", inputs->reflectivity);
 }
