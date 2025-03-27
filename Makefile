@@ -20,7 +20,6 @@ endif
 SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/hooks.c \
 		$(SRC_DIR)/render.c \
-		$(SRC_DIR)/ambient.c \
 		$(SRC_DIR)/light.c \
 		$(SRC_DIR)/utils/minirt_utils.c \
 		$(SRC_DIR)/utils/ft_atof.c \

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/22 16:05:15 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:21:25 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,12 @@ int fill_camera(t_scene *scene, char **values)
         return (1);
     scene->c.vector = parse_coord(values[2]);
     if (!is_vector_normalized(scene->c.vector))
-        return (ft_error("Camera orientation vector is not normalised."));
+    {
+        if (!scene->c.vector.x && !scene->c.vector.y && !scene->c.vector.z)
+            return (ft_error("Camera orientation vector cannot be (0,0,0)."));
+        normalize(&scene->c.vector);
+        // return (ft_error("Camera orientation vector is not normalised."));
+    }
     scene->c.view_degree = ft_atoi(values[3]);
     if (scene->c.view_degree < 0 || scene->c.view_degree > 180)
         return (ft_error("Camera field of view out of range."));
@@ -116,7 +121,12 @@ int fill_plane(t_scene *scene, char **values)
         return (1);
     new_plane->vector = parse_coord(values[2]);
     if (!is_vector_normalized(new_plane->vector))
-        return (ft_error("Plane normal vector is not normalised."));
+    {
+        if (!new_plane->vector.x && !new_plane->vector.y && !new_plane->vector.z)
+            return (ft_error("Plane normal vector cannot be (0,0,0)."));
+        normalize(&new_plane->vector);
+        // return (ft_error("Plane normal vector is not normalised."));
+    }
     new_plane->colour = parse_colour(values[3]);
     if (valid_colour(&new_plane->colour))
         return (1);
@@ -153,7 +163,12 @@ int fill_cylinder(t_scene *scene, char **values)
         return (1);
     new_cylinder->vector = parse_coord(values[2]);
     if (!is_vector_normalized(new_cylinder->vector))
-        return (ft_error("Cylinder orientation vector is not normalised."));
+    {
+        if (!new_cylinder->vector.x && !new_cylinder->vector.y && !new_cylinder->vector.z)
+            return (ft_error("Cylinder orientation vector cannot be (0,0,0)."));
+        normalize(&new_cylinder->vector);
+        // return (ft_error("Cylinder orientation vector is not normalised."));
+    }
     new_cylinder->diameter = ft_atof(values[3]);
     if (new_cylinder->diameter <= 0)
         return (ft_error("Cylinder diameter must be greater than zero."));

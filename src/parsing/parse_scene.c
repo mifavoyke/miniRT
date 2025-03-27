@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/22 16:04:25 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:09:36 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void init_scene(t_scene *scene)
 	scene->sp_count = 0;
 	scene->pl_count = 0;
 	scene->cy_count = 0;
-    scene->background = set_colour(200, 200, 200, 255); // light gray
+	scene->background = set_colour(200, 200, 200, 255); // light gray
 }
 
 static int ft_isspace(char c)
@@ -34,21 +34,28 @@ static int ft_isspace(char c)
 static char *normalise_whitespace(char *str)
 {
 	char *new_str;
-	int i;
+	int i = 0;
+	int j = 0;
 
 	new_str = malloc(ft_strlen(str) + 1);
 	if (!new_str)
 		return (NULL);
-	i = 0;
 	while (str[i])
 	{
-		if (ft_isspace(str[i]))
-			new_str[i] = ' ';
+		if (str[i] == '#')
+		{
+			while (str[i] && str[i] != '\n')
+				i++;
+			break;
+		}
+		else if (ft_isspace(str[i]))
+			new_str[j++] = ' ';
 		else
-			new_str[i] = str[i];
+			new_str[j++] = str[i];
+
 		i++;
 	}
-	new_str[i] = '\0';
+	new_str[j] = '\0';
 	return (new_str);
 }
 
