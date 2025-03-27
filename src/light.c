@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/22 16:11:57 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:40:18 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,20 @@
 
 // mesh objects?
 
+// calculates the closest point on the cylinder axis and finds the vector from
+// that closest point on the axis to the intersection point
+t_coord calculate_cylider_normal(t_cylinder *cy, t_coord intersection_p)
+{
+    t_coord closest_axis_point;
+    t_coord normal;
+    int t;
+
+    t = get_dot_product(make_vector(cy->centre, intersection_p), cy->vector);
+    closest_axis_point = get_point_on_vector(cy->centre, cy->vector, t);
+    normal = make_vector(closest_axis_point, intersection_p);
+    return (normal);
+}
+
 void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, t_coord viewpoint)
 {
     t_sphere *sp;
@@ -46,7 +60,10 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     else if (intersection->type == CYLINDER)
     {
         cy = (t_cylinder *)intersection->obj;
-        // vars->normal = ;
+        if (cy->vector.z == 1 || cy->vector.z == -1)
+            vars->normal = make_vector(cy->centre, intersection->point);
+        else
+            vars->normal = calculate_cylider_normal(cy, intersection->point);
     }
     normalize(&vars->normal);
     vars->incident_l = make_vector(lightpoint, intersection->point);
