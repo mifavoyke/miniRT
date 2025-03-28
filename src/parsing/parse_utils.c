@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:47 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/20 14:11:50 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/28 12:32:51 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_coord parse_coord(char *coord)
 	parsed.x = ft_atof(values[0]);
 	parsed.y = ft_atof(values[1]);
 	parsed.z = ft_atof(values[2]);
-	ft_free(values);
+	free_arr(values);
 	if (parsed.x == INT_MIN || parsed.y == INT_MIN || parsed.z == INT_MIN)
 	{
 		printf("Error: Coordinate out of allowed range.\n");
@@ -71,7 +71,7 @@ t_colour parse_colour(char *clr)
 	colour.g = ft_atoi(values[1]);
 	colour.b = ft_atoi(values[2]);
 	colour.a = 255;
-	ft_free(values);
+	free_arr(values);
 	if (colour.r < 0 || colour.r > 255 || colour.g < 0 || colour.g > 255 || colour.b < 0 || colour.b > 255)
 	{
 		printf("Error: Colour values out of range.\n");

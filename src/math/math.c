@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/21 16:16:48 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/03/28 12:32:08 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,25 +102,6 @@ void append_node(t_inter *new_node, t_inter **head)
 	temp->next = new_node;
 }
 
-void print_list(t_inter *head, int x, int y)
-{
-	t_sphere *sp;
-
-	if (!head)
-	{
-		printf("nothing here\n");
-		return;
-	}
-	int i = 0;
-	while (head)
-	{
-		sp = (t_sphere *)head->obj;
-		printf("x: %d y: %d  IN%d: t: %f, [%f, %f, %f], sp[%f, %f, %f]\n", x, y, i, head->distance, head->point.x, head->point.y, head->point.z, sp->centre.x, sp->centre.y, sp->centre.z);
-		i++;
-		head = head->next;
-	}
-}
-
 // void sort_list(t_inter **head)
 // {
 // 	t_inter *temp;
@@ -187,34 +168,6 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	}
 	return (head);
 }
-
-t_inter ***allocate_inter(int width, int height)
-{
-	t_inter ***section;
-	int y;
-
-	section = (t_inter ***)malloc(height * sizeof(t_inter **));
-	if (!section)
-		return (NULL);
-	y = -1;
-	while (++y < height)
-	{
-		section[y] = (t_inter **)malloc(width * sizeof(t_inter *));
-		if (!section[y])
-			return (NULL);
-	}
-	return (section);
-}
-
-// t_inter **allocate_inter(int width, int height)
-// {
-// 	t_inter **section;
-
-// 	section = (t_inter **)malloc(height * width * sizeof(t_inter *));
-// 	if (!section)
-// 		return (NULL);
-// 	return (section);
-// }
 
 int shoot_rays(t_minirt *minirt, t_scene *scene)
 {

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/22 14:32:47 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/28 14:15:25 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static void print_colour(t_colour colour)
 	printf("(%d, %d, %d)", colour.r, colour.g, colour.b);
 }
 
-static void print_coord(t_coord coord)
+void print_coord(t_coord coord)
 {
-	printf("(%.2f, %.2f, %.2f)", coord.x, coord.y, coord.z);
+	printf("(%.2f, %.2f, %.2f)\n", coord.x, coord.y, coord.z);
 }
 
 static void print_spheres(t_sphere *sp)
@@ -33,10 +33,10 @@ static void print_spheres(t_sphere *sp)
 	{
 		printf("  Centre: ");
 		print_coord(tmp->centre);
-		printf("\n  Diameter: %.2f\n", tmp->diameter);
+		printf("  Diameter: %.2f\n", tmp->diameter);
 		printf("  Colour: ");
 		print_colour(tmp->colour);
-		printf("\n\n");
+		printf("\n");
 		tmp = tmp->next;
 	}
 }
@@ -52,11 +52,11 @@ static void print_planes(t_plane *pl)
 	{
 		printf("  Point: ");
 		print_coord(tmp->point);
-		printf("\n  Normal Vector: ");
+		printf("  Normal Vector: ");
 		print_coord(tmp->vector);
-		printf("\n  Colour: ");
+		printf("  Colour: ");
 		print_colour(tmp->colour);
-		printf("\n\n");
+		printf("\n");
 		tmp = tmp->next;
 	}
 }
@@ -72,9 +72,9 @@ static void print_cylinders(t_cylinder *cy)
 	{
 		printf("  Centre: ");
 		print_coord(tmp->centre);
-		printf("\n  Normal Vector: ");
+		printf("  Normal Vector: ");
 		print_coord(tmp->vector);
-		printf("\n  Diameter: %.2f\n", tmp->diameter);
+		printf("  Diameter: %.2f\n", tmp->diameter);
 		printf("  Height: %.2f\n", tmp->height);
 		printf("  Colour: ");
 		print_colour(tmp->colour);
@@ -83,40 +83,50 @@ static void print_cylinders(t_cylinder *cy)
 	}
 }
 
+void print_camera(t_camera *c)
+{
+	printf("Camera:\n");
+	printf("  Viewpoint: ");
+	print_coord(c->point);
+	printf("  Vector: ");
+	print_coord(c->vector);
+	printf("  View Degree: %d\n", c->view_degree);
+}
+
+void print_light(t_light *l)
+{
+	printf("Light:\n");
+	printf("  Position: ");
+	print_coord(l->lightpoint);
+	printf("  Brightness: %.2f\n", l->brightness);
+	printf("  Colour: ");
+	print_colour(l->colour);
+	printf("\n");
+}
+
+void print_ambient(t_ambient *a)
+{
+	printf("Ambient Light:\n");
+	printf("  Ratio: %.2f\n", a->ratio);
+	printf("  Colour: ");
+	print_colour(a->colour);
+	printf("\n");
+}
+
 void print_scene(t_scene *scene)
 {
 	printf("\n--- Scene Parameters ---\n");
-
 	// Ambient Light
-	printf("Ambient Light:\n");
-	printf("  Ratio: %.2f\n", scene->a.ratio);
-	printf("  Colour: ");
-	print_colour(scene->a.colour);
-	printf("\n");
-
+	print_ambient(&scene->a);
 	// Camera
-	printf("\nCamera:\n");
-	printf("  Viewpoint: ");
-	print_coord(scene->c.point);
-	printf("\n  Vector: ");
-	print_coord(scene->c.vector);
-	printf("\n  View Degree: %d\n", scene->c.view_degree);
-
+	print_camera(&scene->c);
 	// Light Source
-	printf("\nLight:\n");
-	printf("  Position: ");
-	print_coord(scene->l.lightpoint);
-	printf("\n  Brightness: %.2f\n", scene->l.brightness);
-	printf("  Colour: ");
-	print_colour(scene->l.colour);
-	printf("\n");
-
+	print_light(&scene->l);
 	// Object Counts
 	printf("\n--- Object Counts ---\n");
 	printf("Spheres: %d\n", scene->sp_count);
 	printf("Planes: %d\n", scene->pl_count);
 	printf("Cylinders: %d\n", scene->cy_count);
-
 	// Print Objects
 	print_spheres(scene->sp);
 	print_planes(scene->pl);
@@ -126,11 +136,30 @@ void print_scene(t_scene *scene)
 
 void print_light_math_inputs(t_light_math *inputs)
 {
-    printf("Normal Vector: (%f, %f, %f)\n", inputs->normal.x, inputs->normal.y, inputs->normal.z);
-    printf("Incident Light Vector: (%f, %f, %f)\n", inputs->incident_l.x, inputs->incident_l.y, inputs->incident_l.z);
-    printf("Scalar NL: %f\n", inputs->scalar_nl);
-    printf("Incident View Vector: (%f, %f, %f)\n", inputs->incident_v.x, inputs->incident_v.y, inputs->incident_v.z);
-    printf("Reflected Vector: (%f, %f, %f)\n", inputs->reflected_vector.x, inputs->reflected_vector.y, inputs->reflected_vector.z);
-    printf("Scalar VR: %f\n", inputs->scalar_vr);
-    printf("Reflectivity: %f\n", inputs->reflectivity);
+	printf("Normal Vector: (%f, %f, %f)\n", inputs->normal.x, inputs->normal.y, inputs->normal.z);
+	printf("Incident Light Vector: (%f, %f, %f)\n", inputs->incident_l.x, inputs->incident_l.y, inputs->incident_l.z);
+	printf("Scalar NL: %f\n", inputs->scalar_nl);
+	printf("Incident View Vector: (%f, %f, %f)\n", inputs->incident_v.x, inputs->incident_v.y, inputs->incident_v.z);
+	printf("Reflected Vector: (%f, %f, %f)\n", inputs->reflected_vector.x, inputs->reflected_vector.y, inputs->reflected_vector.z);
+	printf("Scalar VR: %f\n", inputs->scalar_vr);
+	printf("Reflectivity: %f\n", inputs->reflectivity);
+}
+
+void print_list(t_inter *head, int x, int y)
+{
+	t_sphere *sp;
+
+	if (!head)
+	{
+		printf("nothing here\n");
+		return;
+	}
+	int i = 0;
+	while (head)
+	{
+		sp = (t_sphere *)head->obj;
+		printf("x: %d y: %d  IN%d: t: %f, [%f, %f, %f], sp[%f, %f, %f]\n", x, y, i, head->distance, head->point.x, head->point.y, head->point.z, sp->centre.x, sp->centre.y, sp->centre.z);
+		i++;
+		head = head->next;
+	}
 }

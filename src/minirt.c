@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/27 13:11:53 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/28 14:28:31 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,19 @@ int minirt_init(t_minirt *minirt)
 	minirt->img = mlx_new_image(minirt->mlx, minirt->img_width, minirt->img_height);
 	if (!minirt->img || (mlx_image_to_window(minirt->mlx, minirt->img, 0, 0) < 0))
 		return (1);
+	minirt->pixels = allocate_pixels(minirt->img_width, minirt->img_height);
+	if (!minirt->pixels)
+		return (1);
 	return (0);
+}
+
+void generate_image(t_minirt *minirt) // should we do it void or consider some failure cases?
+{
+	init_pixels(minirt);
+	minirt->scene->viewport = set_viewport_plane(*minirt->scene);
+	shoot_rays(minirt, minirt->scene);
+	lighting(minirt);
+	render_pixels(minirt);
 }
 
 int32_t main(int argc, char *argv[])
@@ -36,19 +48,12 @@ int32_t main(int argc, char *argv[])
 		return (ft_error("Wrong scene format. Expected .rt file."));
 	if (parse_scene(&minirt, argv[1]))
 		return (1);
+	// print_scene(minirt.scene);
+	print_camera(&minirt.scene->c);
 	if (minirt_init(&minirt))
 		return (ft_error(mlx_strerror(mlx_errno)));
 
-	minirt.pixels = allocate_pixels(minirt.img_width, minirt.img_height);
-	if (!minirt.pixels)
-		return (1);
-	init_pixels(&minirt);
-	print_scene(minirt.scene);
-
-	minirt.scene->viewport = set_viewport_plane(*minirt.scene);
-	shoot_rays(&minirt, minirt.scene);
-	lighting(&minirt);
-	render_pixels(&minirt);
+	generate_image(&minirt);
 
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/22 16:03:15 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/28 14:32:04 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,8 @@
 #define MATTE 4
 #define PLASTIC 30
 #define GLASS 100
-/*
-α (e.g., 1–10) → Wide, soft highlights → Looks like rough or matte surfaces (e.g., chalk, clay, rubber).
-α (e.g., 10–50) → Normal specular reflection (e.g., polished wood, plastic).
-α (e.g., 50–200) → Small, sharp highlights → Looks like metal or glass.
-α (e.g., 200+) → Unrealistically sharp highlights (can look artificial).
-*/
+#define TRANSLATION 10
+#define TRANSLATION_NORM 0.2
 
 typedef struct s_colour
 {
@@ -175,8 +171,7 @@ typedef struct s_minirt
 // LIGHT
 int lighting(t_minirt *minirt);
 
-// PIXELS | RENDERING
-t_colour **allocate_pixels(int width, int height);
+// PIXELS
 void init_pixels(t_minirt *minirt);
 void render_pixels(t_minirt *minirt);
 
@@ -213,12 +208,12 @@ t_inter *cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 
 // HOOKS
 void ft_hook(void *param);
+void generate_image(t_minirt *minirt);
 
 // PARSING
 int parse_scene(t_minirt *minirt, char *rt_file);
 int identify_objects(t_scene *scene, char *first_letter, char **values);
 int valid_input(char **values);
-
 t_coord parse_coord(char *coord);
 t_colour parse_colour(char *clr);
 t_coord set_coord(float x, float y, float z);
@@ -231,15 +226,25 @@ int fill_sphere(t_scene *scene, char **values);
 
 // UTILS
 int ft_error(const char *msg);
-void ft_free(char **arr);
-void free_scene(t_scene *scene);
 double ft_atof(char *str);
 int check_file_format(char *filename);
+
+// ALLOCATE
+t_inter ***allocate_inter(int width, int height);
+t_colour **allocate_pixels(int width, int height);
+
+// FREE
+void free_arr(char **arr);
+void free_scene(t_scene *scene);
 void free_pixels(t_colour **p, int h);
 void free_inter(t_inter ***section, int h, int w);
+
 
 // TESTS - REMOVE AFTER DONE
 void print_scene(t_scene *scene);
 void print_light_math_inputs(t_light_math *inputs);
+void print_list(t_inter *head, int x, int y);
+void print_coord(t_coord coord);
+void print_camera(t_camera *c);
 
 #endif

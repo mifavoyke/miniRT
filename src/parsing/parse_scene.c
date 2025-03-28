@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/27 10:09:36 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/03/28 12:46:30 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void init_scene(t_scene *scene)
 	scene->sp_count = 0;
 	scene->pl_count = 0;
 	scene->cy_count = 0;
-	scene->background = set_colour(200, 200, 200, 255); // light gray
+	scene->background = set_colour(200, 200, 200, 255); // light gray, can we set it as a macro somehow?
 }
 
 static int ft_isspace(char c)
@@ -91,15 +91,15 @@ static t_scene *fill_scene(char **rows, int size)
 		}
 		if (valid_input(values))
 		{
-			ft_free(values);
+			free_arr(values);
 			return (NULL);
 		}
 		if (identify_objects(scene, values[0], values))
 		{
-			ft_free(values);
+			free_arr(values);
 			return (NULL);
 		}
-		ft_free(values);
+		free_arr(values);
 		i++;
 	}
 	return (scene);
@@ -115,7 +115,7 @@ int parse_scene(t_minirt *minirt, char *rt_file)
 	if (!parsed_file)
 		return (1);
 	minirt->scene = fill_scene(parsed_file, size);
-	// ft_free(parsed_file);
+	// free_arr(parsed_file);
 	if (!minirt->scene)
 		return (1);
 	return (0);
