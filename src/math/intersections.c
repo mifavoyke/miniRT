@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/21 16:10:38 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:58:05 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 // based on parametric equations for sphere and ray
 // any point in ray: P = C + t*ray
 // any point in sphere: |P−C|=r --> sqrt(P-C o P - C) = r --> (P-c)o(P-C) = r^2
-t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
+t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord lightpoint)
 {
 	t_coord camera_to_sphere_center;
+	t_coord inter_to_light;
 	float a;
 	float b;
 	float c;
@@ -58,6 +59,9 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 		inter1->type = SPHERE;
 		inter1->distance = t1;
 		inter1->point = set_coord(cam.point.x + t1 * ray.x, cam.point.y + t1 * ray.y, cam.point.z + t1 * ray.z);
+		inter_to_light = make_vector(inter1->point, lightpoint);
+		inter1->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
+		// printf("distance to light %f\n", inter1->dist_to_light);
 		inter1->next = NULL;
 	}
 
@@ -70,6 +74,8 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 		inter2->type = SPHERE;
 		inter2->distance = t2;
 		inter2->point = set_coord(cam.point.x + t2 * ray.x, cam.point.y + t2 * ray.y, cam.point.z + t2 * ray.z);
+		inter_to_light = make_vector(inter2->point, lightpoint);
+		inter2->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
 		inter2->next = NULL;
 	}
 
@@ -87,11 +93,12 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 // any point in ray: P = C + t*ray 
 // t = ((Q - C) * n) / (ray * n)
 // t = ((point in plane - point on line=camera) * normal) / (ray * normal)
-t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
+t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coord lightpoint)
 {
 	float t;
 	t_inter *inter;
 	t_coord temp_vector; // Q - C 
+	t_coord inter_to_light;
 
 	temp_vector = make_vector(pl->point, cam.point);
 	t = get_dot_product(temp_vector, pl->vector) / get_dot_product(ray, pl->vector);
@@ -108,6 +115,8 @@ t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 	inter->type = PLANE;
 	inter->distance = t;
 	inter->point = set_coord(cam.point.x + t * ray.x, cam.point.y + t * ray.y, cam.point.z + t * ray.z);
+	inter_to_light = make_vector(inter->point, lightpoint);
+	inter->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
 	inter->next = NULL;
 	return (inter);
 }

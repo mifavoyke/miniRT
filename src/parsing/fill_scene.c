@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/27 10:21:25 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:25:41 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int fill_light(t_scene *scene, char **values)
     scene->l.colour = parse_colour(values[3]);
     if (valid_colour(&scene->l.colour))
         return (1);
-    if (fill_sphere(scene, values))
-        return (1);
+    // if (fill_sphere(scene, values))
+    //     return (1);
     return (0);
 }
 

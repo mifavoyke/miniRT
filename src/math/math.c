@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 12:32:08 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:58:41 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	temp_pl = scene->pl;
 	while (temp_sp)
 	{
-		new_node = sphere_intersections(ray, scene->c, temp_sp);
+		new_node = sphere_intersections(ray, scene->c, temp_sp, scene->l.lightpoint);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_sp->colour;
@@ -158,7 +158,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	}
 	while (temp_pl)
 	{
-		new_node = plane_intersections(ray, scene->c, temp_pl);
+		new_node = plane_intersections(ray, scene->c, temp_pl, scene->l.lightpoint);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_pl->colour;

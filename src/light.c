@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/27 16:40:18 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:42:48 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
             vars->normal = calculate_cylider_normal(cy, intersection->point);
     }
     normalize(&vars->normal);
-    vars->incident_l = make_vector(lightpoint, intersection->point);
+    vars->actual_v_to_l = vars->incident_l = make_vector(lightpoint, intersection->point);
     normalize(&vars->incident_l);
     vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
     vars->incident_v = make_vector(viewpoint, intersection->point);
@@ -110,6 +110,50 @@ t_colour apply_light(t_colour original, t_colour light, float reflectivity)
     return (final_color);
 }
 
+int compare_distance(t_minirt *minirt, t_coord incident_vector, float current_dist)
+{
+    int y;
+    int x;
+    t_coord vector_to_light;
+    (void)incident_vector;
+
+    y = -1;
+    while (++y < minirt->img_height)
+    {
+        x = -1;
+        while (++x < minirt->img_width)
+        {
+            if (minirt->intersection[y][x])
+            {
+                if (minirt->intersection[y][x]->dist_to_light < current_dist)
+                {
+                    // printf("dist_to_light: %f current_d: %f\n", minirt->intersection[y][x]->dist_to_light, current_dist);
+                    vector_to_light = make_vector(minirt->intersection[y][x]->point, minirt->scene->l.lightpoint);
+                    //     normalize(&vector_to_light);
+                    //     if (are_collinear(vector_to_light, incident_vector))
+                    //     {
+                    //         printf("yes\n");
+                            return (1);
+                    //     }
+                    // }
+                }
+            }
+        }
+    }
+    return (0);
+}
+
+int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs)
+{
+    float d;
+
+    d = get_dot_product(light_inputs->actual_v_to_l, light_inputs->actual_v_to_l);
+    if (compare_distance(minirt, light_inputs->incident_l, d))
+        return (1);
+    else
+        return (0);
+}
+
 // 1 Calculate normal, incident vectors a) from the lightpoint to the intersection point; b) from viewpoint (camera) to the intersection point
 // 2 Calculate reflected vector
 // 3 Calculate the specular light with a Phong model
@@ -129,16 +173,18 @@ int lighting(t_minirt *minirt)
         {
             if (minirt->intersection[y][x])
             {
+                // printf("distance %f\n", minirt->intersection[y][x]->dist_to_light);
                 init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
-                reflected_vector(&light_inputs);
-                specular_light(&light_inputs, minirt->scene->l.brightness);
-                light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
+                // if (is_in_shadow(minirt, &light_inputs))
+                //     light_inputs.reflectivity = minirt->scene->a.ratio;
+                // else
+                // {
+                    reflected_vector(&light_inputs);
+                    specular_light(&light_inputs, minirt->scene->l.brightness);
+                    light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
+                // }
                 minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
             }
-            // else
-            // {
-            //     ? ? ?
-            // }
         }
     }
     return (0);

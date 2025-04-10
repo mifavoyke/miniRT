@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 14:28:31 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:04:32 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void generate_image(t_minirt *minirt) // should we do it void or consider some f
 	init_pixels(minirt);
 	minirt->scene->viewport = set_viewport_plane(*minirt->scene);
 	shoot_rays(minirt, minirt->scene);
+	// print_intersections(minirt->intersection, minirt->img_width, minirt->img_height);
 	lighting(minirt);
 	render_pixels(minirt);
 }
@@ -61,6 +62,7 @@ int32_t main(int argc, char *argv[])
 	free_inter(minirt.intersection, minirt.img_height, minirt.img_width);
 	free_scene(minirt.scene);
 	free_pixels(minirt.pixels, minirt.img_height);
+	
 	mlx_delete_image(minirt.mlx, minirt.img);
 	mlx_terminate(minirt.mlx);
 	return (0);

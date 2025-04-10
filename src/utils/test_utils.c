@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 14:15:25 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:27:26 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,40 @@ void print_list(t_inter *head, int x, int y)
 		printf("x: %d y: %d  IN%d: t: %f, [%f, %f, %f], sp[%f, %f, %f]\n", x, y, i, head->distance, head->point.x, head->point.y, head->point.z, sp->centre.x, sp->centre.y, sp->centre.z);
 		i++;
 		head = head->next;
+	}
+}
+
+void print_distance(t_inter *head)
+{
+	t_inter *tmp = head;
+
+	if (!head)
+	{
+		printf("nothing here\n");
+		return;
+	}
+	while (tmp)
+	{
+		printf("distance to light %f\n", tmp->dist_to_light);
+		tmp = tmp->next;
+	}
+}
+
+void print_intersections(t_inter ***head, int w, int h)
+{
+	int y = -1;
+	int x = -1;
+
+	if (!head)
+	{
+		printf("nothing here\n");
+		return;
+	}
+	while (++y < h)
+	{
+		while (++x < w)
+		{
+			print_distance(head[y][x]);
+		}
 	}
 }

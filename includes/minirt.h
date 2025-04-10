@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/03/28 14:32:04 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:18:49 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 #define GLASS 100
 #define TRANSLATION 10
 #define TRANSLATION_NORM 0.2
+#define EPSILON 1e-6
 
 typedef struct s_colour
 {
@@ -71,6 +72,7 @@ typedef struct s_light
 typedef struct s_light_math
 {
     t_coord normal; // calculated differently for every object
+    t_coord actual_v_to_l;
     t_coord incident_l; // incident light vector
     float scalar_nl; // cosine between the normal and incident light vector
     t_coord incident_v; // incident vector starting from the camera (viewpoint) to P
@@ -135,7 +137,7 @@ typedef struct s_scene
     int sp_count;
     int pl_count;
     int cy_count;
-    t_viewport *viewport; // maybe its better to move it to minirt struct? - yeva
+    t_viewport *viewport;
     t_colour background;
 } t_scene;
 
@@ -154,6 +156,7 @@ typedef struct s_inter
     t_colour colour;
     void *obj;
     float distance;
+    float dist_to_light; // I need - yeva
     struct s_inter *next;
 } t_inter;
 
@@ -202,8 +205,8 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix m, int x, int y);
 int shoot_rays(t_minirt *minirt, t_scene *scene);
 
 // MATH - intersections.c
-t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
-t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
+t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord lightpoint);
+t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coord lightpoint);
 t_inter *cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 
 // HOOKS
@@ -244,6 +247,7 @@ void free_inter(t_inter ***section, int h, int w);
 void print_scene(t_scene *scene);
 void print_light_math_inputs(t_light_math *inputs);
 void print_list(t_inter *head, int x, int y);
+void print_intersections(t_inter ***head, int w, int h);
 void print_coord(t_coord coord);
 void print_camera(t_camera *c);
 
