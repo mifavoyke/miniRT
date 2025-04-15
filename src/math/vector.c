@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/04 19:23:25 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:19:28 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_coord subtract_vectors(t_coord from, t_coord to)
 }
 
 // multiplies one vector with a constant
-t_coord multiply_vector(t_coord v, float n)
+t_coord multiply_vector_by_constant(t_coord v, float n)
 {
     t_coord result_v;
 

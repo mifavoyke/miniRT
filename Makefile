@@ -25,6 +25,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/free.c \
 		$(SRC_DIR)/utils/minirt_utils.c \
 		$(SRC_DIR)/utils/ft_atof.c \
+		$(SRC_DIR)/utils/list_utils.c \
 		$(SRC_DIR)/utils/test_utils.c \
 		$(SRC_DIR)/utils/mergesort.c \
 		$(SRC_DIR)/math/basic.c \
@@ -39,7 +40,8 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/parsing/parse_utils.c \
 		$(SRC_DIR)/parsing/parse_checks.c
 
-OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+# OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJS = $(SRCS:.c=.o) # when we put object files into a directory it does not take the files from subdirectiories of src/
 
 all: libmlx libft $(NAME)
 

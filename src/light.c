@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/10 14:42:48 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:19:39 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_coord reflected_vector(t_light_math *inputs)
 {
     t_coord scaled_normal_vector;
 
-    scaled_normal_vector = multiply_vector(inputs->normal, 2 * inputs->scalar_nl);
+    scaled_normal_vector = multiply_vector_by_constant(inputs->normal, 2 * inputs->scalar_nl);
     inputs->reflected_vector = subtract_vectors(inputs->incident_l, scaled_normal_vector);
     return (inputs->reflected_vector);
 }

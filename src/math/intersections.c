@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/03 16:58:05 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:37:47 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // based on parametric equations for sphere and ray
 // any point in ray: P = C + t*ray
 // any point in sphere: |P−C|=r --> sqrt(P-C o P - C) = r --> (P-c)o(P-C) = r^2
-t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord lightpoint)
+t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord lightpoint)
 {
 	t_coord camera_to_sphere_center;
 	t_coord inter_to_light;
@@ -93,7 +93,7 @@ t_inter *sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord l
 // any point in ray: P = C + t*ray 
 // t = ((Q - C) * n) / (ray * n)
 // t = ((point in plane - point on line=camera) * normal) / (ray * normal)
-t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coord lightpoint)
+t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coord lightpoint)
 {
 	float t;
 	t_inter *inter;
@@ -121,7 +121,7 @@ t_inter *plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coord lig
 	return (inter);
 }
 
-t_inter *cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
+t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 {
 	(void)ray;
 	(void)cam;

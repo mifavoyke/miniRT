@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/03 16:58:41 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:43:25 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_matrix find_transformation_matrix(t_camera c)
 	global_up = set_coord(0.0, 0.0, 1.0);
 	Tm.Tr = set_coord(c.point.x, c.point.y, c.point.z);
 	Tm.F = c.vector;
-	if (Tm.F.x == 0 && Tm.F.y == 0 && Tm.F.z == 1) // if F (0, 0, 1) - we would be making cross product of colinera vectors which is wrong
+	if (Tm.F.x == 0 && Tm.F.y == 0 && Tm.F.z == 1) // if F (0, 0, 1) - we would be making cross product of colinear vectors which is wrong
 	{
 		Tm.U = set_coord(0, -1, 0);
 		Tm.R = set_coord(1, 0, 0);
@@ -65,6 +65,7 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	t_coord Pnew;		// point in 3d space relative to camera
 	t_coord ray_vector; // resulting vector
 
+	// transform coordinate of center of the pixel from 2D screen coord relative to top left corner of the screen to 2D viewport coord relative to center of viewport
 	Pv.x = scale(x + 0.5, -scene->viewport->viewport_width / 2, scene->viewport->viewport_width / 2, WIDTH);
 	Pv.y = scene->viewport->d;
 	Pv.z = scale(y + 0.5, scene->viewport->viewport_height / 2, -scene->viewport->viewport_height / 2, HEIGHT);
@@ -73,54 +74,11 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	Pnew.y = Tm.R.y * Pv.x + Tm.F.y * Pv.y + Tm.U.y * Pv.z + Tm.Tr.y;
 	Pnew.z = Tm.R.z * Pv.x + Tm.F.z * Pv.y + Tm.U.z * Pv.z + Tm.Tr.z;
 	ray_vector = make_vector(scene->c.point, Pnew);
-	if (x == 0 && y == 0)
-	{
-		// 	printf("Pv [%f, %f, %f]\n", Pv.x, Pv.y, Pv.z);
-		// 	printf("F (%f, %f, %f)   R (%f, %f, %f)   U (%f, %f, %f)\n", Fn.x, Fn.y, Fn.z, R.x, R.y, R.z, U.x, U.y, U.z);
-		// printf("Pnew [%f, %f, %f]\n", Pnew.x, Pnew.y, Pnew.z);
-		// 	printf("ray vector [%f, %f, %f] normalized: %d\n", ray_vector.x, ray_vector.y, ray_vector.z, is_vector_normalized(ray_vector));
-	}
 	return (ray_vector);
 }
 
-// appends new_node to the end of the list
-// new_node MUST have a next - either it has NULL or another t_inter node appended
-void append_node(t_inter *new_node, t_inter **head)
-{
-	t_inter *temp;
-
-	if (!new_node)
-		return;
-	if (!head || !*head)
-	{
-		*head = new_node;
-		return;
-	}
-	temp = *head;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new_node;
-}
-
-// void sort_list(t_inter **head)
-// {
-// 	t_inter *temp;
-// 	t_inter *head_copy;
-
-// 	if (!head || !*head)
-// 		return ;
-// 	head_copy = *head;
-// 	while (head_copy->next)
-// 	{
-// 		if (head_copy->next->distance < head_)
-			
-		
-// 	}
-// 	return (head);
-// }
-
-// iterates over all object lists
-// creates list of all intersections of a ray with all scene objects
+// creates linked list of all intersections of a ray with all scene objects (for one pixel, checks all objects)
+// is not sorted, the intersections are in order same as they are ordered in the .rt file - must be sorted
 // HAS TO BE FREED 
 t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 {
@@ -138,7 +96,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	temp_pl = scene->pl;
 	while (temp_sp)
 	{
-		new_node = sphere_intersections(ray, scene->c, temp_sp, scene->l.lightpoint);
+		new_node = find_sphere_intersections(ray, scene->c, temp_sp, scene->l.lightpoint);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_sp->colour;
@@ -148,7 +106,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	}
 	while (temp_cy)
 	{
-		new_node = cylinder_intersections(ray, scene->c, temp_cy);
+		new_node = find_cylinder_intersections(ray, scene->c, temp_cy);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_cy->colour;
@@ -158,7 +116,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	}
 	while (temp_pl)
 	{
-		new_node = plane_intersections(ray, scene->c, temp_pl, scene->l.lightpoint);
+		new_node = find_plane_intersections(ray, scene->c, temp_pl, scene->l.lightpoint);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_pl->colour;
@@ -169,37 +127,40 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	return (head);
 }
 
+// iterates over all pixels of the screen 
+// finds ray from camera through each pixel center
+// for each ray, creates list of intersections with all objects and sorts them so the closest intersection is head of the list
+// result is the populated minirt->intersections 2d array of linked lists
 int shoot_rays(t_minirt *minirt, t_scene *scene)
 {
 	int x;
 	int y;
 	t_matrix Tm;
 	t_coord ray;
-	t_inter *intersection;
+	t_inter *intersection_list;
 
 	minirt->intersection = allocate_inter(minirt->img_width, minirt->img_height);
 	if (!minirt->intersection)
-		return (1);
-	Tm = find_transformation_matrix(scene->c); // probably change this to a 2d array 4x4
+		return (ERROR);
+	Tm = find_transformation_matrix(scene->c);
 	y = -1;
-	while (++y < minirt->img_height) // idk why replacing HEIGHT with minirt->img_height didnt help
+	while (++y < minirt->img_height)
 	{
 		x = -1;
 		while (++x < minirt->img_width)
 		{
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
-			intersection = create_intersection_list(scene, ray);
-			// if (intersection && intersection->type == PLANE)
-			// 	print_list(intersection, x, y);
-			if (intersection)
-				minirt->pixels[y][x] = intersection->colour;
+			intersection_list = create_intersection_list(scene, ray);
+			merge_sort(intersection_list); // order intersection list
+			minirt->intersection[y][x] = intersection_list; // populate the intersection list
+			/*###### following if-else is temporary ###########################*/
+			if (intersection_list)
+				minirt->pixels[y][x] = intersection_list->colour;
 			else
 				minirt->pixels[y][x] = minirt->scene->background;
-			minirt->intersection[y][x] = intersection;
-			// order intersection list
-			// apply lightning on the first one (for now)
+			/*##################################################################*/
+			// DECIDE: APPLY LIGHT HERE OR ITERATE OVER THE SCREEN ONE MORE TIME ? AS YOU DO IN LIGHT.C IN THE LAST FUNCTION -Z.
 		}
 	}
-	//print_list(minirt->intersection[235][265], 265, 235);
 	return (0);
 }
