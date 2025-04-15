@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/15 11:19:28 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:55:44 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
+// dot product is used to project one vector onto another, or to find components along a direction
 // gets a scalar number from 2 vectors
 // dot product of a vector with itself is its length
 float get_dot_product(t_coord A, t_coord B)

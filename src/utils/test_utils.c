@@ -145,25 +145,6 @@ void print_light_math_inputs(t_light_math *inputs)
 	printf("Reflectivity: %f\n", inputs->reflectivity);
 }
 
-void print_list(t_inter *head, int x, int y)
-{
-	t_sphere *sp;
-
-	if (!head)
-	{
-		printf("nothing here\n");
-		return;
-	}
-	int i = 0;
-	while (head)
-	{
-		sp = (t_sphere *)head->obj;
-		printf("x: %d y: %d  IN%d: t: %f, [%f, %f, %f], sp[%f, %f, %f]\n", x, y, i, head->distance, head->point.x, head->point.y, head->point.z, sp->centre.x, sp->centre.y, sp->centre.z);
-		i++;
-		head = head->next;
-	}
-}
-
 void print_distance(t_inter *head)
 {
 	t_inter *tmp = head;

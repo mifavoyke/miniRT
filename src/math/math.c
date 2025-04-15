@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/15 11:43:25 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:55:24 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+/* THIS FILE IS WHERE THE RENDERING MAGIC HAPPENS (WITHOUT LIGHT) */
 
 // finds transformation matrix of camera from origin to defined position C
 // from C0[0,0,0] and v0(0, 1, 0) to Cn(cx, cy, cz) and vn(vx, vy, vz)
@@ -106,7 +108,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	}
 	while (temp_cy)
 	{
-		new_node = find_cylinder_intersections(ray, scene->c, temp_cy);
+		new_node = find_cylinder_intersections(ray, scene->c, temp_cy, scene->l.lightpoint);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_cy->colour;
@@ -151,7 +153,8 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 		{
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			intersection_list = create_intersection_list(scene, ray);
-			merge_sort(intersection_list); // order intersection list
+			merge_sort(&intersection_list); // order intersection list
+			print_list(intersection_list, x, y);
 			minirt->intersection[y][x] = intersection_list; // populate the intersection list
 			/*###### following if-else is temporary ###########################*/
 			if (intersection_list)

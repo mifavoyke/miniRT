@@ -31,38 +31,31 @@ void append_node(t_inter *new_node, t_inter **head)
 	temp->next = new_node;
 }
 
-// ---------------------------------------------- MERGE SORT ------------------------------------------------------------------
-
-// recursively merges the separated parts of the list into a single sorted list 
-t_inter *merge(t_inter *a, t_inter *b)
+// prints linked list
+void print_list(t_inter *head, int x, int y)
 {
-	t_inter* result;
-	
-	result = NULL;
-	if (!a)
-		return b;
-	if (!b)
-		return a;
-	if (a->distance <= b->distance)
+	if (!head)
 	{
-		result = a;
-		result->next = merge(a->next, b);
+		//printf("List is empty.\n");
+		return;
 	}
-	else
+	printf("[%d, %d] ------------------------------------------------------------\n", x, y);
+	while (head)
 	{
-		result = b;
-		result->next = merge(a, b->next);
+		printf("Intersection point: (%f, %f, %f) distance: %f, object: %d\n", head->point.x, head->point.y, head->point.z, head->distance, head->type);
+		head = head->next;
 	}
-	return (result);
 }
 
+// ---------------------------------------------- MERGE SORT ------------------------------------------------------------------
+
 // splits the linked list into two halves using the fast and slow pointer approach
-// when found half, set the next as head of a new list so we have a strat of the new list
-// in the first list, set last element->next as NULL so the first list has an end 
-void split_list(t_inter* list, t_inter** front, t_inter** back)
+// when found half, set the next as head of a new list so we have a start of the new list
+// in the first list, set last_element->next as NULL so the first list has an end
+void split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 {
-	t_inter* slow = list;
-	t_inter* fast = list->next;
+	t_inter *slow = list;
+	t_inter *fast = list->next;
 
 	while (fast)
 	{
@@ -73,29 +66,50 @@ void split_list(t_inter* list, t_inter** front, t_inter** back)
 			fast = fast->next;
 		}
 	}
-	*front = list;
-	*back = slow->next;
+	*first_half = list;
+	*second_half = slow->next;
 	slow->next = NULL;
 }
 
-// recursive merge sort
-// accepts a head pointer (pointer to the first element which is also a pointer)
-void merge_sort(t_inter** list_head)
+// recursively merges the separated parts of the list into a single sorted list
+// the result is accumulated 
+t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half)
 {
-	t_inter*	head;
-	t_inter* a;
-	t_inter* b;
-	
+	t_inter *result;
+
+	result = NULL;
+	if (!first_half)
+		return second_half;
+	if (!second_half)
+		return first_half;
+	if (first_half->distance <= second_half->distance)
+	{
+		result = first_half;
+		result->next = compare_and_merge(first_half->next, second_half);
+	}
+	else
+	{
+		result = second_half;
+		result->next = compare_and_merge(first_half, second_half->next);
+	}
+	return (result);
+}
+
+// merge sort - recursively split the list and then recursively merges it from teh smallest parts
+void merge_sort(t_inter **list_head)
+{
+	t_inter *head;
+	t_inter *first_half;
+	t_inter *second_half;
+
 	head = *list_head;
 	if (!head || !head->next)
 		return;
+	split_list(head, &first_half, &second_half);
+	merge_sort(&first_half);
+	merge_sort(&second_half);
 
-
-	splitList(head, &a, &b);
-	merge_sort(&a);
-	merge_sort(&b);
-
-	*list_head = merge(a, b);
+	*list_head = compare_and_merge(first_half, second_half);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------

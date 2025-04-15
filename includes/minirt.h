@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/15 11:52:48 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:55:08 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int shoot_rays(t_minirt *minirt, t_scene *scene);
 // MATH - intersections.c
 t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord lightpoint);
 t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coord lightpoint);
-t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
+t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, t_coord lightpoint);
 
 // HOOKS
 void ft_hook(void *param);
@@ -231,6 +231,9 @@ int fill_sphere(t_scene *scene, char **values);
 int ft_error(const char *msg);
 double ft_atof(char *str);
 int check_file_format(char *filename);
+void append_node(t_inter *new_node, t_inter **head);
+void merge_sort(t_inter **list_head);
+void print_list(t_inter *head, int x, int y);
 
 // ALLOCATE
 t_inter ***allocate_inter(int width, int height);
@@ -246,7 +249,6 @@ void free_inter(t_inter ***section, int h, int w);
 // TESTS - REMOVE AFTER DONE
 void print_scene(t_scene *scene);
 void print_light_math_inputs(t_light_math *inputs);
-void print_list(t_inter *head, int x, int y);
 void print_intersections(t_inter ***head, int w, int h);
 void print_coord(t_coord coord);
 void print_camera(t_camera *c);

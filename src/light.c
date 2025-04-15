@@ -114,7 +114,7 @@ int compare_distance(t_minirt *minirt, t_coord incident_vector, float current_di
 {
     int y;
     int x;
-    t_coord vector_to_light;
+    //t_coord vector_to_light;
     (void)incident_vector;
 
     y = -1;
@@ -128,7 +128,7 @@ int compare_distance(t_minirt *minirt, t_coord incident_vector, float current_di
                 if (minirt->intersection[y][x]->dist_to_light < current_dist)
                 {
                     // printf("dist_to_light: %f current_d: %f\n", minirt->intersection[y][x]->dist_to_light, current_dist);
-                    vector_to_light = make_vector(minirt->intersection[y][x]->point, minirt->scene->l.lightpoint);
+                    // todo: vector_to_light = make_vector(minirt->intersection[y][x]->point, minirt->scene->l.lightpoint);
                     //     normalize(&vector_to_light);
                     //     if (are_collinear(vector_to_light, incident_vector))
                     //     {
