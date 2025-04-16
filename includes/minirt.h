@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/15 18:55:08 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/16 13:59:14 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ t_coord get_cross_product(t_coord A, t_coord B);
 void normalize(t_coord *N);
 t_coord multiply_vector_by_constant(t_coord v, float n);
 t_coord subtract_vectors(t_coord from, t_coord to);
+t_coord move_point_by_vector(t_coord point, t_coord vector);
 
 // MATH - basic.c
 int equals(float a, float b, float deviation);

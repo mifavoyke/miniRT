@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/15 18:55:24 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/16 14:21:03 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			intersection_list = create_intersection_list(scene, ray);
 			merge_sort(&intersection_list); // order intersection list
-			print_list(intersection_list, x, y);
+			// print_list(intersection_list, x, y);
 			minirt->intersection[y][x] = intersection_list; // populate the intersection list
 			/*###### following if-else is temporary ###########################*/
 			if (intersection_list)

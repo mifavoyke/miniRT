@@ -14,13 +14,15 @@ Ray tracing pdf handbook:
 https://www.researchgate.net/publication/230583216_Ray_Tracing_Algorithms_-_Theory_and_Practice
 creating rotation matrices and general 3d rotation matrix:
 https://en.wikipedia.org/wiki/Rotation_matrix
+cylinder line intersection:
+http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersection.php
 
 
 * FOR YEVA *
 - vectors must be normalized, we can check if they are during parsing, with function is_vector_normalized from math/vector.c that returns 0(no) or 1(yes) so we must put error if 0 - not normalized
 - also pls check that vectors are non-zero (cannot have all cords 0)
 - object files are kept in src folder by their .c file, not in separate objs folder because of having folders in src - did not work, we can change the makefile later to separate them again
-- I print some things 
+- we coiuld add an id to each object based on their order in the .rt file 
 
 * FOR ZUZANA *
 

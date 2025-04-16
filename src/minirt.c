@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/03 17:04:32 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:23:24 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void generate_image(t_minirt *minirt) // should we do it void or consider some f
 int32_t main(int argc, char *argv[])
 {
 	t_minirt minirt;
-
+	
 	if (argc != 2)
 		return (ft_error("Usage: ./miniRT [scene].rt"));
 	if (check_file_format(argv[1]))
@@ -53,7 +53,6 @@ int32_t main(int argc, char *argv[])
 	print_camera(&minirt.scene->c);
 	if (minirt_init(&minirt))
 		return (ft_error(mlx_strerror(mlx_errno)));
-
 	generate_image(&minirt);
 
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);

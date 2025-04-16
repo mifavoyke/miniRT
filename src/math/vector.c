@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/15 17:55:44 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/16 13:58:53 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,3 +108,16 @@ t_coord multiply_vector_by_constant(t_coord v, float n)
     result_v.z = v.z * n;
     return (result_v);
 }
+
+// moves the point in the direction amd size of the vector 
+t_coord move_point_by_vector(t_coord point, t_coord vector)
+{
+    t_coord moved_point;
+
+    moved_point.x = point.x + vector.x;
+    moved_point.y = point.y + vector.y;
+    moved_point.z = point.z + vector.z;
+    return (moved_point);  
+}
+
+
