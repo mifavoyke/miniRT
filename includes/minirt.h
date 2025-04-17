@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/17 19:43:28 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:19:29 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ void ft_hook(void *param);
 void generate_image(t_minirt *minirt);
 
 // PARSING
-int parse_scene(t_minirt *minirt, char *rt_file);
+int create_scene(t_minirt *minirt, char *rt_file);
 int identify_objects(t_scene *scene, char *first_letter, char **values);
 int valid_input(char **values);
 t_coord parse_coord(char *coord);

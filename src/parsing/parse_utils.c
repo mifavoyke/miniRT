@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:47 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 12:32:51 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:55:07 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,12 @@ t_colour parse_colour(char *clr)
 	return (colour);
 }
 
+// counts all rows of the file
 int	count_rows(char *arg)
 {
-	char	*one_line;
+	int		i;
 	int		fd;
-	int	i;
+	char	*one_line;
 
 	i = 0;
 	fd = open(arg, O_RDONLY);
@@ -92,8 +93,11 @@ int	count_rows(char *arg)
 		return (0);
 	one_line = get_next_line(fd);
 	if (!one_line)
+	{
+		close(fd);
 		return (0);
-	while (one_line != NULL)
+	}
+	while (one_line)
 	{
 		i++;
 		free(one_line);
@@ -103,6 +107,8 @@ int	count_rows(char *arg)
 	return (i);
 }
 
+// stores lines from the .rt file in an array
+// @returns array of lines from the file
 char	**get_lines(char *arg, int size)
 {
 	char	**read_lines;
@@ -111,17 +117,24 @@ char	**get_lines(char *arg, int size)
 	int		fd;
 
 	i = 0;
-	read_lines = NULL;
+	// read_lines = NULL;
 	fd = open(arg, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
 	one_line = get_next_line(fd);
 	if (!one_line)
+	{
+		close(fd);
 		return (NULL);
+	}
 	read_lines = (char **)malloc(size * sizeof(char *));
-	if (read_lines == NULL)
+	if (!read_lines)
+	{
+		close(fd);
+		free(one_line);
 		return (NULL);
-	while (one_line != NULL)
+	}
+	while (one_line)
 	{
 		read_lines[i] = one_line;
 		one_line = get_next_line(fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/03 16:27:26 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:05:09 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void print_camera(t_camera *c)
 	print_coord(c->point);
 	printf("  Vector: ");
 	print_coord(c->vector);
-	printf("  View Degree: %d\n", c->view_degree);
+	printf("  View Degree: %f\n", c->view_degree);
 }
 
 void print_light(t_light *l)

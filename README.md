@@ -26,6 +26,8 @@ http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersecti
 * FOR ZUZANA *
 check the transformations and rotations with keys
 - i think we should handle being inside objects - now when first inter is behind camera, the second inter 
+- if color allocation fails, it is -1 on all rgba, but we can still use it like this - wont it mke issues? should we rather set it to all black - 0,0,0,0?
+- redo the rotations with the rotation matrices
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 
