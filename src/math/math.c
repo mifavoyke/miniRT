@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/16 14:21:03 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/17 19:35:43 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	t_coord ray_vector; // resulting vector
 
 	// transform coordinate of center of the pixel from 2D screen coord relative to top left corner of the screen to 2D viewport coord relative to center of viewport
-	Pv.x = scale(x + 0.5, -scene->viewport->viewport_width / 2, scene->viewport->viewport_width / 2, WIDTH);
-	Pv.y = scene->viewport->d;
-	Pv.z = scale(y + 0.5, scene->viewport->viewport_height / 2, -scene->viewport->viewport_height / 2, HEIGHT);
+	Pv.x = scale(x + 0.5, -scene->viewport_width / 2, scene->viewport_width / 2, WIDTH);
+	Pv.y = scene->viewport_distance;
+	Pv.z = scale(y + 0.5, scene->viewport_height / 2, -scene->viewport_height / 2, HEIGHT);
 	// applying transformation matrix to point P0 to get its position in 3D
 	Pnew.x = Tm.R.x * Pv.x + Tm.F.x * Pv.y + Tm.U.x * Pv.z + Tm.Tr.x;
 	Pnew.y = Tm.R.y * Pv.x + Tm.F.y * Pv.y + Tm.U.y * Pv.z + Tm.Tr.y;
@@ -92,7 +92,6 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 
 	head = NULL;
 	new_node = NULL;
-
 	temp_sp = scene->sp;
 	temp_cy = scene->cy;
 	temp_pl = scene->pl;
@@ -153,7 +152,7 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 		{
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			intersection_list = create_intersection_list(scene, ray);
-			merge_sort(&intersection_list); // order intersection list
+			merge_sort(&intersection_list, "distance"); // order intersection list
 			// print_list(intersection_list, x, y);
 			minirt->intersection[y][x] = intersection_list; // populate the intersection list
 			/*###### following if-else is temporary ###########################*/

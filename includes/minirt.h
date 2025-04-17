@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/16 13:59:14 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/17 19:43:28 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 #include <ctype.h>
 #include "../lib/libft/libft.h"
 #include "../lib/MLX42/include/MLX42/MLX42.h"
+
+/* ------------------------------ MACROS ----------------------------- */
 #define WIDTH 500
 #define HEIGHT 500
 #define INT_ERROR INT_MIN
@@ -31,9 +33,10 @@
 #define PLASTIC 30
 #define GLASS 100
 #define TRANSLATION 10
-#define TRANSLATION_NORM 0.2
+#define ROTATION 0.2
 #define EPSILON 1e-6
 
+/* ------------------------ DATA STRUCTURES --------------------------- */
 typedef struct s_colour
 {
 	int				r;
@@ -49,6 +52,15 @@ typedef struct s_coord
 	float			z;
 }					t_coord;
 
+enum e_obj_t
+{
+	SPHERE,   // 0
+	PLANE,    // 1
+	CYLINDER, // 2
+	NO_OB
+};
+
+/* ------------------------- SCENE INFORMATION -------------------------- */
 typedef struct s_ambient
 {
 	float			ratio;
@@ -59,7 +71,7 @@ typedef struct s_camera
 {
 	t_coord			point;
 	t_coord			vector;
-	int				view_degree;
+	float			view_degree;
 }					t_camera;
 
 typedef struct s_light
@@ -81,6 +93,7 @@ typedef struct s_light_math
 	float			reflectivity;
 }					t_light_math;
 
+/* ----------------------------- OBJECTS ------------------------------- */
 typedef struct s_sphere
 {
 	t_coord			centre;
@@ -107,6 +120,7 @@ typedef struct s_cylinder
 	struct s_cylinder	*next;
 }						t_cylinder;
 
+/* ----------------------- MATH CALCULATIONS ------------------------------ */
 typedef struct s_matrix
 {
 	t_coord			R;
@@ -115,13 +129,18 @@ typedef struct s_matrix
 	t_coord			Tr;
 }					t_matrix;
 
-typedef struct s_viewport
+typedef struct s_inter
 {
-	float			d;
-	float			viewport_width;
-	float			viewport_height;
-	t_coord			viewport_centre;
-}					t_viewport;
+	t_coord			point;
+	enum e_obj_t	type;
+	t_colour		colour;
+	void			*obj;
+	float			distance;
+	float			dist_to_light; // I need - yeva
+	struct s_inter	*next;
+}					t_inter;
+
+/* ------------------------ SCENE DESCRIPTION -------------------------- */
 
 typedef struct s_scene
 {
@@ -137,28 +156,11 @@ typedef struct s_scene
 	int				sp_count;
 	int				pl_count;
 	int				cy_count;
-	t_viewport		*viewport;
+	float			viewport_distance;
+	float			viewport_width;
+	float			viewport_height;
 	t_colour		background;
 }					t_scene;
-
-enum e_obj_t
-{
-	SPHERE,   // 0
-	PLANE,    // 1
-	CYLINDER, // 2
-	NO_OB
-};
-
-typedef struct s_inter
-{
-	t_coord			point;
-	enum e_obj_t	type;
-	t_colour		colour;
-	void			*obj;
-	float			distance;
-	float			dist_to_light; // I need - yeva
-	struct s_inter	*next;
-}					t_inter;
 
 typedef struct s_minirt
 {
@@ -171,6 +173,7 @@ typedef struct s_minirt
 	t_inter         ***intersection;
 }					t_minirt;
 
+/* ------------------------------- FUNCTIONS ------------------------------ */
 // LIGHT
 int lighting(t_minirt *minirt);
 
@@ -197,13 +200,15 @@ double scale(double num, double new_min, double new_max, double old_max);
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 
 // MATH - math.c
-t_viewport *set_viewport_plane(t_scene scene);
+float get_viewport_height(float viewport_width);
+float get_viewport_width(float angle_deg, float distance);
 float get_discriminant(float a, float b, float c);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 float get_viewport_width(float angle_deg, float distance);
 t_coord get_viewport_ray(t_scene *scene, t_matrix m, int x, int y);
 int shoot_rays(t_minirt *minirt, t_scene *scene);
+bool is_there_intersection(t_scene *scene, t_coord ray);
 
 // MATH - intersections.c
 t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord lightpoint);
@@ -233,7 +238,7 @@ int ft_error(const char *msg);
 double ft_atof(char *str);
 int check_file_format(char *filename);
 void append_node(t_inter *new_node, t_inter **head);
-void merge_sort(t_inter **list_head);
+void merge_sort(t_inter **list_head, char *criteria);
 void print_list(t_inter *head, int x, int y);
 
 // ALLOCATE

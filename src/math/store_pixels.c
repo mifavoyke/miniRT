@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   store_pixels.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:28 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 12:31:19 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:12:35 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
+// sets all pixels to the colour of the background by default
 void init_pixels(t_minirt *minirt)
 {
 	int x;

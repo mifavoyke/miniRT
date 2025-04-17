@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/16 14:23:24 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/17 19:45:02 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ int minirt_init(t_minirt *minirt)
 {
 	minirt->img_width = 1920;
 	minirt->img_height = 1080;
+	// minirt->scene->viewport_distance = 1.0;
+	// minirt->scene->viewport_width = get_viewport_width(minirt->scene->c.view_degree, minirt->scene->viewport_distance);
+	// minirt->scene->viewport_height = get_viewport_height(minirt->scene->viewport_width);
 	// mlx_set_setting(MLX_MAXIMIZED, true);
 	minirt->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
 	if (!minirt->mlx)
@@ -24,6 +27,7 @@ int minirt_init(t_minirt *minirt)
 	if (!minirt->img || (mlx_image_to_window(minirt->mlx, minirt->img, 0, 0) < 0))
 		return (1);
 	minirt->pixels = allocate_pixels(minirt->img_width, minirt->img_height);
+	minirt->intersection = NULL;
 	if (!minirt->pixels)
 		return (1);
 	return (0);
@@ -31,8 +35,9 @@ int minirt_init(t_minirt *minirt)
 
 void generate_image(t_minirt *minirt) // should we do it void or consider some failure cases?
 {
+	if (minirt->intersection)
+		free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
 	init_pixels(minirt);
-	minirt->scene->viewport = set_viewport_plane(*minirt->scene);
 	shoot_rays(minirt, minirt->scene);
 	// print_intersections(minirt->intersection, minirt->img_width, minirt->img_height);
 	lighting(minirt);
@@ -48,7 +53,7 @@ int32_t main(int argc, char *argv[])
 	if (check_file_format(argv[1]))
 		return (ft_error("Wrong scene format. Expected .rt file."));
 	if (parse_scene(&minirt, argv[1]))
-		return (1);
+		return (ERROR);
 	// print_scene(minirt.scene);
 	print_camera(&minirt.scene->c);
 	if (minirt_init(&minirt))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:10:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/16 14:16:20 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/17 15:31:15 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void print_list(t_inter *head, int x, int y)
 	printf("[%d, %d] ------------------------------------------------------------\n", x, y);
 	while (head)
 	{
-		printf("Intersection point: (%f, %f, %f) distance: %f, object: %d\n", head->point.x, head->point.y, head->point.z, head->distance, head->type);
+		printf("Intersection point: (%f, %f, %f) distance: %f, dist_to_light: %f, object: %d\n", head->point.x, head->point.y, head->point.z, head->distance, head->dist_to_light, head->type);
 		head = head->next;
 	}
 }
@@ -72,31 +72,45 @@ void split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 }
 
 // recursively merges the separated parts of the list into a single sorted list
+// if criteria is dist-to-light, use that, else use distance as the base case
 // the result is accumulated 
-t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half)
+t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half, char *criteria)
 {
 	t_inter *result;
-
+	float first_half_criteria;
+	float second_half_criteria;
+	
 	result = NULL;
+	if (!ft_strncmp("dist_to_light\0", criteria, ft_strlen(criteria)))
+	{
+		first_half_criteria = first_half->dist_to_light;
+		second_half_criteria = second_half->dist_to_light;
+	}
+	else
+	{
+		first_half_criteria = first_half->distance;
+		second_half_criteria = second_half->distance;
+	}
 	if (!first_half)
 		return second_half;
 	if (!second_half)
 		return first_half;
-	if (first_half->distance <= second_half->distance)
+	if (first_half_criteria <= second_half_criteria)
 	{
 		result = first_half;
-		result->next = compare_and_merge(first_half->next, second_half);
+		result->next = compare_and_merge(first_half->next, second_half, criteria);
 	}
 	else
 	{
 		result = second_half;
-		result->next = compare_and_merge(first_half, second_half->next);
+		result->next = compare_and_merge(first_half, second_half->next, criteria);
 	}
 	return (result);
 }
 
 // merge sort - recursively split the list and then recursively merges it from teh smallest parts
-void merge_sort(t_inter **list_head)
+// sorts based on distance or distance to the light - can add more later
+void merge_sort(t_inter **list_head, char *criteria)
 {
 	t_inter *head;
 	t_inter *first_half;
@@ -106,10 +120,10 @@ void merge_sort(t_inter **list_head)
 	if (!head || !head->next)
 		return;
 	split_list(head, &first_half, &second_half);
-	merge_sort(&first_half);
-	merge_sort(&second_half);
+	merge_sort(&first_half, criteria);
+	merge_sort(&second_half, criteria);
 
-	*list_head = compare_and_merge(first_half, second_half);
+	*list_head = compare_and_merge(first_half, second_half, criteria);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
