@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/16 14:30:03 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/17 18:59:40 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_co
 		inter1 = (t_inter *)malloc(sizeof(t_inter));
 		inter1->obj = (void *)sp;
 		inter1->type = SPHERE;
-		inter1->distance = fabsf(t1);
+		inter1->distance = (t1);
+		if (t1 <= t2)
+			inter1->colour = sp->colour;
+		else
+			inter1->colour = set_colour(0,0,0,0);
 		inter1->point = set_coord(cam.point.x + t1 * ray.x, cam.point.y + t1 * ray.y, cam.point.z + t1 * ray.z);
 		inter_to_light = make_vector(inter1->point, lightpoint);
 		inter1->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
@@ -73,6 +77,10 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_co
 		inter2 = (t_inter *)malloc(sizeof(t_inter));
 		inter2->obj = (void *)sp;
 		inter2->type = SPHERE;
+		if (t2 > 1 && t2 <= t1)
+			inter2->colour = sp->colour;
+		else
+			inter2->colour = set_colour(0,0,0,0);
 		inter2->distance = fabsf(t2);
 		inter2->point = set_coord(cam.point.x + t2 * ray.x, cam.point.y + t2 * ray.y, cam.point.z + t2 * ray.z);
 		inter_to_light = make_vector(inter2->point, lightpoint);
@@ -103,13 +111,13 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coor
 
 	temp_vector = make_vector(pl->point, cam.point);
 	t = - get_dot_product(temp_vector, pl->vector) / get_dot_product(ray, pl->vector);
-	// todo: edge cases - must implement handling them
+	// edge cases
 	if (get_dot_product(ray, pl->vector) == 0.0)
 	{
-		if (get_dot_product(temp_vector, pl->vector) == 0.0)
-			printf("ray is contained in the plane");
-		else
-			printf("ray and plane are parallel, never interect\n");
+		if (get_dot_product(temp_vector, pl->vector) == 0.0) // ray is contained in the plane
+			t = 0.1; // TODO: may change this - this is handling edge case when the plane goes straight through ray - they are contained
+		else // ray and plane are parallel, never interect
+			t = -1;
 	}
 	if (t <= 0)
 		inter = NULL;
@@ -118,6 +126,7 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coor
 		inter = (t_inter *)malloc(sizeof(t_inter));
 		inter->obj = (void *)pl;
 		inter->type = PLANE;
+		inter->colour = pl->colour;
 		inter->distance = fabsf(t);
 		inter->point = set_coord(cam.point.x + t * ray.x, cam.point.y + t * ray.y, cam.point.z + t * ray.z);
 		inter_to_light = make_vector(inter->point, lightpoint);
@@ -214,6 +223,7 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		inter1->point = set_coord(cam.point.x + t1 * ray.x, cam.point.y + t1 * ray.y, cam.point.z + t1 * ray.z);
 		inter1->obj = (void *)cy;
 		inter1->type = CYLINDER;
+		inter1->colour = cy->colour;
 		inter1->distance = fabsf(t1);
 		inter_to_light = make_vector(inter1->point, lightpoint);
 		inter1->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
@@ -258,6 +268,7 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		inter2->point = set_coord(cam.point.x + t2 * ray.x, cam.point.y + t2 * ray.y, cam.point.z + t2 * ray.z);
 		inter2->obj = (void *)cy;
 		inter2->type = CYLINDER;
+		inter2->colour = cy->colour;
 		inter2->distance = fabsf(t2);
 		inter_to_light = make_vector(inter2->point, lightpoint);
 		inter2->dist_to_light = get_dot_product(inter_to_light, inter_to_light);

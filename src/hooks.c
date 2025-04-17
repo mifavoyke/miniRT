@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 16:36:21 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:07:53 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,27 @@
 
 void move(t_minirt *minirt, char *msg, float *coord, int arithmetic)
 {
+    printf("point before:   ");
+    print_coord(minirt->scene->c.point);
     if (arithmetic == 0)
         *coord -= TRANSLATION;
     if (arithmetic == 1)
         *coord += TRANSLATION;
-    printf("%s: ", msg);
+    printf("%s:         ", msg);
     print_coord(minirt->scene->c.point);
     generate_image(minirt);
 }
 
 void redirect(t_minirt *minirt, char *msg, float *coord, int arithmetic)
 {
+    printf("vector before:  ");
+    print_coord(minirt->scene->c.vector);
     if (arithmetic == 0)
-        *coord -= TRANSLATION_NORM;
+        *coord -= ROTATION;
     if (arithmetic == 1)
-        *coord += TRANSLATION_NORM;
+        *coord += ROTATION;
     normalize(&minirt->scene->c.vector);
-    printf("%s:                         ", msg);
+    printf("%s:         ", msg);
     print_coord(minirt->scene->c.vector);
     generate_image(minirt);
 }
@@ -71,5 +75,4 @@ void ft_hook(void *param)
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_DOWN))
         redirect(minirt, "-z", &minirt->scene->c.vector.z, 0);
     // moving objs
-    
 }

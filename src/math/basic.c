@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/15 13:04:25 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:25:32 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,23 @@ int32_t  ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
     pixel |= b << 8;
     pixel |= a;
     return (pixel);
+}
+
+// calculates width of the viewport plane (representing screen) in the 3d space
+float get_viewport_width(float angle_deg, float distance)
+{
+	float   viewport_width;
+	float   angle_rad;
+
+	// Convert angle to radians
+	angle_rad = angle_deg * M_PI / 180.0;
+	viewport_width = 2 * (tan(angle_rad / 2) * distance); // 
+	return (viewport_width);
+}
+
+// calculates height of the viewport plane (representing screen) based on viewport width
+// keeps the width:height ratio of screen 
+float get_viewport_height(float viewport_width)
+{
+	return (viewport_width * HEIGHT / WIDTH);
 }

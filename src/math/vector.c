@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/16 13:58:53 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/17 17:06:14 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,18 @@ void normalize(t_coord *N)
     float len;
     
     len = sqrt(pow(N->x, 2) + pow(N->y, 2) + pow(N->z, 2));
-    N->x = N->x / len;
-    N->y = N->y / len;
-    N->z = N->z / len;
+    if (len == 0)
+    {
+        N->x = 0;
+        N->y = 0;
+        N->z = 0;
+    }
+    else
+    {
+        N->x = N->x / len;
+        N->y = N->y / len;
+        N->z = N->z / len;
+    }
 }
 
 // makes a vector from point A to point B

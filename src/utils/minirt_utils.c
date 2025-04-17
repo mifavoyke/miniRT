@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 17:06:31 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 12:29:54 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:22:29 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ int check_file_format(char *filename)
 			return (0);
 		i++;
 	}
-	return (1);
+	return (ERROR);
 }

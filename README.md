@@ -19,12 +19,15 @@ http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersecti
 
 
 * FOR YEVA *
-- vectors must be normalized, we can check if they are during parsing, with function is_vector_normalized from math/vector.c that returns 0(no) or 1(yes) so we must put error if 0 - not normalized
 - also pls check that vectors are non-zero (cannot have all cords 0)
 - object files are kept in src folder by their .c file, not in separate objs folder because of having folders in src - did not work, we can change the makefile later to separate them again
-- we coiuld add an id to each object based on their order in the .rt file 
+- we could add an id to each object based on their order in the .rt file 
 
 * FOR ZUZANA *
+check the transformations and rotations with keys
+- i think we should handle being inside objects - now when first inter is behind camera, the second inter 
+- if color allocation fails, it is -1 on all rgba, but we can still use it like this - wont it mke issues? should we rather set it to all black - 0,0,0,0?
+- redo the rotations with the rotation matrices
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 

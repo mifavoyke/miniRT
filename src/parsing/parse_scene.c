@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/03/28 12:46:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:08:56 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static char *normalise_whitespace(char *str)
 	return (new_str);
 }
 
+// iterates each line, normalizes whitespace, puts all elements into array, 
 static t_scene *fill_scene(char **rows, int size)
 {
 	t_scene *scene;
@@ -75,11 +76,17 @@ static t_scene *fill_scene(char **rows, int size)
 	{
 		normalised = normalise_whitespace(rows[i]);
 		if (!normalised)
+		{
+			free(scene);
+			scene = NULL;
 			return (NULL);
+		}
 		values = ft_split(normalised, ' ');
 		free(normalised);
 		if (!values)
 		{
+			free(scene);
+			scene = NULL;
 			printf("Error: ft_split failed.\n");
 			return (NULL);
 		}
@@ -87,7 +94,7 @@ static t_scene *fill_scene(char **rows, int size)
 		{
 			i++;
 			free(values);
-			continue;
+			continue ;
 		}
 		if (valid_input(values))
 		{
@@ -105,7 +112,7 @@ static t_scene *fill_scene(char **rows, int size)
 	return (scene);
 }
 
-int parse_scene(t_minirt *minirt, char *rt_file)
+int create_scene(t_minirt *minirt, char *rt_file)
 {
 	char **parsed_file;
 	int size;
@@ -113,10 +120,13 @@ int parse_scene(t_minirt *minirt, char *rt_file)
 	size = count_rows(rt_file);
 	parsed_file = get_lines(rt_file, size);
 	if (!parsed_file)
-		return (1);
+		return (ERROR);
 	minirt->scene = fill_scene(parsed_file, size);
-	// free_arr(parsed_file);
+	free(parsed_file);
 	if (!minirt->scene)
-		return (1);
+		return (ERROR);
+	minirt->scene->viewport_distance = 1.0;
+	minirt->scene->viewport_width = get_viewport_width(minirt->scene->c.view_degree, minirt->scene->viewport_distance);
+	minirt->scene->viewport_height = get_viewport_height(minirt->scene->viewport_width);
 	return (0);
 }
