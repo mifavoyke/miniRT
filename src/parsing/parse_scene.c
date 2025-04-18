@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 22:08:56 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/18 12:51:02 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int create_scene(t_minirt *minirt, char *rt_file)
 	if (!parsed_file)
 		return (ERROR);
 	minirt->scene = fill_scene(parsed_file, size);
-	free(parsed_file);
+	free_arr(parsed_file);
 	if (!minirt->scene)
 		return (ERROR);
 	minirt->scene->viewport_distance = 1.0;

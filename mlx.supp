@@ -1,0 +1,101 @@
+{
+   MLX42_GLFW_init
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libglfw*.so*
+   ...
+}
+
+{
+   MLX42_X11_library_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libX11*.so*
+   ...
+}
+
+{
+   MLX42_LLVM_library_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libLLVM*.so*
+   ...
+}
+
+{
+   DynamicLoader_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:_dl_*
+   ...
+}
+
+{
+   CPP_STD_library_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libstdc++*.so*
+   ...
+}
+
+{
+   MLX42_init_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:mlx_init
+   ...
+}
+
+{
+   MLX42_terminate_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:mlx_terminate
+   ...
+}
+
+{
+   dlopen_malloc_leak
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:malloc
+   fun:_dl_find_object_update
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen_implementation
+   fun:dlopen@@GLIBC_2.34
+}
+
+{
+   dynamic_linker_strncmp_invalid_read
+   Memcheck:Addr8
+   fun:strncmp
+   fun:is_dst
+   ...
+   fun:_dl_map_object*
+}
+
+{
+   dynamic_linker_decompose_rpath
+   Memcheck:Addr8
+   fun:strncmp
+   fun:is_dst
+   fun:_dl_dst*
+   ...
+   fun:_dl_map_object*
+}
