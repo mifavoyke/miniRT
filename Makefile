@@ -82,6 +82,9 @@ fclean: clean
 	@$(RM) ./lib/MLX42
 	@make fclean -C $(LIBFT_DIR)
 
+valgrind: all
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=mlx.supp ./$(NAME) scenes/basic.rt
+
 re: fclean all
 
 .PHONY: all clean fclean re libmlx libft
