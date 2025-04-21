@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 18:59:40 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:20:59 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 // based on parametric equations for sphere and ray
 // any point in ray: P = C + t*ray
 // any point in sphere: |P−C|=r --> sqrt(P-C o P - C) = r --> (P-c)o(P-C) = r^2
-t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_coord lightpoint)
+t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 {
 	t_coord camera_to_sphere_center;
-	t_coord inter_to_light;
 	float a;
 	float b;
 	float c;
@@ -64,9 +63,6 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_co
 		else
 			inter1->colour = set_colour(0,0,0,0);
 		inter1->point = set_coord(cam.point.x + t1 * ray.x, cam.point.y + t1 * ray.y, cam.point.z + t1 * ray.z);
-		inter_to_light = make_vector(inter1->point, lightpoint);
-		inter1->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
-		// printf("distance to light %f\n", inter1->dist_to_light);
 		inter1->next = NULL;
 	}
 
@@ -83,8 +79,6 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_co
 			inter2->colour = set_colour(0,0,0,0);
 		inter2->distance = fabsf(t2);
 		inter2->point = set_coord(cam.point.x + t2 * ray.x, cam.point.y + t2 * ray.y, cam.point.z + t2 * ray.z);
-		inter_to_light = make_vector(inter2->point, lightpoint);
-		inter2->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
 		inter2->next = NULL;
 	}
 
@@ -102,15 +96,14 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp, t_co
 // any point in ray: P = C + t * ray 
 // t = - ((Q - C) o n) / (ray o n)
 // t = ((point in plane - point on line=camera) o normal) / (ray o normal)
-t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coord lightpoint)
+t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 {
 	float t; // parameter applied to the ray = scalar that tells you how far to move along the direction vector (ray) starting from the camera
 	t_inter *inter;
 	t_coord temp_vector;
-	t_coord inter_to_light;
 
 	temp_vector = make_vector(pl->point, cam.point);
-	t = - get_dot_product(temp_vector, pl->vector) / get_dot_product(ray, pl->vector);
+	t = - get_dot_product(temp_vector, pl->vector) / get_dot_product(ray, pl->vector); // why is there a minus?
 	// edge cases
 	if (get_dot_product(ray, pl->vector) == 0.0)
 	{
@@ -129,8 +122,6 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coor
 		inter->colour = pl->colour;
 		inter->distance = fabsf(t);
 		inter->point = set_coord(cam.point.x + t * ray.x, cam.point.y + t * ray.y, cam.point.z + t * ray.z);
-		inter_to_light = make_vector(inter->point, lightpoint);
-		inter->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
 		inter->next = NULL;
 	}
 	return (inter);
@@ -143,7 +134,7 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl, t_coor
 // but in 3D, this “distance to a line” is hard to work with directly — so we project everything onto the plane perpendicular to the axis
 // project both the ray(helper 2) and vector from the cylinder axis to the ray origin(helper 1) onto the plane perpendicular to the cylinder’s axis
 // then the problem becomes 2D problem of a line intersecting a circle of radius r
-t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, t_coord lightpoint)
+t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 {
 	float a;
 	float b;
@@ -154,11 +145,10 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 	
 	t_coord cap_center;
 	t_plane *plane;
-	t_inter *inter1;
-	t_inter *inter2;
+	t_inter *inter1 = NULL;
+	t_inter *inter2 = NULL;
 	t_coord temp_inter_1;
 	t_coord temp_inter_2;
-	t_coord inter_to_light;
 	t_coord cam_to_centre;
 	
 	cam_to_centre = make_vector(cy->centre, cam.point); // temp vector w: from centre of cylinder to camera --> w = L0 - Cc
@@ -194,7 +184,6 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		plane->vector = cy->vector;
 		plane->colour = cy->colour;
 		plane->next = NULL;
-		inter1 = find_plane_intersections(ray, cam, plane, lightpoint);
 		if (inter1 && get_dot_product(make_vector(cap_center, inter1->point), make_vector(cap_center, inter1->point)) >= pow(cy->diameter / 2, 2))
 			inter1 = NULL;
 		free(plane);
@@ -209,7 +198,6 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		plane->vector = cy->vector;
 		plane->colour = cy->colour;
 		plane->next = NULL;
-		inter1 = find_plane_intersections(ray, cam, plane, lightpoint);
 		if (inter1 && get_dot_product(make_vector(cap_center, inter1->point), make_vector(cap_center, inter1->point)) >= pow(cy->diameter / 2, 2))
 			inter1 = NULL;
 		free(plane);
@@ -225,8 +213,6 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		inter1->type = CYLINDER;
 		inter1->colour = cy->colour;
 		inter1->distance = fabsf(t1);
-		inter_to_light = make_vector(inter1->point, lightpoint);
-		inter1->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
 		inter1->next = NULL;
 	}
 
@@ -239,7 +225,6 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		plane->vector = cy->vector;
 		plane->colour = cy->colour;
 		plane->next = NULL;
-		inter2 = find_plane_intersections(ray, cam, plane, lightpoint);
 		if (inter2 && get_dot_product(make_vector(cap_center, inter2->point), make_vector(cap_center, inter2->point)) >= pow(cy->diameter / 2, 2))
 			inter2 = NULL;
 		free(plane);
@@ -254,7 +239,6 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		plane->vector = cy->vector;
 		plane->colour = cy->colour;
 		plane->next = NULL;
-		inter2 = find_plane_intersections(ray, cam, plane, lightpoint);
 		if (inter2 && get_dot_product(make_vector(cap_center, inter2->point), make_vector(cap_center, inter2->point)) >= pow(cy->diameter / 2, 2))
 			inter2 = NULL;
 		free(plane);
@@ -270,8 +254,6 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 		inter2->type = CYLINDER;
 		inter2->colour = cy->colour;
 		inter2->distance = fabsf(t2);
-		inter_to_light = make_vector(inter2->point, lightpoint);
-		inter2->dist_to_light = get_dot_product(inter_to_light, inter_to_light);
 		inter2->next = NULL;
 	}
 

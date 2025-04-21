@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 21:05:09 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/21 17:15:03 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,37 +145,49 @@ void print_light_math_inputs(t_light_math *inputs)
 	printf("Reflectivity: %f\n", inputs->reflectivity);
 }
 
-void print_distance(t_inter *head)
+void draw_shadow_rays(t_minirt *minirt)
 {
-	t_inter *tmp = head;
+	int x, y;
+	t_coord intersection_point;
+	t_coord light_point = minirt->scene->l.lightpoint;
+	t_colour white = set_colour(255, 255, 255, 255);
 
-	if (!head)
+	for (y = 0; y < minirt->img_height; y++)
 	{
-		printf("nothing here\n");
-		return;
-	}
-	while (tmp)
-	{
-		printf("distance to light %f\n", tmp->dist_to_light);
-		tmp = tmp->next;
+		for (x = 0; x < minirt->img_width; x++)
+		{
+			if (minirt->intersection[y][x])
+			{
+				intersection_point = minirt->intersection[y][x]->point;
+				if (x % 10 == 0 && y % 10 == 0)
+					draw_line(minirt, intersection_point, light_point, white);
+			}
+		}
 	}
 }
 
-void print_intersections(t_inter ***head, int w, int h)
+void draw_line(t_minirt *minirt, t_coord start, t_coord end, t_colour color)
 {
-	int y = -1;
-	int x = -1;
+	float dx = end.x - start.x;
+	float dy = end.y - start.y;
+	float dz = end.z - start.z;
+	float steps = fmax(fmax(fabs(dx), fabs(dy)), fabs(dz));
+	float x_inc = dx / steps;
+	float y_inc = dy / steps;
+	float z_inc = dz / steps;
 
-	if (!head)
+	float x = start.x;
+	float y = start.y;
+	float z = start.z;
+	int i = 0;
+	while (i++ < steps)
 	{
-		printf("nothing here\n");
-		return;
-	}
-	while (++y < h)
-	{
-		while (++x < w)
-		{
-			print_distance(head[y][x]);
-		}
+		int px = (int)x;
+		int py = (int)y;
+		if (px >= 0 && px < minirt->img_width && py >= 0 && py < minirt->img_height)
+			minirt->pixels[py][px] = color;
+		x += x_inc;
+		y += y_inc;
+		z += z_inc;
 	}
 }

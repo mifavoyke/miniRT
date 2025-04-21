@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:10:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 15:31:15 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:16:14 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void print_list(t_inter *head, int x, int y)
 	printf("[%d, %d] ------------------------------------------------------------\n", x, y);
 	while (head)
 	{
-		printf("Intersection point: (%f, %f, %f) distance: %f, dist_to_light: %f, object: %d\n", head->point.x, head->point.y, head->point.z, head->distance, head->dist_to_light, head->type);
+		printf("Intersection point: (%f, %f, %f) distance: %f, object: %d\n", head->point.x, head->point.y, head->point.z, head->distance, head->type);
 		head = head->next;
 	}
 }
@@ -72,7 +72,6 @@ void split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 }
 
 // recursively merges the separated parts of the list into a single sorted list
-// if criteria is dist-to-light, use that, else use distance as the base case
 // the result is accumulated 
 t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half, char *criteria)
 {
@@ -81,20 +80,20 @@ t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half, char *crit
 	float second_half_criteria;
 	
 	result = NULL;
-	if (!ft_strncmp("dist_to_light\0", criteria, ft_strlen(criteria)))
-	{
-		first_half_criteria = first_half->dist_to_light;
-		second_half_criteria = second_half->dist_to_light;
-	}
-	else
+	// if (!ft_strncmp("dist_to_light\0", criteria, ft_strlen(criteria)))
+	// {
+	// 	first_half_criteria = first_half->dist_to_light;
+	// 	second_half_criteria = second_half->dist_to_light;
+	// }
+	if (!ft_strncmp("distance", criteria, ft_strlen(criteria)))
 	{
 		first_half_criteria = first_half->distance;
 		second_half_criteria = second_half->distance;
 	}
 	if (!first_half)
-		return second_half;
+		return (second_half);
 	if (!second_half)
-		return first_half;
+		return (first_half);
 	if (first_half_criteria <= second_half_criteria)
 	{
 		result = first_half;

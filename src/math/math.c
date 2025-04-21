@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 19:35:43 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:19:15 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	temp_pl = scene->pl;
 	while (temp_sp)
 	{
-		new_node = find_sphere_intersections(ray, scene->c, temp_sp, scene->l.lightpoint);
+		new_node = find_sphere_intersections(ray, scene->c, temp_sp);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_sp->colour;
@@ -107,7 +107,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	}
 	while (temp_cy)
 	{
-		new_node = find_cylinder_intersections(ray, scene->c, temp_cy, scene->l.lightpoint);
+		new_node = find_cylinder_intersections(ray, scene->c, temp_cy);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_cy->colour;
@@ -117,7 +117,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 	}
 	while (temp_pl)
 	{
-		new_node = find_plane_intersections(ray, scene->c, temp_pl, scene->l.lightpoint);
+		new_node = find_plane_intersections(ray, scene->c, temp_pl);
 		if (new_node != NULL)
 		{
 			new_node->colour = temp_pl->colour;
@@ -152,7 +152,7 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 		{
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			intersection_list = create_intersection_list(scene, ray);
-			merge_sort(&intersection_list, "distance"); // order intersection list
+			// merge_sort(&intersection_list, "distance"); // order intersection list
 			// print_list(intersection_list, x, y);
 			minirt->intersection[y][x] = intersection_list; // populate the intersection list
 			/*###### following if-else is temporary ###########################*/

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 11:03:53 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:14:31 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void generate_image(t_minirt *minirt) // should we do it void or consider some f
 		free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
 	init_pixels(minirt);
 	shoot_rays(minirt, minirt->scene);
-	// print_intersections(minirt->intersection, minirt->img_width, minirt->img_height);
+    // draw_shadow_rays(minirt);
 	lighting(minirt);
 	render_pixels(minirt);
 }

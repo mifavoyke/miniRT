@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 17:06:14 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:58:54 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_coord multiply_vector_by_constant(t_coord v, float n)
     return (result_v);
 }
 
-// moves the point in the direction amd size of the vector 
+// moves the point in the direction and size of the vector 
 t_coord move_point_by_vector(t_coord point, t_coord vector)
 {
     t_coord moved_point;
@@ -128,5 +128,3 @@ t_coord move_point_by_vector(t_coord point, t_coord vector)
     moved_point.z = point.z + vector.z;
     return (moved_point);  
 }
-
-

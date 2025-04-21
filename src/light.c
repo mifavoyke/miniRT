@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 12:52:50 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:15:47 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,16 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
             vars->normal = calculate_cylider_normal(cy, intersection->point);
     }
     normalize(&vars->normal);
-    vars->actual_v_to_l = vars->incident_l = make_vector(lightpoint, intersection->point);
+
+    vars->shadow_ray = make_vector(intersection->point, lightpoint);
+    vars->max_length = get_dot_product(vars->shadow_ray, vars->shadow_ray);
+    normalize(&vars->shadow_ray);
+    vars->shadow_origin = move_point_by_vector(intersection->point, multiply_vector_by_constant(vars->shadow_ray, 0.001));
+
+    vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
     vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
+    
     vars->incident_v = make_vector(viewpoint, intersection->point);
     normalize(&vars->incident_v);
 }
@@ -130,15 +137,18 @@ int lighting(t_minirt *minirt)
             if (minirt->intersection[y][x])
             {
                 init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
-                // if (is_in_shadow(minirt, &light_inputs))
-                //     light_inputs.reflectivity = minirt->scene->a.ratio;
-                // else
-                // {
+                if (is_in_shadow(minirt, &light_inputs)) {
+                    light_inputs.reflectivity = minirt->scene->a.ratio;
+                    // minirt->pixels[y][x] = set_colour(0, 0, 0, 255);
+                }
+                else
+                {
                     reflected_vector(&light_inputs);
                     specular_light(&light_inputs, minirt->scene->l.brightness);
                     light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
-                // }
-                minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
+                    minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
+                    // draw_line(minirt, minirt->intersection[y][x]->point, minirt->scene->l.lightpoint, set_colour(255, 255, 255, 255));
+                }
             }
         }
     }
