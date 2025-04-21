@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/18 12:51:02 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/21 10:36:22 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int create_scene(t_minirt *minirt, char *rt_file)
 	if (!parsed_file)
 		return (ERROR);
 	minirt->scene = fill_scene(parsed_file, size);
-	free_arr(parsed_file);
+	// free_arr(parsed_file); // causes seg fault
 	if (!minirt->scene)
 		return (ERROR);
 	minirt->scene->viewport_distance = 1.0;

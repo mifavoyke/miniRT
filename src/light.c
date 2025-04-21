@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 19:43:37 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/21 12:52:50 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,93 +110,6 @@ t_colour apply_light(t_colour original, t_colour light, float reflectivity)
     return (final_color);
 }
 
-int compare_distance(t_minirt *minirt, t_coord incident_vector, float current_dist)
-{
-    int y;
-    int x;
-    //t_coord vector_to_light;
-    (void)incident_vector;
-
-    y = -1;
-    while (++y < minirt->img_height)
-    {
-        x = -1;
-        while (++x < minirt->img_width)
-        {
-            if (minirt->intersection[y][x])
-            {
-                if (minirt->intersection[y][x]->dist_to_light < current_dist)
-                {
-                    // printf("dist_to_light: %f current_d: %f\n", minirt->intersection[y][x]->dist_to_light, current_dist);
-                    // todo: vector_to_light = make_vector(minirt->intersection[y][x]->point, minirt->scene->l.lightpoint);
-                    //     normalize(&vector_to_light);
-                    //     if (are_collinear(vector_to_light, incident_vector))
-                    //     {
-                    //         printf("yes\n");
-                            return (1);
-                    //     }
-                    // }
-                }
-            }
-        }
-    }
-    return (0);
-}
-
-bool is_there_intersection(t_scene *scene, t_coord ray)
-{
-	t_sphere *temp_sp; // maybe create a void * list of objects - spheres,planes, cylinders
-	t_plane *temp_pl;
-	t_cylinder *temp_cy;
-    t_inter *new_node;
-    
-	temp_sp = scene->sp;
-	temp_cy = scene->cy;
-	temp_pl = scene->pl;
-	while (temp_sp)
-	{
-		new_node = find_sphere_intersections(ray, scene->c, temp_sp, scene->l.lightpoint);
-		if (new_node)
-        {
-            free(new_node);
-			return true;
-        }
-		temp_sp = temp_sp->next;
-	}
-	while (temp_cy)
-	{
-		new_node = find_cylinder_intersections(ray, scene->c, temp_cy, scene->l.lightpoint);
-		if (new_node)
-        {
-            free(new_node);
-			return true;
-        }
-		temp_cy = temp_cy->next;
-	}
-	while (temp_pl)
-	{
-		new_node = find_plane_intersections(ray, scene->c, temp_pl, scene->l.lightpoint);
-		if (new_node)
-        {
-            free(new_node);
-			return true;
-        }
-		temp_pl = temp_pl->next;
-	}
-	return (false);
-}
-
-int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs)
-{
-    float d;
-
-    d = get_dot_product(light_inputs->actual_v_to_l, light_inputs->actual_v_to_l);
-    if (compare_distance(minirt, light_inputs->incident_l, d))
-        return (1);
-    else
-        return (0);
-}
-
 // 1 Calculate normal, incident vectors a) from the lightpoint to the intersection point; b) from viewpoint (camera) to the intersection point
 // 2 Calculate reflected vector
 // 3 Calculate the specular light with a Phong model
@@ -216,7 +129,6 @@ int lighting(t_minirt *minirt)
         {
             if (minirt->intersection[y][x])
             {
-                // printf("distance %f\n", minirt->intersection[y][x]->dist_to_light);
                 init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
                 // if (is_in_shadow(minirt, &light_inputs))
                 //     light_inputs.reflectivity = minirt->scene->a.ratio;

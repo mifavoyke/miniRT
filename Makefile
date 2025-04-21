@@ -23,6 +23,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/light.c \
 		$(SRC_DIR)/allocate.c \
 		$(SRC_DIR)/free.c \
+		$(SRC_DIR)/shadow.c \
 		$(SRC_DIR)/utils/minirt_utils.c \
 		$(SRC_DIR)/utils/ft_atof.c \
 		$(SRC_DIR)/utils/list_utils.c \

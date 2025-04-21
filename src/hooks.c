@@ -3,39 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 17:07:53 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/21 12:40:54 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#define ANGLE_RADIAN 0.2
+#define ZOOM 0.5
+#define TRANSLATION 5
 
-void move(t_minirt *minirt, char *msg, float *coord, int arithmetic)
+// Euclidean space vs Cartesian
+
+void move(t_minirt *minirt, float *coord, float translation)
 {
-    printf("point before:   ");
-    print_coord(minirt->scene->c.point);
-    if (arithmetic == 0)
-        *coord -= TRANSLATION;
-    if (arithmetic == 1)
-        *coord += TRANSLATION;
-    printf("%s:         ", msg);
+    *coord += translation;
     print_coord(minirt->scene->c.point);
     generate_image(minirt);
 }
 
-void redirect(t_minirt *minirt, char *msg, float *coord, int arithmetic)
+// Rotates up and down. Rotation matrix:
+// Rx = | 1    0        0     |
+//      | 0  cos(a)  -sin(a)  |
+//      | 0  sin(a)   cos(a)  |
+void rotate_x(t_minirt *minirt, t_coord *original_vector, double angle)
 {
-    printf("vector before:  ");
-    print_coord(minirt->scene->c.vector);
-    if (arithmetic == 0)
-        *coord -= ROTATION;
-    if (arithmetic == 1)
-        *coord += ROTATION;
-    normalize(&minirt->scene->c.vector);
-    printf("%s:         ", msg);
-    print_coord(minirt->scene->c.vector);
+    t_coord new_vector;
+
+    new_vector.x = original_vector->x;
+    new_vector.y = cos(angle) * original_vector->y - sin(angle) * original_vector->z;
+    new_vector.z = sin(angle) * original_vector->y + cos(angle) * original_vector->z;
+    normalize(&new_vector);
+    print_coord(new_vector);
+    *original_vector = new_vector;
+    generate_image(minirt);
+}
+
+// Rotates in spiral - yaw. Rotation matrix:
+// Ry = | cos(a)   0   sin(a) |
+//      |   0      1     0    |
+//      | -sin(a)  0   cos(a) |
+void rotate_y(t_minirt *minirt, t_coord *original_vector, double angle)
+{
+    t_coord new_vector;
+
+    new_vector.x = cos(angle) * original_vector->x + sin(angle) * original_vector->z;
+    new_vector.y = original_vector->y;
+    new_vector.z = -sin(angle) * original_vector->x + cos(angle) * original_vector->z;
+    normalize(&new_vector);
+    print_coord(new_vector);
+    *original_vector = new_vector;
+    generate_image(minirt);
+}
+
+// Rotates left and right. Rotation matrix:
+// Rz = | cos(a)  -sin(a)  0 |
+//      | sin(a)   cos(a)  0 |
+//      |   0        0     1 |
+void rotate_z(t_minirt *minirt, t_coord *original_vector, double angle)
+{
+    t_coord new_vector;
+
+    new_vector.x = cos(angle) * original_vector->x - sin(angle) * original_vector->y;
+    new_vector.y = sin(angle) * original_vector->x + cos(angle) * original_vector->y;
+    new_vector.z = original_vector->z;
+    normalize(&new_vector);
+    print_coord(new_vector);
+    *original_vector = new_vector;
     generate_image(minirt);
 }
 
@@ -50,29 +86,37 @@ void ft_hook(void *param)
         mlx_close_window(minirt->mlx);
     // changes position of the camera
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_D))
-        move(minirt, "+x", &minirt->scene->c.point.x, 1);
+        move(minirt, &minirt->scene->c.point.x, TRANSLATION);
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_A))
-        move(minirt, "-x", &minirt->scene->c.point.x, 0);
-    if (mlx_is_key_down(minirt->mlx, MLX_KEY_M))
-        move(minirt, "+y", &minirt->scene->c.point.y, 1);
-    if (mlx_is_key_down(minirt->mlx, MLX_KEY_N))
-        move(minirt, "-y", &minirt->scene->c.point.y, 0);
+        move(minirt, &minirt->scene->c.point.x, -TRANSLATION);
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_W))
-        move(minirt, "+z", &minirt->scene->c.point.z, 1);
+        move(minirt, &minirt->scene->c.point.z, TRANSLATION);
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_S))
-        move(minirt, "-z", &minirt->scene->c.point.z, 0);
+        move(minirt, &minirt->scene->c.point.z, -TRANSLATION);
     // DIRECTIONAL VECTOR
-    if (mlx_is_key_down(minirt->mlx, MLX_KEY_RIGHT))
-        redirect(minirt, "+x", &minirt->scene->c.vector.x, 1);
-    if (mlx_is_key_down(minirt->mlx, MLX_KEY_LEFT))
-        redirect(minirt, "-x", &minirt->scene->c.vector.x, 0);
-    if (mlx_is_key_down(minirt->mlx, MLX_KEY_K))
-        redirect(minirt, "+y", &minirt->scene->c.vector.y, 1); // i dont understand what it changes but somehow it does
-    if (mlx_is_key_down(minirt->mlx, MLX_KEY_J))
-        redirect(minirt, "-y", &minirt->scene->c.vector.y, 0);
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_UP))
-        redirect(minirt, "+z", &minirt->scene->c.vector.z, 1);
+        rotate_x(minirt, &minirt->scene->c.vector, ANGLE_RADIAN);
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_DOWN))
-        redirect(minirt, "-z", &minirt->scene->c.vector.z, 0);
+        rotate_x(minirt, &minirt->scene->c.vector, -ANGLE_RADIAN);
+    if (mlx_is_key_down(minirt->mlx, MLX_KEY_K))
+        rotate_y(minirt, &minirt->scene->c.vector, ANGLE_RADIAN);
+    if (mlx_is_key_down(minirt->mlx, MLX_KEY_J))
+        rotate_y(minirt, &minirt->scene->c.vector, -ANGLE_RADIAN);
+    if (mlx_is_key_down(minirt->mlx, MLX_KEY_LEFT))
+        rotate_z(minirt, &minirt->scene->c.vector, ANGLE_RADIAN);
+    if (mlx_is_key_down(minirt->mlx, MLX_KEY_RIGHT))
+        rotate_z(minirt, &minirt->scene->c.vector, -ANGLE_RADIAN);
     // moving objs
+}
+
+void scroll_zoom(double xdelta, double ydelta, void *param)
+{
+    t_minirt *minirt;
+    (void)xdelta; // what is it for?
+
+    minirt = (t_minirt *)param;
+    if (ydelta > 0)
+        move(minirt, &minirt->scene->c.point.y, ZOOM);
+    else if (ydelta < 0)
+        move(minirt, &minirt->scene->c.point.y, -ZOOM);
 }

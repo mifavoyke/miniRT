@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 21:22:45 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/21 11:03:53 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int32_t main(int argc, char *argv[])
 	generate_image(&minirt);
 
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
+	mlx_scroll_hook(minirt.mlx, &scroll_zoom, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 
 	free_inter(minirt.intersection, minirt.img_height, minirt.img_width);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/17 21:19:29 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/21 12:51:52 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@
 #define MATTE 4
 #define PLASTIC 30
 #define GLASS 100
-#define TRANSLATION 10
-#define ROTATION 0.2
 #define EPSILON 1e-6
 
 /* ------------------------ DATA STRUCTURES --------------------------- */
@@ -176,6 +174,8 @@ typedef struct s_minirt
 /* ------------------------------- FUNCTIONS ------------------------------ */
 // LIGHT
 int lighting(t_minirt *minirt);
+bool is_there_intersection(t_scene *scene, t_coord ray);
+int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs);
 
 // PIXELS
 void init_pixels(t_minirt *minirt);
@@ -217,6 +217,7 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy, 
 
 // HOOKS
 void ft_hook(void *param);
+void scroll_zoom(double xdelta, double ydelta, void *param);
 void generate_image(t_minirt *minirt);
 
 // PARSING
