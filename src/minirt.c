@@ -14,8 +14,10 @@
 
 int minirt_init(t_minirt *minirt)
 {
-	minirt->img_width = 1920;
-	minirt->img_height = 1080;
+	// minirt->img_width = 1920;
+	// minirt->img_height = 1080;
+	minirt->img_width = WIDTH;
+	minirt->img_height = HEIGHT;
 	// mlx_set_setting(MLX_MAXIMIZED, true);
 	minirt->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
 	if (!minirt->mlx)
@@ -30,14 +32,14 @@ int minirt_init(t_minirt *minirt)
 	return (0);
 }
 
-void generate_image(t_minirt *minirt) // should we do it void or consider some failure cases?
+void generate_image(t_minirt *minirt)
 {
 	if (minirt->intersection)
 		free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
 	init_pixels(minirt);
 	shoot_rays(minirt, minirt->scene);
-    // draw_shadow_rays(minirt);
 	lighting(minirt);
+    // draw_shadow_rays(minirt);
 	render_pixels(minirt);
 }
 
@@ -53,7 +55,7 @@ int32_t main(int argc, char *argv[])
 		return (ERROR);
 	if (minirt_init(&minirt))
 	{
-		// TODO: free the scene
+		free_scene(minirt.scene);
 		return (ft_error(mlx_strerror(mlx_errno)));
 	}
 	generate_image(&minirt);

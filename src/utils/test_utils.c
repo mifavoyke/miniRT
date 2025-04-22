@@ -174,11 +174,11 @@ void draw_line(t_minirt *minirt, t_coord start, t_coord end, t_colour color)
 	float steps = fmax(fmax(fabs(dx), fabs(dy)), fabs(dz));
 	float x_inc = dx / steps;
 	float y_inc = dy / steps;
-	float z_inc = dz / steps;
+	// float z_inc = dz / steps;
 
 	float x = start.x;
 	float y = start.y;
-	float z = start.z;
+	// float z = start.z;
 	int i = 0;
 	while (i++ < steps)
 	{
@@ -188,6 +188,6 @@ void draw_line(t_minirt *minirt, t_coord start, t_coord end, t_colour color)
 			minirt->pixels[py][px] = color;
 		x += x_inc;
 		y += y_inc;
-		z += z_inc;
+		// z += z_inc;
 	}
 }

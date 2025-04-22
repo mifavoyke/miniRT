@@ -24,8 +24,8 @@
 #include "../lib/MLX42/include/MLX42/MLX42.h"
 
 /* ------------------------------ MACROS ----------------------------- */
-#define WIDTH 600
-#define HEIGHT 800
+#define WIDTH 800
+#define HEIGHT 600
 #define INT_ERROR INT_MIN
 #define ERROR 1
 #define SUCCESS 0
@@ -97,6 +97,7 @@ typedef struct s_light_math
 /* ----------------------------- OBJECTS ------------------------------- */
 typedef struct s_sphere
 {
+	int id;
 	t_coord			centre;
 	float			diameter;
 	t_colour		colour;
@@ -105,6 +106,7 @@ typedef struct s_sphere
 
 typedef struct s_plane
 {
+	int id;
 	t_coord			point;
 	t_coord			vector;
 	t_colour		colour;
@@ -113,6 +115,7 @@ typedef struct s_plane
 
 typedef struct s_cylinder
 {
+	int id;
 	t_coord				centre;
 	t_coord				vector;
 	float				diameter;
@@ -137,6 +140,7 @@ typedef struct s_inter
 	t_colour		colour;
 	void			*obj;
 	float			distance;
+	int id;
 	struct s_inter	*next;
 }					t_inter;
 
@@ -176,8 +180,7 @@ typedef struct s_minirt
 /* ------------------------------- FUNCTIONS ------------------------------ */
 // LIGHT
 int lighting(t_minirt *minirt);
-bool is_there_intersection(t_scene *scene, t_coord ray);
-int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs);
+int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs, int current_id);
 
 // PIXELS
 void init_pixels(t_minirt *minirt);
@@ -208,9 +211,9 @@ float get_discriminant(float a, float b, float c);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 float get_viewport_width(float angle_deg, float distance);
-t_coord get_viewport_ray(t_scene *scene, t_matrix m, int x, int y);
 int shoot_rays(t_minirt *minirt, t_scene *scene);
 bool is_there_intersection(t_scene *scene, t_coord ray);
+float get_plane_intersection_t(t_coord ray, t_coord cam_origin, t_plane *pl);
 
 // MATH - intersections.c
 t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
@@ -234,7 +237,7 @@ int valid_coord(t_coord *coord);
 int valid_colour(t_colour *clr);
 char **get_lines(char *arg, int size);
 int count_rows(char *arg);
-int fill_sphere(t_scene *scene, char **values);
+int fill_sphere(t_scene *scene, char **values, int i);
 
 // UTILS
 int ft_error(const char *msg);
@@ -261,5 +264,6 @@ void print_coord(t_coord coord);
 void print_camera(t_camera *c);
 void draw_shadow_rays(t_minirt *minirt);
 void draw_line(t_minirt *minirt, t_coord start, t_coord end, t_colour color);
+void print_light(t_light *l);
 
 #endif

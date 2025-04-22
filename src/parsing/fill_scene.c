@@ -73,7 +73,7 @@ int fill_light(t_scene *scene, char **values)
     return (0);
 }
 
-int fill_sphere(t_scene *scene, char **values)
+int fill_sphere(t_scene *scene, char **values, int i)
 {
     t_sphere *new_sphere;
     t_sphere *tmp;
@@ -92,6 +92,11 @@ int fill_sphere(t_scene *scene, char **values)
     new_sphere->colour = parse_colour(values[3]);
     if (valid_colour(&new_sphere->colour))
         return (1);
+    
+    new_sphere->id = i - 1;
+    printf("id: %d\n", new_sphere->id);
+
+    i++;
     new_sphere->next = NULL;
     if (!scene->sp)
         scene->sp = new_sphere;
@@ -106,7 +111,7 @@ int fill_sphere(t_scene *scene, char **values)
     return (0);
 }
 
-int fill_plane(t_scene *scene, char **values)
+int fill_plane(t_scene *scene, char **values, int i)
 {
     t_plane *new_plane;
     t_plane *tmp;
@@ -130,6 +135,9 @@ int fill_plane(t_scene *scene, char **values)
     new_plane->colour = parse_colour(values[3]);
     if (valid_colour(&new_plane->colour))
         return (1);
+    
+    new_plane->id = i - 1;
+    printf("id: %d\n", new_plane->id);
 
     new_plane->next = NULL;
     if (!scene->pl)
@@ -148,7 +156,7 @@ int fill_plane(t_scene *scene, char **values)
     return (0);
 }
 
-int fill_cylinder(t_scene *scene, char **values)
+int fill_cylinder(t_scene *scene, char **values, int i)
 {
     t_cylinder *new_cylinder;
     t_cylinder *tmp;
@@ -179,6 +187,9 @@ int fill_cylinder(t_scene *scene, char **values)
     if (valid_colour(&new_cylinder->colour))
         return (1);
 
+    new_cylinder->id = i - 1;
+    printf("id: %d\n", new_cylinder->id);
+
     new_cylinder->next = NULL;
     if (!scene->cy)
         scene->cy = new_cylinder;
@@ -198,6 +209,8 @@ int fill_cylinder(t_scene *scene, char **values)
 
 int identify_objects(t_scene *scene, char *first_letter, char **values)
 {
+    static int i = 1;
+
     if (!ft_strncmp(first_letter, "A", 1))
         return (fill_ambient(scene, values));
     else if (!ft_strncmp(first_letter, "C", 1))
@@ -205,10 +218,19 @@ int identify_objects(t_scene *scene, char *first_letter, char **values)
     else if (!ft_strncmp(first_letter, "L", 1))
         return (fill_light(scene, values));
     else if (!ft_strncmp(first_letter, "sp", 2))
-        return (fill_sphere(scene, values));
+    {
+        i++;
+        return (fill_sphere(scene, values, i));
+    }
     else if (!ft_strncmp(first_letter, "pl", 2))
-        return (fill_plane(scene, values));
+    {
+        i++;
+        return (fill_plane(scene, values, i));
+    }
     else if (!ft_strncmp(first_letter, "cy", 2))
-        return (fill_cylinder(scene, values));
+    {
+        i++;
+        return (fill_cylinder(scene, values, i));
+    }
     return (ft_error("Unknown object type."));
 }

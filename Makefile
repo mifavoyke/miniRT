@@ -1,5 +1,5 @@
 NAME := miniRT
-CFLAGS := -Wextra -Wall -Werror -Wunreachable-code -Ofast -g
+CFLAGS := -Wextra -Wall -Werror -Wunreachable-code -O3 -ffast-math -g
 CC := cc
 RM := rm -rf
 HEADERS = -I ./includes -I ./lib/MLX42/include/MLX42 -I ./lib/libft

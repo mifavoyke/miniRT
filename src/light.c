@@ -70,7 +70,7 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     vars->shadow_ray = make_vector(intersection->point, lightpoint);
     vars->max_length = get_dot_product(vars->shadow_ray, vars->shadow_ray);
     normalize(&vars->shadow_ray);
-    vars->shadow_origin = move_point_by_vector(intersection->point, multiply_vector_by_constant(vars->shadow_ray, 0.001));
+    vars->shadow_origin = move_point_by_vector(intersection->point, multiply_vector_by_constant(vars->shadow_ray, 1e-4));
 
     vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
@@ -78,6 +78,7 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     
     vars->incident_v = make_vector(viewpoint, intersection->point);
     normalize(&vars->incident_v);
+    vars->reflectivity = 0.0;
 }
 
 // bidirectional reflectance distribution function (BRDF)
@@ -127,6 +128,7 @@ int lighting(t_minirt *minirt)
     t_light_math light_inputs;
     int y;
     int x;
+    int id;
 
     y = -1;
     while (++y < minirt->img_height)
@@ -136,18 +138,24 @@ int lighting(t_minirt *minirt)
         {
             if (minirt->intersection[y][x])
             {
+                id = minirt->intersection[y][x]->id;
                 init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
-                if (is_in_shadow(minirt, &light_inputs)) {
+                if (is_in_shadow(minirt, &light_inputs, id)) {
                     light_inputs.reflectivity = minirt->scene->a.ratio;
-                    // minirt->pixels[y][x] = set_colour(0, 0, 0, 255);
+                    if (minirt->intersection[y][x]->type == PLANE)
+                        printf("Shadow hit the plane\n");
+                    // minirt->pixels[y][x] = set_colour(0, 10, 0, 255);
                 }
                 else
                 {
                     reflected_vector(&light_inputs);
                     specular_light(&light_inputs, minirt->scene->l.brightness);
                     light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
-                    minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
+                    if (light_inputs.reflectivity > 1.0)
+                        light_inputs.reflectivity = 1.0;
                     // draw_line(minirt, minirt->intersection[y][x]->point, minirt->scene->l.lightpoint, set_colour(255, 255, 255, 255));
+                    // minirt->pixels[y][x] = set_colour(255, 0, 0, 255);
+                    minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
                 }
             }
         }

@@ -76,6 +76,7 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	Pnew.y = Tm.R.y * Pv.x + Tm.F.y * Pv.y + Tm.U.y * Pv.z + Tm.Tr.y;
 	Pnew.z = Tm.R.z * Pv.x + Tm.F.z * Pv.y + Tm.U.z * Pv.z + Tm.Tr.z;
 	ray_vector = make_vector(scene->c.point, Pnew);
+	normalize(&ray_vector);
 	return (ray_vector);
 }
 

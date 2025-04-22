@@ -63,6 +63,7 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 		else
 			inter1->colour = set_colour(0,0,0,0);
 		inter1->point = set_coord(cam.point.x + t1 * ray.x, cam.point.y + t1 * ray.y, cam.point.z + t1 * ray.z);
+		inter1->id = sp->id;
 		inter1->next = NULL;
 	}
 
@@ -79,6 +80,7 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 			inter2->colour = set_colour(0,0,0,0);
 		inter2->distance = fabsf(t2);
 		inter2->point = set_coord(cam.point.x + t2 * ray.x, cam.point.y + t2 * ray.y, cam.point.z + t2 * ray.z);
+		inter2->id = sp->id;
 		inter2->next = NULL;
 	}
 
@@ -92,6 +94,26 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 	return (NULL);
 }
 
+// returns the scalar t at which the ray intersects the plane
+float get_plane_intersection_t(t_coord ray, t_coord cam_origin, t_plane *pl)
+{
+	t_coord to_plane;
+	float denom;
+	float t;
+
+	to_plane = make_vector(cam_origin, pl->point);
+	denom = get_dot_product(ray, pl->vector);
+	if (fabsf(denom) < 1e-6) // remove it ?
+	{
+		if (get_dot_product(to_plane, pl->vector) == 0.0)
+			t = 0.1;
+		else
+			t = -1;
+	}
+	t = get_dot_product(to_plane, pl->vector) / denom;
+	return (t);
+}
+
 // any point in plane: (P - Q ) * n = 0 --> Q = given point in plane, P = intersection point, n = surface normal
 // any point in ray: P = C + t * ray 
 // t = - ((Q - C) o n) / (ray o n)
@@ -100,18 +122,19 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 {
 	float t; // parameter applied to the ray = scalar that tells you how far to move along the direction vector (ray) starting from the camera
 	t_inter *inter;
-	t_coord temp_vector;
+	// t_coord temp_vector;
 
-	temp_vector = make_vector(pl->point, cam.point);
-	t = - get_dot_product(temp_vector, pl->vector) / get_dot_product(ray, pl->vector); // why is there a minus?
-	// edge cases
-	if (get_dot_product(ray, pl->vector) == 0.0)
-	{
-		if (get_dot_product(temp_vector, pl->vector) == 0.0) // ray is contained in the plane
-			t = 0.1; // TODO: may change this - this is handling edge case when the plane goes straight through ray - they are contained
-		else // ray and plane are parallel, never interect
-			t = -1;
-	}
+	// temp_vector = make_vector(cam.point, pl->point);
+	// t = get_dot_product(temp_vector, pl->vector) / get_dot_product(ray, pl->vector); // why is there a minus?
+	// // edge cases
+	// if (get_dot_product(ray, pl->vector) == 0.0)
+	// {
+	// 	if (get_dot_product(temp_vector, pl->vector) == 0.0) // ray is contained in the plane
+	// 		t = 0.1; // TODO: may change this - this is handling edge case when the plane goes straight through ray - they are contained
+	// 	else // ray and plane are parallel, never interect
+	// 		t = -1;
+	// }
+	t = get_plane_intersection_t(ray, cam.point, pl);
 	if (t <= 0)
 		inter = NULL;
 	else 
@@ -122,6 +145,7 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 		inter->colour = pl->colour;
 		inter->distance = fabsf(t);
 		inter->point = set_coord(cam.point.x + t * ray.x, cam.point.y + t * ray.y, cam.point.z + t * ray.z);
+		inter->id = pl->id;
 		inter->next = NULL;
 	}
 	return (inter);
