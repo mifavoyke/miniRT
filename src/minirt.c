@@ -59,7 +59,7 @@ int32_t main(int argc, char *argv[])
 		return (ft_error(mlx_strerror(mlx_errno)));
 	}
 	generate_image(&minirt);
-
+	print_controls();
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_scroll_hook(minirt.mlx, &scroll_zoom, (void *)&minirt);
 	mlx_loop(minirt.mlx);

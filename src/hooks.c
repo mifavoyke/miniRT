@@ -20,7 +20,7 @@
 void move(t_minirt *minirt, float *coord, float translation)
 {
     *coord += translation;
-    // print_coord(minirt->scene->c.point);
+    print_coord(minirt->scene->c.point);
     generate_image(minirt);
 }
 
@@ -119,4 +119,23 @@ void scroll_zoom(double xdelta, double ydelta, void *param)
         move(minirt, &minirt->scene->c.point.y, ZOOM);
     else if (ydelta < 0)
         move(minirt, &minirt->scene->c.point.y, -ZOOM);
+}
+
+void print_controls(void)
+{
+    printf("\n=== MINI-RT CONTROLS ===\n");
+    printf("Close Program:\n");
+    printf("  [ESC]               → Exit the program\n\n");
+    printf("Camera Position:\n");
+    printf("  [W] / [S]           → Move camera forward/backward (Z-axis)\n");
+    printf("  [A] / [D]           → Move camera left/right (X-axis)\n");
+    printf("  Scroll              → Zoom in/out (Y-axis up/down)\n\n");
+    printf("Camera Rotation:\n");
+    printf("  [UP] / [DOWN]       → Pitch camera up/down (rotate X-axis)\n");
+    printf("  [LEFT] / [RIGHT]    → Roll camera left/right (rotate Z-axis)\n");
+    printf("  [J] / [K]           → Yaw camera left/right (rotate Y-axis)\n\n");
+    printf("Additional:\n");
+    printf("  Mouse Scroll        → Zoom camera in/out\n");
+    printf("========================\n\n");
+    printf("  Future: Add object control and light control if needed\n");
 }

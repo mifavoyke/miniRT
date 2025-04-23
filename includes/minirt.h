@@ -212,7 +212,6 @@ t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 float get_viewport_width(float angle_deg, float distance);
 int shoot_rays(t_minirt *minirt, t_scene *scene);
-bool is_there_intersection(t_scene *scene, t_coord ray);
 float get_plane_intersection_t(t_coord ray, t_coord cam_origin, t_plane *pl);
 
 // MATH - intersections.c
@@ -222,6 +221,7 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 
 // HOOKS
 void ft_hook(void *param);
+void print_controls(void);
 void scroll_zoom(double xdelta, double ydelta, void *param);
 void generate_image(t_minirt *minirt);
 

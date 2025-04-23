@@ -1,5 +1,5 @@
-A   0.1							    204,0,204
-C   0,-10,0	    0,1,0	80
+A   0.4							    204,0,204
+C   0,0,0	    0,1,0	90
 L   30,0,20				0.6	        255,255,255
 
 # sphere first, cylinder behind it and plane cutting through the middle perpendicular to x axis
@@ -15,8 +15,8 @@ L   30,0,20				0.6	        255,255,255
 
 # sphere in a box
 sp  0,10,0				10	 	    255,0,255 
-pl	-100,0,0	    1,0,0		        20,100,20 
-pl	100,0,0	    1,0,0		        100,20,0 
-pl	0,0,-100	    0,0,1		        20,20,100 
-pl	0,0,100	    0,0,1		        200,0,20 
+# pl	-100,0,0	    1,0,0		        20,100,20 # green left wall
+# pl	100,0,0	    1,0,0		        100,20,0 # maroon right wall
+pl	0,0,-100	    0,0,1		        20,20,100 # purple floor
+# pl	0,0,100	    0,0,1		        200,0,20 # the red one - ceiling 
 # some shit happens when we put 180 degrees view

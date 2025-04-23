@@ -71,7 +71,7 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     vars->shadow_ray = make_vector(intersection->point, lightpoint);
     vars->max_length = sqrtf(get_dot_product(vars->shadow_ray, vars->shadow_ray));
     normalize(&vars->shadow_ray);
-    offset = multiply_vector_by_constant(vars->shadow_ray, 1);
+    offset = multiply_vector_by_constant(vars->shadow_ray, 1e-4f);
     // printf("shadow ray:\n");
     // print_coord(vars->shadow_ray);
     vars->shadow_origin = move_point_by_vector(intersection->point, offset);
@@ -155,8 +155,8 @@ int lighting(t_minirt *minirt)
                 }
                 else
                 {
-                    reflected_vector(&light_inputs);
-                    specular_light(&light_inputs, minirt->scene->l.brightness);
+                    // reflected_vector(&light_inputs);
+                    // specular_light(&light_inputs, minirt->scene->l.brightness); // temprorarily removed the specular light
                     light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
                     if (light_inputs.reflectivity > 1.0)
                         light_inputs.reflectivity = 1.0;
