@@ -36,7 +36,7 @@ void rotate_x(t_minirt *minirt, t_coord *original_vector, double angle)
     new_vector.y = cos(angle) * original_vector->y - sin(angle) * original_vector->z;
     new_vector.z = sin(angle) * original_vector->y + cos(angle) * original_vector->z;
     normalize(&new_vector);
-    // print_coord(new_vector);
+    print_coord(new_vector);
     *original_vector = new_vector;
     generate_image(minirt);
 }

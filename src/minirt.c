@@ -39,7 +39,6 @@ void generate_image(t_minirt *minirt)
 	init_pixels(minirt);
 	shoot_rays(minirt, minirt->scene);
 	lighting(minirt);
-    // draw_shadow_rays(minirt);
 	render_pixels(minirt);
 }
 

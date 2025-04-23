@@ -73,7 +73,7 @@ void split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 
 // recursively merges the separated parts of the list into a single sorted list
 // the result is accumulated 
-t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half, char *criteria)
+t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half)
 {
 	t_inter *result;
 	float first_half_criteria;
@@ -85,11 +85,12 @@ t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half, char *crit
 	// 	first_half_criteria = first_half->dist_to_light;
 	// 	second_half_criteria = second_half->dist_to_light;
 	// }
-	if (!ft_strncmp("distance", criteria, ft_strlen(criteria)))
-	{
-		first_half_criteria = first_half->distance;
-		second_half_criteria = second_half->distance;
-	}
+	if (!first_half)
+		return (second_half);
+	if (!second_half)
+		return (first_half);
+	first_half_criteria = first_half->distance;
+	second_half_criteria = second_half->distance;
 	if (!first_half)
 		return (second_half);
 	if (!second_half)
@@ -97,19 +98,19 @@ t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half, char *crit
 	if (first_half_criteria <= second_half_criteria)
 	{
 		result = first_half;
-		result->next = compare_and_merge(first_half->next, second_half, criteria);
+		result->next = compare_and_merge(first_half->next, second_half);
 	}
 	else
 	{
 		result = second_half;
-		result->next = compare_and_merge(first_half, second_half->next, criteria);
+		result->next = compare_and_merge(first_half, second_half->next);
 	}
 	return (result);
 }
 
 // merge sort - recursively split the list and then recursively merges it from teh smallest parts
 // sorts based on distance or distance to the light - can add more later
-void merge_sort(t_inter **list_head, char *criteria)
+void merge_sort(t_inter **list_head)
 {
 	t_inter *head;
 	t_inter *first_half;
@@ -119,10 +120,10 @@ void merge_sort(t_inter **list_head, char *criteria)
 	if (!head || !head->next)
 		return;
 	split_list(head, &first_half, &second_half);
-	merge_sort(&first_half, criteria);
-	merge_sort(&second_half, criteria);
+	merge_sort(&first_half);
+	merge_sort(&second_half);
 
-	*list_head = compare_and_merge(first_half, second_half, criteria);
+	*list_head = compare_and_merge(first_half, second_half);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------

@@ -83,7 +83,7 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
     vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
-    
+
     vars->incident_v = make_vector(viewpoint, intersection->point);
     normalize(&vars->incident_v);
     vars->reflectivity = 0.0;
@@ -148,15 +148,19 @@ int lighting(t_minirt *minirt)
             {
                 id = minirt->intersection[y][x]->id;
                 init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
-                if (is_in_shadow(minirt, &light_inputs, id)) {
+                if (is_in_shadow(minirt, &light_inputs, id))
+                {
                     light_inputs.reflectivity = minirt->scene->a.ratio;
                     // printf("Shadow hit the plane\n");
                     // minirt->pixels[y][x] = set_colour(0, 10, 0, 255);
                 }
                 else
                 {
-                    // reflected_vector(&light_inputs);
-                    // specular_light(&light_inputs, minirt->scene->l.brightness); // temprorarily removed the specular light
+                    if (minirt->intersection[y][x]->type != PLANE)
+                    {
+                        reflected_vector(&light_inputs);
+                        specular_light(&light_inputs, minirt->scene->l.brightness); // temprorarily removed the specular light
+                    }
                     light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
                     if (light_inputs.reflectivity > 1.0)
                         light_inputs.reflectivity = 1.0;

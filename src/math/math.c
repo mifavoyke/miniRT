@@ -153,7 +153,7 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 		{
 			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			intersection_list = create_intersection_list(scene, ray);
-			// merge_sort(&intersection_list, "distance"); // order intersection list
+			merge_sort(&intersection_list); // order intersection list
 			// print_list(intersection_list, x, y);
 			minirt->intersection[y][x] = intersection_list; // populate the intersection list
 			/*###### following if-else is temporary ###########################*/

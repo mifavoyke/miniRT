@@ -128,3 +128,13 @@ t_coord move_point_by_vector(t_coord point, t_coord vector)
     moved_point.z = point.z + vector.z;
     return (moved_point);  
 }
+
+t_coord add_vectors(t_coord v1, t_coord v2)
+{
+	t_coord new_v;
+
+	new_v.x = v1.x + v2.x;
+	new_v.y = v1.y + v2.y;
+	new_v.z = v1.z + v2.z;
+	return (new_v);
+}

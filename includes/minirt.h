@@ -197,6 +197,7 @@ void normalize(t_coord *N);
 t_coord multiply_vector_by_constant(t_coord v, float n);
 t_coord subtract_vectors(t_coord from, t_coord to);
 t_coord move_point_by_vector(t_coord point, t_coord vector);
+t_coord add_vectors(t_coord v1, t_coord v2);
 
 // MATH - basic.c
 int equals(float a, float b, float deviation);
@@ -244,7 +245,7 @@ int ft_error(const char *msg);
 double ft_atof(char *str);
 int check_file_format(char *filename);
 void append_node(t_inter *new_node, t_inter **head);
-void merge_sort(t_inter **list_head, char *criteria);
+void merge_sort(t_inter **list_head);
 void print_list(t_inter *head, int x, int y);
 
 // ALLOCATE
