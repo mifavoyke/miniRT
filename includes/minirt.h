@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/21 16:48:28 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:35:46 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@
 #define MATTE 4
 #define PLASTIC 30
 #define GLASS 100
-#define EPSILON 1e-6
+#define ANGLE_RADIAN 0.2
+#define ZOOM 0.5
+#define TRANSLATION 5
 
 /* ------------------------ DATA STRUCTURES --------------------------- */
 typedef struct s_colour
@@ -183,7 +185,7 @@ int lighting(t_minirt *minirt);
 int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs, int current_id);
 
 // PIXELS
-void init_pixels(t_minirt *minirt);
+int init_pixels(t_minirt *minirt);
 void render_pixels(t_minirt *minirt);
 
 // MATH - vector.c
@@ -221,10 +223,11 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
 t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 
 // HOOKS
+void resize_hook(int width, int height, void* param);
 void ft_hook(void *param);
 void print_controls(void);
 void scroll_zoom(double xdelta, double ydelta, void *param);
-void generate_image(t_minirt *minirt);
+int generate_image(t_minirt *minirt);
 
 // PARSING
 int create_scene(t_minirt *minirt, char *rt_file);

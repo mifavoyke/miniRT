@@ -6,22 +6,19 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 12:40:54 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:41:30 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#define ANGLE_RADIAN 0.2
-#define ZOOM 0.5
-#define TRANSLATION 5
-
-// Euclidean space vs Cartesian
 
 void move(t_minirt *minirt, float *coord, float translation)
 {
     *coord += translation;
     print_coord(minirt->scene->c.point);
-    generate_image(minirt);
+    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
+    if (generate_image(minirt))
+        exit(1);
 }
 
 // Rotates up and down. Rotation matrix:
@@ -38,7 +35,9 @@ void rotate_x(t_minirt *minirt, t_coord *original_vector, double angle)
     normalize(&new_vector);
     print_coord(new_vector);
     *original_vector = new_vector;
-    generate_image(minirt);
+    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
+    if (generate_image(minirt))
+        exit(1);
 }
 
 // Rotates in spiral - yaw. Rotation matrix:
@@ -55,7 +54,9 @@ void rotate_y(t_minirt *minirt, t_coord *original_vector, double angle)
     normalize(&new_vector);
     print_coord(new_vector);
     *original_vector = new_vector;
-    generate_image(minirt);
+    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
+    if (generate_image(minirt))
+        exit(1);
 }
 
 // Rotates left and right. Rotation matrix:
@@ -72,10 +73,10 @@ void rotate_z(t_minirt *minirt, t_coord *original_vector, double angle)
     normalize(&new_vector);
     print_coord(new_vector);
     *original_vector = new_vector;
-    generate_image(minirt);
+    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
+    if (generate_image(minirt))
+        exit(1);
 }
-
-// bool mlx_is_mouse_down(mlx_t* mlx, mouse_key_t key);
 
 void ft_hook(void *param)
 {
@@ -138,4 +139,19 @@ void print_controls(void)
     printf("  Mouse Scroll        → Zoom camera in/out\n");
     printf("========================\n\n");
     printf("  Future: Add object control and light control if needed\n");
+}
+
+void resize_hook(int width, int height, void *param)
+{
+    t_minirt *minirt;
+
+    minirt = (t_minirt *)param;
+    mlx_resize_image(minirt->img, width, height);
+    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
+    free_pixels(minirt->pixels, minirt->img_height);
+    minirt->img_width = width;
+    minirt->img_height = height;
+    if (generate_image(minirt))
+        exit(1);
+    // mlx_image_to_window(minirt->mlx, minirt->img, 0, 0);
 }

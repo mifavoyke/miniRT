@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 17:15:47 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:58:25 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,12 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     vars->shadow_ray = make_vector(intersection->point, lightpoint);
     vars->max_length = sqrtf(get_dot_product(vars->shadow_ray, vars->shadow_ray));
     normalize(&vars->shadow_ray);
-    offset = multiply_vector_by_constant(vars->shadow_ray, 1e-4f);
-    // printf("shadow ray:\n");
-    // print_coord(vars->shadow_ray);
+    offset = multiply_vector_by_constant(vars->shadow_ray, 1e-6);
     vars->shadow_origin = move_point_by_vector(intersection->point, offset);
-    // printf("coord of the intersection point, offset and the final shadow origin: \n");
-    // print_coord(intersection->point);
-    // print_coord(offset);
-    // print_coord(vars->shadow_origin);
-
+    
     vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
     vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
-
     vars->incident_v = make_vector(viewpoint, intersection->point);
     normalize(&vars->incident_v);
     vars->reflectivity = 0.0;
@@ -103,6 +96,8 @@ t_coord reflected_vector(t_light_math *inputs)
 // Phong reflection model for specular light: Is = max{0, k * (R*V)^n}
 float specular_light(t_light_math *inputs, float light_brightness) // Phong reflection model
 {
+    if (inputs->scalar_nl < 0)
+        return (0.0);
     inputs->scalar_vr = get_dot_product(inputs->reflected_vector, inputs->incident_v);
     inputs->reflectivity = fmax(0, (light_brightness * pow(inputs->scalar_vr, PLASTIC)));
     return (inputs->reflectivity);

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 15:19:15 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:45:22 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 // finds ray from camera through each pixel center
 // for each ray, creates list of intersections with all objects and sorts them so the closest intersection is head of the list
 // result is the populated minirt->intersections 2d array of linked lists
-int shoot_rays(t_minirt *minirt, t_scene *scene)
+int shoot_rays(t_minirt *minirt, t_scene *scene) // i moved the allocate intersection function one level up to the generate_image(), seemed more logical
 {
 	int x;
 	int y;
@@ -141,9 +141,6 @@ int shoot_rays(t_minirt *minirt, t_scene *scene)
 	t_coord ray;
 	t_inter *intersection_list;
 
-	minirt->intersection = allocate_inter(minirt->img_width, minirt->img_height);
-	if (!minirt->intersection)
-		return (ERROR);
 	Tm = find_transformation_matrix(scene->c);
 	y = -1;
 	while (++y < minirt->img_height)

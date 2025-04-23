@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 17:15:03 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:57:19 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ void print_light_math_inputs(t_light_math *inputs)
 	printf("Scalar VR: %f\n", inputs->scalar_vr);
 	printf("Reflectivity: %f\n", inputs->reflectivity);
 }
+
+// Euclidean space vs Cartesian
 
 void draw_shadow_rays(t_minirt *minirt)
 {

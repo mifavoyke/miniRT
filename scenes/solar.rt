@@ -1,0 +1,27 @@
+# 🌌 Ambient light
+A 0.1               255,255,255       # Dim white ambient light like space
+
+# 🚀 Camera (distant and elevated)
+C 0,50,150          0,-0.3,-1         30            # Camera tilted slightly downward
+
+# ✨ Light source (like the sun's light)
+L 0,100,100         0.9               255,255,200     # Warm, bright light from above
+
+# ☀️ Sun
+sp 0,0,0            10                255,200,0       # Yellow-orange sun
+
+# 🌍 Planets along the X-axis (not to scale, but spaced)
+sp 15,0,0           0.5               150,150,150     # Mercury (gray)
+sp 20,0,0           1.0               200,120,80      # Venus (orange)
+sp 25,0,0           1.0               80,100,255      # Earth (blue)
+sp 30,0,0           0.8               200,80,80       # Mars (red)
+sp 38,0,0           2.5               180,130,90      # Jupiter (brown)
+sp 46,0,0           2.0               220,220,150     # Saturn (light yellow)
+sp 53,0,0           1.6               100,200,220     # Uranus (light blue)
+sp 60,0,0           1.5               80,120,255      # Neptune (deep blue)
+
+# 🪐 Saturn ring (optional, simple flat cylinder for a ring look)
+cy 46,0,0           0,1,0             3.0 0.1         180,180,150   # Saturn's ring
+
+# 🌫️ Space floor for reference (or starry background if supported)
+pl 0,-10,0          0,1,0             10,10,20        # Very dark floor, not visible in space

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 14:58:54 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:57:51 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ bool are_collinear(t_coord A, t_coord B)
     t_coord cross_product;
     
     cross_product = get_cross_product(A, B);
-    return (fabs(cross_product.x) < EPSILON && fabs(cross_product.y) < EPSILON && fabs(cross_product.z) < EPSILON);
+    return (fabs(cross_product.x) < 1e-6 && fabs(cross_product.y) < 1e-6 && fabs(cross_product.z) < 1e-6);
 }
 
 // gets the difference between vectors

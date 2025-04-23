@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:38:51 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/15 11:39:37 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:43:13 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_colour **allocate_pixels(int width, int height)
 	return (pixels);
 }
 
-// WE DO NOT NEED THIS IF WE CHECK FOR LIGHT IN THE SHOOT_RAY FUNCTION - OR ? -Z.
+// WE DO NOT NEED THIS IF WE CHECK FOR LIGHT IN THE SHOOT_RAY FUNCTION - OR ? -Z. |||| what? - Yeva
 t_inter ***allocate_inter(int width, int height)
 {
 	t_inter ***section;
