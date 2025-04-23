@@ -46,6 +46,7 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     t_sphere *sp;
     t_plane *pl;
     t_cylinder *cy;
+    t_coord offset;
 
     if (intersection->type == SPHERE)
     {
@@ -68,9 +69,16 @@ void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, 
     normalize(&vars->normal);
 
     vars->shadow_ray = make_vector(intersection->point, lightpoint);
-    vars->max_length = get_dot_product(vars->shadow_ray, vars->shadow_ray);
+    vars->max_length = sqrtf(get_dot_product(vars->shadow_ray, vars->shadow_ray));
     normalize(&vars->shadow_ray);
-    vars->shadow_origin = move_point_by_vector(intersection->point, multiply_vector_by_constant(vars->shadow_ray, 1e-4));
+    offset = multiply_vector_by_constant(vars->shadow_ray, 1);
+    // printf("shadow ray:\n");
+    // print_coord(vars->shadow_ray);
+    vars->shadow_origin = move_point_by_vector(intersection->point, offset);
+    // printf("coord of the intersection point, offset and the final shadow origin: \n");
+    // print_coord(intersection->point);
+    // print_coord(offset);
+    // print_coord(vars->shadow_origin);
 
     vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
@@ -142,8 +150,7 @@ int lighting(t_minirt *minirt)
                 init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
                 if (is_in_shadow(minirt, &light_inputs, id)) {
                     light_inputs.reflectivity = minirt->scene->a.ratio;
-                    if (minirt->intersection[y][x]->type == PLANE)
-                        printf("Shadow hit the plane\n");
+                    // printf("Shadow hit the plane\n");
                     // minirt->pixels[y][x] = set_colour(0, 10, 0, 255);
                 }
                 else
@@ -155,8 +162,8 @@ int lighting(t_minirt *minirt)
                         light_inputs.reflectivity = 1.0;
                     // draw_line(minirt, minirt->intersection[y][x]->point, minirt->scene->l.lightpoint, set_colour(255, 255, 255, 255));
                     // minirt->pixels[y][x] = set_colour(255, 0, 0, 255);
-                    minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
                 }
+                minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
             }
         }
     }
