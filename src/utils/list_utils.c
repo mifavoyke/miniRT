@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 11:10:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 15:16:14 by yhusieva         ###   ########.fr       */
+/*   Created: 2025/04/26 17:14:57 by zuzanapiaro       #+#    #+#             */
+/*   Updated: 2025/04/26 19:53:35 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,17 @@ void split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half)
 {
 	t_inter *result;
-	float first_half_criteria;
-	float second_half_criteria;
 	
 	result = NULL;
-	// if (!ft_strncmp("dist_to_light\0", criteria, ft_strlen(criteria)))
-	// {
-	// 	first_half_criteria = first_half->dist_to_light;
-	// 	second_half_criteria = second_half->dist_to_light;
-	// }
 	if (!first_half)
 		return (second_half);
 	if (!second_half)
 		return (first_half);
-	first_half_criteria = first_half->distance;
-	second_half_criteria = second_half->distance;
 	if (!first_half)
 		return (second_half);
 	if (!second_half)
 		return (first_half);
-	if (first_half_criteria <= second_half_criteria)
+	if (first_half->distance <= second_half->distance)
 	{
 		result = first_half;
 		result->next = compare_and_merge(first_half->next, second_half);
@@ -125,5 +116,3 @@ void merge_sort(t_inter **list_head)
 
 	*list_head = compare_and_merge(first_half, second_half);
 }
-
-// ----------------------------------------------------------------------------------------------------------------------------

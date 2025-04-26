@@ -5,16 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 12:50:50 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/18 12:50:51 by zuzanapiaro      ###   ########.fr       */
+/*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
+/*   Updated: 2025/04/26 19:47:48 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "../../includes/minirt.h"
 
-void free_arr(char **arr)
+// frees the array
+void	free_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arr[i])
@@ -25,11 +26,12 @@ void free_arr(char **arr)
 	free(arr);
 }
 
-void free_scene(t_scene *scene)
+// free the allocated objects in the scene (pl, cy, sp), and the scene itself
+void	free_scene(t_scene *scene)
 {
-	t_sphere *sp_tmp;
-	t_plane *pl_tmp;
-	t_cylinder *cy_tmp;
+	t_sphere	*sp_tmp;
+	t_plane		*pl_tmp;
+	t_cylinder	*cy_tmp;
 
 	while (scene->sp)
 	{

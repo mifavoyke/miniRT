@@ -1,0 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   coord_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/26 17:34:24 by zuzanapiaro       #+#    #+#             */
+/*   Updated: 2025/04/26 18:05:58 by zuzanapiaro      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minirt.h"
+
+void	print_coord(t_coord coord)
+{
+	printf("(%.2f, %.2f, %.2f)\n", coord.x, coord.y, coord.z);
+}
+
+// sets coordinate/vector
+t_coord	set_coord(float x, float y, float z)
+{
+	t_coord	coord;
+
+	coord.x = x;
+	coord.y = y;
+	coord.z = z;
+	return (coord);
+}
+
+t_coord	parse_coord(char *coord)
+{
+	t_coord	parsed;
+	char	**values;
+
+	values = ft_split(coord, ',');
+	if (!values || !values[0] || !values[1] || !values[2])
+	{
+		free_arr(values);
+		printf("Error: Invalid coordinate format.\n");
+		return (set_coord(INT_ERROR, INT_ERROR, INT_ERROR));
+	}
+	parsed.x = ft_atof(values[0]);
+	parsed.y = ft_atof(values[1]);
+	parsed.z = ft_atof(values[2]);
+	free_arr(values);
+	if (parsed.x == INT_MIN || parsed.y == INT_MIN || parsed.z == INT_MIN)
+	{
+		printf("Error: Coordinate out of allowed range.\n");
+		return (set_coord(INT_ERROR, INT_ERROR, INT_ERROR));
+	}
+	return (parsed);
+}
+
+int	invalid_coord(t_coord *coord)
+{
+	return (coord->x == INT_ERROR
+		&& coord->y == INT_ERROR
+		&& coord->z == INT_ERROR);
+}

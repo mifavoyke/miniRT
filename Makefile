@@ -21,13 +21,7 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/hooks.c \
 		$(SRC_DIR)/render.c \
 		$(SRC_DIR)/light.c \
-		$(SRC_DIR)/allocate.c \
-		$(SRC_DIR)/free.c \
 		$(SRC_DIR)/shadow.c \
-		$(SRC_DIR)/utils/minirt_utils.c \
-		$(SRC_DIR)/utils/ft_atof.c \
-		$(SRC_DIR)/utils/list_utils.c \
-		$(SRC_DIR)/utils/test_utils.c \
 		$(SRC_DIR)/math/basic.c \
 		$(SRC_DIR)/math/intersections.c \
 		$(SRC_DIR)/math/math.c \
@@ -35,10 +29,22 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/math/viewport.c \
 		$(SRC_DIR)/math/extra.c \
 		$(SRC_DIR)/math/store_pixels.c \
+		$(SRC_DIR)/parsing/color_utils.c \
+		$(SRC_DIR)/parsing/coord_utils.c \
+		$(SRC_DIR)/parsing/file_data.c \
+		$(SRC_DIR)/parsing/fill_objects_a.c \
+		$(SRC_DIR)/parsing/fill_objects_b.c \
 		$(SRC_DIR)/parsing/fill_scene.c \
 		$(SRC_DIR)/parsing/parse_scene.c \
 		$(SRC_DIR)/parsing/parse_utils.c \
-		$(SRC_DIR)/parsing/parse_checks.c
+		$(SRC_DIR)/utils/allocate.c \
+		$(SRC_DIR)/utils/array_utils.c \
+		$(SRC_DIR)/utils/free.c \
+		$(SRC_DIR)/utils/ft_atof.c \
+		$(SRC_DIR)/utils/list_utils.c \
+		$(SRC_DIR)/utils/string_utils.c \
+		$(SRC_DIR)/utils/test_utils.c \
+		$(SRC_DIR)/utils/utils.c 
 
 # OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 OBJS = $(SRCS:.c=.o) # when we put object files into a directory it does not take the files from subdirectiories of src/

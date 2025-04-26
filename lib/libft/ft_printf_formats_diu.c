@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_utils.c                                     :+:      :+:    :+:   */
+/*   ft_printf_formats_diu.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:55:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2024/02/01 16:55:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/24 09:14:55 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	char_counter(size_t n)
 	count = 0;
 	if (n == 0)
 		return (1);
-	if (n < 0)
+	if ((int)n < 0)
 		count++;
 	while (n != 0)
 	{

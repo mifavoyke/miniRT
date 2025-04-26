@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/23 19:43:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/26 19:58:41 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-int minirt_init(t_minirt *minirt)
+int minirt_init(t_minirt *minirt, t_scene *scene)
 {
+	minirt->scene = scene;
 	minirt->img_width = WIDTH;
 	minirt->img_height = HEIGHT;
 	minirt->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
@@ -39,17 +40,17 @@ int generate_image(t_minirt *minirt)
 	return (0);
 }
 
-int32_t main(int argc, char *argv[])
+int32_t	main(int argc, char *argv[])
 {
-	t_minirt minirt;
-	
+	t_scene		*scene;
+	t_minirt	minirt;
+
 	if (argc != 2)
-		return (ft_error("Usage: ./miniRT [scene].rt"));
-	if (check_file_format(argv[1]))
-		return (ft_error("Wrong scene format. Expected .rt file."));
-	if (create_scene(&minirt, argv[1]))
+		return (ft_error("Wrong input. Use:\t ./minirt [scene].rt\n"));
+	scene = create_scene(argv[1]);
+	if (!scene)
 		return (ERROR);
-	if (minirt_init(&minirt))
+	if (minirt_init(&minirt, scene) == ERROR)
 	{
 		free_scene(minirt.scene);
 		return (ft_error(mlx_strerror(mlx_errno)));
@@ -57,6 +58,7 @@ int32_t main(int argc, char *argv[])
 	if (generate_image(&minirt))
 		return (ERROR);
 	print_controls();
+	
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_scroll_hook(minirt.mlx, &scroll_zoom, (void *)&minirt);
 	mlx_resize_hook(minirt.mlx, resize_hook, (void *)&minirt);

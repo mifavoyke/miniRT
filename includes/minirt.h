@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/23 19:35:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/26 19:54:28 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,32 +230,51 @@ void scroll_zoom(double xdelta, double ydelta, void *param);
 int generate_image(t_minirt *minirt);
 
 // PARSING
-int create_scene(t_minirt *minirt, char *rt_file);
-int identify_objects(t_scene *scene, char *first_letter, char **values);
-int valid_input(char **values);
-t_coord parse_coord(char *coord);
-t_colour parse_colour(char *clr);
-t_coord set_coord(float x, float y, float z);
-t_colour set_colour(int r, int b, int g, int a);
-int valid_coord(t_coord *coord);
-int valid_colour(t_colour *clr);
-char **get_lines(char *arg, int size);
-int count_rows(char *arg);
+void init_scene(t_scene *scene);
+void free_scene(t_scene *scene);
+int	count_rows(int fd);
+char	**get_file_data(int fd, int size);
+t_scene	*create_scene(char *filename);
+int fill_scene(t_scene *scene, char **file_rows);
+
+int	count_rows(int fd);
+char	**store_file_contents(char *filename);
+char	**get_file_data(int fd, int size);
+
+void	print_colour(t_colour colour);
+void	print_coord(t_coord coord);
+
+int identify_object(t_scene *scene, char *first_letter, char **values);
+int fill_cylinder(t_scene *scene, char **values, int i);
+int fill_plane(t_scene *scene, char **values, int i);
 int fill_sphere(t_scene *scene, char **values, int i);
 
 // UTILS
-int ft_error(const char *msg);
-double ft_atof(char *str);
 int check_file_format(char *filename);
+int ft_error(const char *msg);
+char *normalise_whitespace(char *str);
+void free_arr(char **arr);
+void print_arr(char **arr);
+int ft_is_space(char c);
+int	is_empty_line(char *line);
+int is_valid_input(char **values);
+int is_numerical(char *str);
+double ft_atof(char *str);
+void print_scene(t_scene *scene);
 void append_node(t_inter *new_node, t_inter **head);
-void merge_sort(t_inter **list_head);
 void print_list(t_inter *head, int x, int y);
+void merge_sort(t_inter **list_head);
 
-// ALLOCATE
+// UTILS
+t_colour set_colour(int r, int b, int g, int a);
+t_coord set_coord(float x, float y, float z);
+t_coord parse_coord(char *coord);
+t_colour parse_colour(char *clr);
+int32_t  ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+int invalid_coord(t_coord *coord);
+int invalid_colour(t_colour *clr);
 t_inter ***allocate_inter(int width, int height);
 t_colour **allocate_pixels(int width, int height);
-
-// FREE
 void free_arr(char **arr);
 void free_scene(t_scene *scene);
 void free_pixels(t_colour **p, int h);
@@ -269,5 +288,53 @@ void print_camera(t_camera *c);
 void draw_shadow_rays(t_minirt *minirt);
 void draw_line(t_minirt *minirt, t_coord start, t_coord end, t_colour color);
 void print_light(t_light *l);
+
+
+// -------------
+
+// PARSING
+void init_scene(t_scene *scene);
+void free_scene(t_scene *scene);
+int fill_scene(t_scene *scene, char **file_rows);
+
+char	**store_file_contents(char *filename);
+char	**get_file_data(int fd, int size);
+
+
+int identify_object(t_scene *scene, char *first_letter, char **values);
+int fill_cylinder(t_scene *scene, char **values, int i);
+int fill_plane(t_scene *scene, char **values, int i);
+int fill_sphere(t_scene *scene, char **values, int i);
+
+// MATH
+float get_viewport_width(float angle_deg, float distance);
+float get_viewport_height(float viewport_width);
+
+// MATH - vector.c
+void normalize(t_coord *N);
+int is_vector_normalized(t_coord v);
+
+
+// UTILS
+int check_file_format(char *filename);
+int ft_error(const char *msg);
+char *normalise_whitespace(char *str);
+void free_arr(char **arr);
+void print_arr(char **arr);
+int ft_is_space(char c);
+int	is_empty_line(char *line);
+int is_valid_input(char **values);
+int is_numerical(char *str);
+double ft_atof(char *str);
+void print_scene(t_scene *scene);
+
+
+t_colour set_colour(int r, int b, int g, int a);
+t_coord set_coord(float x, float y, float z);
+t_coord parse_coord(char *coord);
+t_colour parse_colour(char *clr);
+int32_t  ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+int invalid_coord(t_coord *coord);
+int invalid_colour(t_colour *clr);
 
 #endif
