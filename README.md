@@ -16,18 +16,26 @@ creating rotation matrices and general 3d rotation matrix:
 https://en.wikipedia.org/wiki/Rotation_matrix
 cylinder line intersection:
 http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersection.php
+https://en.wikipedia.org/wiki/Line-cylinder_intersection
+Intersection of a ray with different objects (or objects with objects)
+https://www.realtimerendering.com/intersections.html
 
 
 * FOR YEVA *
-- also pls check that vectors are non-zero (cannot have all cords 0)
-- object files are kept in src folder by their .c file, not in separate objs folder because of having folders in src - did not work, we can change the makefile later to separate them again
-- we could add an id to each object based on their order in the .rt file 
+- NEW: before we were allocating new inter array for each new image, now we just allocate once and when creating new image, free the existing list of intersections there and assign the newly generated list intead - it happend in the math.c - shoot_rays() - seems faster now
+- ALSO i removed the init pixels function and if there is no intersectoin, we assign the default background color in the shoot_rays again
 
 * FOR ZUZANA *
 check the transformations and rotations with keys
-- i think we should handle being inside objects - now when first inter is behind camera, the second inter 
-- if color allocation fails, it is -1 on all rgba, but we can still use it like this - wont it mke issues? should we rather set it to all black - 0,0,0,0?
+- i think we should handle being inside objects - now when first inter is behind camera, the second inter - so calculate even inters that are behind the camera and set the other inter to black - if the inter in front of the camera is black, it is inside and no difused light applies
 - redo the rotations with the rotation matrices
+- redo the printf for errors to write to stderr
+- cylinder, maybe parboloid?
+- multithreding - parallelization
+- maybe optimization as in the article "Starter ray tracing math" above
+- handle pixels in resize hook - now they are not freed and not reallocated when the size is different - have to do this 
+- should we change viewport width in minirt struct when resizing? 
+- rename cy->vector to cy->axis
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 
@@ -37,13 +45,6 @@ check the transformations and rotations with keys
 - dot product: operation that takes two vectors and returns a single scalar value
 - length of a vector = square root of the dot product of the vector by itself
 - changing camera viewpoint coordinates ensures translation, changing normal vector ensures rotation
-
-
-** DOING: ** 
-- did viewport setup so we have info about the viewport plane, must be regenreated or each new scene/movement 
-- working on finding corner points
-- then will map each pixel to the viewport scale and get its coordinates in the 3d scene through which we will shoot the ray to scene 
-
 
 TRANSLATION AND ROTATION
 1. Translation (Movement)

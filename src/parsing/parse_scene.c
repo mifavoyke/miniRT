@@ -3,130 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/20 14:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 10:36:22 by yhusieva         ###   ########.fr       */
+/*   Created: 2025/04/23 14:18:55 by zuzanapiaro       #+#    #+#             */
+/*   Updated: 2025/04/28 15:08:54 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-static void init_scene(t_scene *scene)
-{
-	scene->sp = NULL;
-	scene->pl = NULL;
-	scene->cy = NULL;
-	scene->a_count = 0;
-	scene->c_count = 0;
-	scene->l_count = 0;
-	scene->sp_count = 0;
-	scene->pl_count = 0;
-	scene->cy_count = 0;
-	scene->background = set_colour(200, 200, 200, 255); // light gray, can we set it as a macro somehow?
-}
 
-static int ft_isspace(char c)
+// gets array of values from one file row
+char	**row_values_into_arr(char *file_row)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == '\v');
-}
+	char	*normalised;
+	char	**values;
 
-static char *normalise_whitespace(char *str)
-{
-	char *new_str;
-	int i = 0;
-	int j = 0;
-
-	new_str = malloc(ft_strlen(str) + 1);
-	if (!new_str)
-		return (NULL);
-	while (str[i])
+	normalised = normalise_whitespace(file_row);
+	if (!normalised || is_empty_line(normalised))
 	{
-		if (str[i] == '#')
-		{
-			while (str[i] && str[i] != '\n')
-				i++;
-			break;
-		}
-		else if (ft_isspace(str[i]))
-			new_str[j++] = ' ';
-		else
-			new_str[j++] = str[i];
-
-		i++;
+		free(normalised);
+		normalised = NULL;
+		return (NULL);
 	}
-	new_str[j] = '\0';
-	return (new_str);
+	values = ft_split(normalised, ' ');
+	free(normalised);
+	normalised = NULL;
+	if (!values)
+		return (NULL);
+	return (values);
 }
 
 // iterates each line, normalizes whitespace, puts all elements into array, 
-static t_scene *fill_scene(char **rows, int size)
+int	fill_scene(t_scene *scene, char **file_rows)
 {
-	t_scene *scene;
-	char **values;
-	char *normalised;
-	int i;
+	char	**values;
+	int		i;
 
-	scene = malloc(sizeof(t_scene));
-	if (!scene)
-		return (NULL);
-	init_scene(scene);
-	i = 0;
-	while (i < size)
+	i = -1;
+	while (file_rows[++i])
 	{
-		normalised = normalise_whitespace(rows[i]);
-		if (!normalised)
-		{
-			free(scene);
-			scene = NULL;
-			return (NULL);
-		}
-		values = ft_split(normalised, ' ');
-		free(normalised);
+		values = row_values_into_arr(file_rows[i]);
 		if (!values)
-		{
-			free(scene);
-			scene = NULL;
-			printf("Error: ft_split failed.\n");
-			return (NULL);
-		}
-		if (!*values)
-		{
-			i++;
-			free(values);
 			continue ;
+		print_arr(values);
+		if (!is_valid_input(values))
+		{
+			printf("Input contains invalid characters. Check the .rt file.\n");
+			free_arr(values);
+			return (ERROR);
 		}
-		if (valid_input(values))
+		if (identify_object(scene, values[0], values) == ERROR)
 		{
 			free_arr(values);
-			return (NULL);
-		}
-		if (identify_objects(scene, values[0], values))
-		{
-			free_arr(values);
-			return (NULL);
+			return (ERROR);
 		}
 		free_arr(values);
-		i++;
 	}
-	return (scene);
+	return (SUCCESS);
 }
 
-int create_scene(t_minirt *minirt, char *rt_file)
+// stores file rows into array, allocates scene and fills it with array data
+// scene and its objects are freed in the caller function 
+// returns allocated scene or NULL if alloc or fill fails
+t_scene	*create_scene(char *filename)
 {
-	char **parsed_file;
-	int size;
+	t_scene	*scene;
+	char	**file_data;
 
-	size = count_rows(rt_file);
-	parsed_file = get_lines(rt_file, size);
-	if (!parsed_file)
-		return (ERROR);
-	minirt->scene = fill_scene(parsed_file, size);
-	// free_arr(parsed_file); // causes seg fault
-	if (!minirt->scene)
-		return (ERROR);
-	minirt->scene->viewport_distance = 1.0;
-	minirt->scene->viewport_width = get_viewport_width(minirt->scene->c.view_degree, minirt->scene->viewport_distance);
-	minirt->scene->viewport_height = get_viewport_height(minirt->scene->viewport_width);
-	return (0);
+	file_data = store_file_contents(filename);
+	if (!file_data)
+		return (NULL);
+	scene = (t_scene *)malloc(sizeof(t_scene));
+	if (!scene)
+	{
+		free_arr(file_data);
+		return (NULL);
+	}
+	init_scene(scene);
+	if (fill_scene(scene, file_data) == ERROR)
+	{
+		free_arr(file_data);
+		free_scene(scene);
+		return (NULL);
+	}
+	free_arr(file_data);
+	scene->viewport_distance = 1.0;
+	scene->viewport_width = get_viewport_width(scene->c.view_degree,
+			scene->viewport_distance);
+	scene->viewport_height = get_viewport_height(scene->viewport_width);
+	return (scene);
 }

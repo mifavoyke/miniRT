@@ -1,0 +1,18 @@
+A   0							    204,0,204
+C   0,0,0	    0,1,0	90
+L   30,0,20				0.6	        255,255,255
+
+# kolmy on the camera
+cy     -5,30,0     0,1,0    4   10   255,255,0
+
+# straight up
+cy     0,30,0     0,0,1    5   20   255,0,255
+
+# laying and rotated, should see the top cap
+cy     5,5,0    0.707,0.707,0    3    10   0,255,255
+
+# plane behind
+pl	0,50,0	    0,-1,0		        100,0,0
+
+# plane below
+pl	0,0,-30	    0,0,1		        100,0,0

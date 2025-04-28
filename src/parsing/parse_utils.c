@@ -5,142 +5,77 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/20 14:11:47 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/17 21:55:07 by zuzanapiaro      ###   ########.fr       */
+/*   Created: 2025/04/25 10:06:08 by zuzanapiaro       #+#    #+#             */
+/*   Updated: 2025/04/26 19:11:14 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-t_coord set_coord(float x, float y, float z)
+// checks if the last 3 characters of the file name are .rt
+int	check_file_format(char *filename)
 {
-	t_coord coord;
-
-	coord.x = x;
-	coord.y = y;
-	coord.z = z;
-	return (coord);
-}
-
-t_colour set_colour(int r, int b, int g, int a)
-{
-	t_colour clr;
-
-	clr.r = r;
-	clr.b = b;
-	clr.g = g;
-	clr.a = a;
-	return (clr);
-}
-
-t_coord parse_coord(char *coord)
-{
-	t_coord parsed;
-	char **values;
-
-	values = ft_split(coord, ',');
-	if (!values || !values[0] || !values[1] || !values[2])
-	{
-		printf("Error: Invalid coordinate format.\n");
-		return (set_coord(INT_ERROR, INT_ERROR, INT_ERROR));
-	}
-	parsed.x = ft_atof(values[0]);
-	parsed.y = ft_atof(values[1]);
-	parsed.z = ft_atof(values[2]);
-	free_arr(values);
-	if (parsed.x == INT_MIN || parsed.y == INT_MIN || parsed.z == INT_MIN)
-	{
-		printf("Error: Coordinate out of allowed range.\n");
-		return (set_coord(INT_ERROR, INT_ERROR, INT_ERROR));
-	}
-	return (parsed);
-}
-
-t_colour parse_colour(char *clr)
-{
-	t_colour colour;
-	char **values;
-
-	values = ft_split(clr, ',');
-	if (!values || !values[0] || !values[1] || !values[2])
-	{
-		printf("Error: Invalid colour format.\n");
-		return (set_colour(-1, -1, -1, -1));
-	}
-	colour.r = ft_atoi(values[0]);
-	colour.g = ft_atoi(values[1]);
-	colour.b = ft_atoi(values[2]);
-	colour.a = 255;
-	free_arr(values);
-	if (colour.r < 0 || colour.r > 255 || colour.g < 0 || colour.g > 255 || colour.b < 0 || colour.b > 255)
-	{
-		printf("Error: Colour values out of range.\n");
-		return (set_colour(-1, -1, -1, -1));
-	}
-	return (colour);
-}
-
-// counts all rows of the file
-int	count_rows(char *arg)
-{
-	int		i;
-	int		fd;
-	char	*one_line;
+	int	i;
 
 	i = 0;
-	fd = open(arg, O_RDONLY);
-	if (fd == -1)
-		return (0);
-	one_line = get_next_line(fd);
-	if (!one_line)
+	while (filename[i])
 	{
-		close(fd);
-		return (0);
-	}
-	while (one_line)
-	{
+		if (filename[i] == '.'
+			&& filename[i + 1] == 'r'
+			&& filename[i + 2] == 't'
+			&& filename[i + 3] == '\0')
+			return (0);
 		i++;
-		free(one_line);
-		one_line = get_next_line(fd);
 	}
-	close(fd);
-	return (i);
+	return (ERROR);
 }
 
-// stores lines from the .rt file in an array
-// @returns array of lines from the file
-char	**get_lines(char *arg, int size)
+// normalizes whitespace for one row
+char	*normalise_whitespace(char *str)
 {
-	char	**read_lines;
-	char	*one_line;
 	int		i;
-	int		fd;
+	int		j;
+	char	*new_str;
 
 	i = 0;
-	// read_lines = NULL;
-	fd = open(arg, O_RDONLY);
-	if (fd == -1)
+	j = 0;
+	new_str = (char *)malloc(ft_strlen(str) + 1);
+	if (!new_str)
 		return (NULL);
-	one_line = get_next_line(fd);
-	if (!one_line)
+	while (str[i])
 	{
-		close(fd);
-		return (NULL);
-	}
-	read_lines = (char **)malloc(size * sizeof(char *));
-	if (!read_lines)
-	{
-		close(fd);
-		free(one_line);
-		return (NULL);
-	}
-	while (one_line)
-	{
-		read_lines[i] = one_line;
-		one_line = get_next_line(fd);
+		if (str[i] == '#')
+		{
+			while (str[i] && str[i] != '\n')
+				i++;
+			break ;
+		}
+		else if (ft_is_space(str[i]))
+			new_str[j++] = ' ';
+		else
+			new_str[j++] = str[i];
 		i++;
 	}
-	free(one_line);
-	close(fd);
-	return (read_lines);
+	new_str[j] = '\0';
+	return (new_str);
+}
+
+// checks if input has correct values
+// @returns 1 if valid, 0 if not valid
+int	is_valid_input(char **values)
+{
+	int	i;
+
+	if (!values || !values[0])
+		return (1);
+	if (!ft_isalpha(values[0][0]))
+		return (0);
+	i = 1;
+	while (values[i])
+	{
+		if (!is_numerical(values[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
