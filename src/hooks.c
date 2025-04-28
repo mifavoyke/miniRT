@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/23 19:41:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:32:09 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ void move(t_minirt *minirt, float *coord, float translation)
 {
     *coord += translation;
     print_coord(minirt->scene->c.point);
-    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
     if (generate_image(minirt))
-        exit(1);
+        exit(ERROR);
 }
 
 // Rotates up and down. Rotation matrix:
@@ -35,9 +34,8 @@ void rotate_x(t_minirt *minirt, t_coord *original_vector, double angle)
     normalize(&new_vector);
     print_coord(new_vector);
     *original_vector = new_vector;
-    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
     if (generate_image(minirt))
-        exit(1);
+        exit(ERROR);
 }
 
 // Rotates in spiral - yaw. Rotation matrix:
@@ -54,9 +52,8 @@ void rotate_y(t_minirt *minirt, t_coord *original_vector, double angle)
     normalize(&new_vector);
     print_coord(new_vector);
     *original_vector = new_vector;
-    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
     if (generate_image(minirt))
-        exit(1);
+        exit(ERROR);
 }
 
 // Rotates left and right. Rotation matrix:
@@ -73,9 +70,8 @@ void rotate_z(t_minirt *minirt, t_coord *original_vector, double angle)
     normalize(&new_vector);
     print_coord(new_vector);
     *original_vector = new_vector;
-    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
     if (generate_image(minirt))
-        exit(1);
+        exit(ERROR);
 }
 
 void ft_hook(void *param)
@@ -122,36 +118,35 @@ void scroll_zoom(double xdelta, double ydelta, void *param)
         move(minirt, &minirt->scene->c.point.y, -ZOOM);
 }
 
-void print_controls(void)
-{
-    printf("\n=== MINI-RT CONTROLS ===\n");
-    printf("Close Program:\n");
-    printf("  [ESC]               → Exit the program\n\n");
-    printf("Camera Position:\n");
-    printf("  [W] / [S]           → Move camera forward/backward (Z-axis)\n");
-    printf("  [A] / [D]           → Move camera left/right (X-axis)\n");
-    printf("  Scroll              → Zoom in/out (Y-axis up/down)\n\n");
-    printf("Camera Rotation:\n");
-    printf("  [UP] / [DOWN]       → Pitch camera up/down (rotate X-axis)\n");
-    printf("  [LEFT] / [RIGHT]    → Roll camera left/right (rotate Z-axis)\n");
-    printf("  [J] / [K]           → Yaw camera left/right (rotate Y-axis)\n\n");
-    printf("Additional:\n");
-    printf("  Mouse Scroll        → Zoom camera in/out\n");
-    printf("========================\n\n");
-    printf("  Future: Add object control and light control if needed\n");
-}
-
 void resize_hook(int width, int height, void *param)
 {
     t_minirt *minirt;
 
     minirt = (t_minirt *)param;
-    mlx_resize_image(minirt->img, width, height);
-    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
     free_pixels(minirt->pixels, minirt->img_height);
+    free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
     minirt->img_width = width;
     minirt->img_height = height;
-    if (generate_image(minirt))
-        exit(1);
-    // mlx_image_to_window(minirt->mlx, minirt->img, 0, 0);
+    minirt->pixels = allocate_pixels(minirt->img_width, minirt->img_height, minirt->scene->background);
+	if (!minirt->pixels)
+    {
+        cleanup(minirt);
+        exit(ERROR);
+    }
+    minirt->intersection = allocate_inter(minirt->img_width, minirt->img_height);
+    if (!minirt->intersection)
+    {
+        cleanup(minirt);
+        exit(ERROR);
+    }
+    mlx_resize_image(minirt->img, width, height);
+    if (generate_image(minirt) == ERROR)
+    {
+        free_pixels(minirt->pixels, minirt->img_height);
+        free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
+        free_scene(minirt->scene);
+        mlx_delete_image(minirt->mlx, minirt->img);
+        mlx_terminate(minirt->mlx);
+        exit(ERROR);
+    }
 }

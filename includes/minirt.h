@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/26 19:54:28 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/28 14:24:28 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,11 +274,14 @@ int32_t  ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 int invalid_coord(t_coord *coord);
 int invalid_colour(t_colour *clr);
 t_inter ***allocate_inter(int width, int height);
-t_colour **allocate_pixels(int width, int height);
+t_colour **allocate_pixels(int width, int height, t_colour background_colour);
 void free_arr(char **arr);
 void free_scene(t_scene *scene);
 void free_pixels(t_colour **p, int h);
 void free_inter(t_inter ***section, int h, int w);
+void	free_list(t_inter **lst, void (*del)(void *));
+void	cleanup(t_minirt *minirt);
+
 
 // TESTS - REMOVE AFTER DONE
 void print_scene(t_scene *scene);

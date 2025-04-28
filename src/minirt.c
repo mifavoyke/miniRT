@@ -3,37 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/26 19:58:41 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/28 14:24:03 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+// prints possible key controls 
+void print_controls(void)
+{
+    printf("\n=== MINI-RT CONTROLS ===\n");
+    printf("Close Program:\n");
+    printf("  [ESC]               → Exit the program\n\n");
+    printf("Camera Position:\n");
+    printf("  [W] / [S]           → Move camera forward/backward (Z-axis)\n");
+    printf("  [A] / [D]           → Move camera left/right (X-axis)\n");
+    printf("  Scroll              → Zoom in/out (Y-axis up/down)\n\n");
+    printf("Camera Rotation:\n");
+    printf("  [UP] / [DOWN]       → Pitch camera up/down (rotate X-axis)\n");
+    printf("  [LEFT] / [RIGHT]    → Roll camera left/right (rotate Z-axis)\n");
+    printf("  [J] / [K]           → Yaw camera left/right (rotate Y-axis)\n\n");
+    printf("Additional:\n");
+    printf("  Mouse Scroll        → Zoom camera in/out\n");
+    printf("========================\n\n");
+    printf("  Future: Add object control and light control if needed\n");
+}
 
 int minirt_init(t_minirt *minirt, t_scene *scene)
 {
 	minirt->scene = scene;
 	minirt->img_width = WIDTH;
 	minirt->img_height = HEIGHT;
+	minirt->pixels = allocate_pixels(minirt->img_width, minirt->img_height, minirt->scene->background);
+	if (!minirt->pixels)
+		return (ERROR);
+	minirt->intersection = allocate_inter(minirt->img_width, minirt->img_height);
+	if (!minirt->intersection)
+	{
+		free_pixels(minirt->pixels, minirt->img_height);
+		return (ERROR);
+	}
 	minirt->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
 	if (!minirt->mlx)
 		return (ERROR);
 	minirt->img = mlx_new_image(minirt->mlx, minirt->img_width, minirt->img_height);
 	if (!minirt->img || (mlx_image_to_window(minirt->mlx, minirt->img, 0, 0) < 0))
 		return (ERROR);
-	minirt->intersection = NULL;
+	// minirt->intersection = NULL;
 	return (0);
+}
+
+void	cleanup(t_minirt *minirt)
+{
+	free_pixels(minirt->pixels, minirt->img_height);
+	free_inter(minirt->intersection, minirt->img_height, minirt->img_width);
+	free_scene(minirt->scene);
+	mlx_delete_image(minirt->mlx, minirt->img);
+	mlx_terminate(minirt->mlx);
 }
 
 int generate_image(t_minirt *minirt)
 {
-	if (init_pixels(minirt))
-		return (ERROR);
-	minirt->intersection = allocate_inter(minirt->img_width, minirt->img_height);
-	if (!minirt->intersection)
-		return (ERROR);
 	shoot_rays(minirt, minirt->scene);
 	lighting(minirt);
 	render_pixels(minirt);
@@ -64,11 +97,6 @@ int32_t	main(int argc, char *argv[])
 	mlx_resize_hook(minirt.mlx, resize_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 
-	free_inter(minirt.intersection, minirt.img_height, minirt.img_width);
-	free_pixels(minirt.pixels, minirt.img_height);
-	free_scene(minirt.scene);
-	
-	mlx_delete_image(minirt.mlx, minirt.img);
-	mlx_terminate(minirt.mlx);
+	cleanup(&minirt);
 	return (0);
 }

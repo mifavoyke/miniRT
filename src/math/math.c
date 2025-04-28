@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/23 19:45:22 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:05:08 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int shoot_rays(t_minirt *minirt, t_scene *scene) // i moved the allocate interse
 
 	Tm = find_transformation_matrix(scene->c);
 	y = -1;
+	printf("height: %d, width: %d\n", minirt->img_height, minirt->img_width);
 	while (++y < minirt->img_height)
 	{
 		x = -1;
@@ -152,6 +153,8 @@ int shoot_rays(t_minirt *minirt, t_scene *scene) // i moved the allocate interse
 			intersection_list = create_intersection_list(scene, ray);
 			merge_sort(&intersection_list); // order intersection list
 			// print_list(intersection_list, x, y);
+			if (minirt->intersection[y][x]) // ERROR happens because when we resize, the new size is checked for x,y, but befre nothing as there so we try to access memory that was not used before 
+				free_list(&minirt->intersection[y][x], free); // ERROR
 			minirt->intersection[y][x] = intersection_list; // populate the intersection list
 			/*###### following if-else is temporary ###########################*/
 			if (intersection_list)
