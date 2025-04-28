@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:38:51 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 14:32:30 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:01:30 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_colour	**allocate_pixels(int width, int height, t_colour background_color)
 			return (NULL);
 		}
 		x = -1;
-        while (++x < width)
-            pixels[y][x] = background_color;
+		while (++x < width)
+			pixels[y][x] = background_color;
 	}
 	return (pixels);
 }
@@ -61,8 +61,8 @@ t_inter	***allocate_inter(int width, int height)
 			return (NULL);
 		}
 		x = -1;
-        while (++x < width)
-            section[y][x] = NULL;
+		while (++x < width)
+			section[y][x] = NULL;
 	}
 	return (section);
 }

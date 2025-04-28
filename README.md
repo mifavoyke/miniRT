@@ -35,6 +35,7 @@ check the transformations and rotations with keys
 - maybe optimization as in the article "Starter ray tracing math" above
 - handle pixels in resize hook - now they are not freed and not reallocated when the size is different - have to do this 
 - should we change viewport width in minirt struct when resizing? 
+- rename cy->vector to cy->axis
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 

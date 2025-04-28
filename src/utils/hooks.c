@@ -6,11 +6,11 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 14:32:09 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:06:40 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 void move(t_minirt *minirt, float *coord, float translation)
 {

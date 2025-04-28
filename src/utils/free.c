@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/28 14:20:00 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:01:13 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_list(t_inter **lst, void (*del)(void *))
 	while (node)
 	{
 		next = node->next;
-		free(node); // here is double free or corruption
+		free(node);
 		node = next;
 	}
 	*lst = NULL;

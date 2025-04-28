@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/28 14:24:28 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:19:10 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,6 @@ int lighting(t_minirt *minirt);
 int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs, int current_id);
 
 // PIXELS
-int init_pixels(t_minirt *minirt);
 void render_pixels(t_minirt *minirt);
 
 // MATH - vector.c
@@ -230,7 +229,6 @@ void scroll_zoom(double xdelta, double ydelta, void *param);
 int generate_image(t_minirt *minirt);
 
 // PARSING
-void init_scene(t_scene *scene);
 void free_scene(t_scene *scene);
 int	count_rows(int fd);
 char	**get_file_data(int fd, int size);
@@ -264,6 +262,9 @@ void print_scene(t_scene *scene);
 void append_node(t_inter *new_node, t_inter **head);
 void print_list(t_inter *head, int x, int y);
 void merge_sort(t_inter **list_head);
+int minirt_init(t_minirt *minirt, t_scene *scene);
+void	init_scene(t_scene *scene);
+
 
 // UTILS
 t_colour set_colour(int r, int b, int g, int a);
@@ -281,6 +282,7 @@ void free_pixels(t_colour **p, int h);
 void free_inter(t_inter ***section, int h, int w);
 void	free_list(t_inter **lst, void (*del)(void *));
 void	cleanup(t_minirt *minirt);
+void print_controls(void);
 
 
 // TESTS - REMOVE AFTER DONE

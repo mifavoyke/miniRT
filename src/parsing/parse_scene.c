@@ -3,29 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:55 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 19:39:10 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/28 15:08:54 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// initilizes all allocated values in the scene to NULL
-void	init_scene(t_scene *scene)
-{
-	scene->sp = NULL;
-	scene->pl = NULL;
-	scene->cy = NULL;
-	scene->a_count = 0;
-	scene->c_count = 0;
-	scene->l_count = 0;
-	scene->sp_count = 0;
-	scene->pl_count = 0;
-	scene->cy_count = 0;
-	scene->background = set_colour(200, 200, 200, 255);
-}
 
 // gets array of values from one file row
 char	**row_values_into_arr(char *file_row)
