@@ -6,24 +6,24 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:14:57 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 19:53:35 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/27 10:57:07 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // appends new_node to the end of the list
-// new_node MUST have a next - either it has NULL or another t_inter node appended
-void append_node(t_inter *new_node, t_inter **head)
+// new_node has a next - either another t_inter node appended or NULL
+void	append_node(t_inter *new_node, t_inter **head)
 {
-	t_inter *temp;
+	t_inter	*temp;
 
 	if (!new_node)
-		return;
+		return ;
 	if (!head || !*head)
 	{
 		*head = new_node;
-		return;
+		return ;
 	}
 	temp = *head;
 	while (temp->next)
@@ -31,32 +31,20 @@ void append_node(t_inter *new_node, t_inter **head)
 	temp->next = new_node;
 }
 
-// prints linked list
-void print_list(t_inter *head, int x, int y)
+// ---------------------------- MERGE SORT ------------------------------------
+
+// splits linked list into two halves using the fast and slow pointer approach
+// when found half, set the next as head of a new list so new list has a start
+// in the first list, set last_element->next as NULL so first list has an end
+void	split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 {
-	if (!head)
-	{
-		//printf("List is empty.\n");
-		return;
-	}
-	printf("[%d, %d] ------------------------------------------------------------\n", x, y);
-	while (head)
-	{
-		printf("Intersection point: (%f, %f, %f) distance: %f, object: %d\n", head->point.x, head->point.y, head->point.z, head->distance, head->type);
-		head = head->next;
-	}
-}
+	t_inter	*slow;
+	t_inter	*fast;
 
-// ---------------------------------------------- MERGE SORT ------------------------------------------------------------------
-
-// splits the linked list into two halves using the fast and slow pointer approach
-// when found half, set the next as head of a new list so we have a start of the new list
-// in the first list, set last_element->next as NULL so the first list has an end
-void split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
-{
-	t_inter *slow = list;
-	t_inter *fast = list->next;
-
+	if (!list)
+		return ;
+	slow = list;
+	fast = list->next;
 	while (fast)
 	{
 		fast = fast->next;
@@ -73,10 +61,10 @@ void split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 
 // recursively merges the separated parts of the list into a single sorted list
 // the result is accumulated 
-t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half)
+t_inter	*compare_and_merge(t_inter *first_half, t_inter *second_half)
 {
-	t_inter *result;
-	
+	t_inter	*result;
+
 	result = NULL;
 	if (!first_half)
 		return (second_half);
@@ -99,20 +87,19 @@ t_inter *compare_and_merge(t_inter *first_half, t_inter *second_half)
 	return (result);
 }
 
-// merge sort - recursively split the list and then recursively merges it from teh smallest parts
+// recursively split list and then recursively merge it from the smallest parts
 // sorts based on distance or distance to the light - can add more later
-void merge_sort(t_inter **list_head)
+void	merge_sort(t_inter **list_head)
 {
-	t_inter *head;
-	t_inter *first_half;
-	t_inter *second_half;
+	t_inter	*head;
+	t_inter	*first_half;
+	t_inter	*second_half;
 
 	head = *list_head;
 	if (!head || !head->next)
-		return;
+		return ;
 	split_list(head, &first_half, &second_half);
 	merge_sort(&first_half);
 	merge_sort(&second_half);
-
 	*list_head = compare_and_merge(first_half, second_half);
 }

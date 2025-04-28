@@ -16,6 +16,9 @@ creating rotation matrices and general 3d rotation matrix:
 https://en.wikipedia.org/wiki/Rotation_matrix
 cylinder line intersection:
 http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersection.php
+https://en.wikipedia.org/wiki/Line-cylinder_intersection
+Intersection of a ray with different objects (or objects with objects)
+https://www.realtimerendering.com/intersections.html
 
 
 * FOR YEVA *
@@ -25,9 +28,12 @@ http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersecti
 
 * FOR ZUZANA *
 check the transformations and rotations with keys
-- i think we should handle being inside objects - now when first inter is behind camera, the second inter 
+- i think we should handle being inside objects - now when first inter is behind camera, the second inter - so calculate even inters that are behind the camera and set the other inter to black - if the inter in front of the camera is black, it is inside and no difused light applies
 - redo the rotations with the rotation matrices
-- redo teh prints for errors to write to stderr
+- redo the printf for errors to write to stderr
+- cylinder, maybe parboloid?
+- multithreding - parallelization
+- maybe optimization as in the article "Starter ray tracing math" above
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 

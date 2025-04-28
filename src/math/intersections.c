@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/21 16:20:59 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/27 20:29:57 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 	// {
 	// 	if (get_dot_product(temp_vector, pl->vector) == 0.0) // ray is contained in the plane
 	// 		t = 0.1; // TODO: may change this - this is handling edge case when the plane goes straight through ray - they are contained
-	// 	else // ray and plane are parallel, never interect
+	// 	else // ray and plane are parallel, never intersect
 	// 		t = -1;
 	// }
 	t = get_plane_intersection_t(ray, cam.point, pl);
@@ -151,6 +151,109 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 	return (inter);
 }
 
+// cylinder coat: || a x (p - b) || = r -> a=axis vector, b=cylinder base center, p=any point on coat
+// cylinder height: 0 <= a o (p - b) <= h
+// line: t = c + n*d  -> c=point on line, n=line unit vector, d=distance 
+// t = a o (c + n*d - b)
+// 1. solve for d
+// Solving for d only gives you the distance at which the line intersects the infinite cylinder
+// To see if the intersection occurs within the part we consider the actual cylinder, we need to check if
+// the signed distance t from the cylinder base b along the axis a to the intersection p is within -h/2 and h/2 cylinder
+// 2. solve for t - t means how far along the cylinder axis the point is
+// --> -h/2 <= t <= h/2
+// 3. find caps intersections
+t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
+{
+	float root_part;
+	float t1;
+	float t2;
+	float d1;
+	float d2;
+	t_inter *inter1;
+	t_inter *inter2;
+	t_coord base_center;
+	t_coord ray_axis_cross; // helper vector (n x a) used multiple times
+	t_coord base_ray_vector; // helper vector (b - c) where b os center of the base and c is point on the ray
+	
+	base_center = add_vectors(cy->centre, multiply_vector_by_constant(cy->vector, -(cy->height / 2)));
+	ray_axis_cross = get_cross_product(ray, cy->vector);
+	base_ray_vector = make_vector(cam.point, base_center);
+	root_part = get_dot_product(ray_axis_cross, ray_axis_cross) * pow(cy->diameter / 2, 2) - (get_dot_product(cy->vector, cy->vector) * (pow(get_dot_product(base_ray_vector, ray_axis_cross), 2)));
+	if (get_dot_product(ray_axis_cross, ray_axis_cross) == 0) // line is parallel to the axis
+	{
+		if (root_part < 0) // no intersection
+		{
+			d1 = 0;
+			d2 = 0;	
+		}
+		else // intersection is the entire line
+		{
+			d1 = 1; // idk, for now
+			d2 = 1; // idk, for now
+		}
+	}
+	else
+	{
+		d1 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) + sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);
+		d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) - sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);	
+	}
+	t1 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
+	t2 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d2), base_ray_vector));
+	if (t1 >= 0 && t1 <= (cy->height))
+	{
+		inter1 = (t_inter *)malloc(sizeof(t_inter));
+		inter1->obj = (void *)cy;
+		inter1->type = CYLINDER;
+		inter1->colour = cy->colour;
+		inter1->distance = fabsf(d1);
+		inter1->point = set_coord(cam.point.x + d1 * ray.x, cam.point.y + d1 * ray.y, cam.point.z + d1 * ray.z);
+		inter1->id = cy->id;
+		inter1->next = NULL;
+	}
+	else // add one more else-if to chek for cap intersection
+		inter1 = NULL;
+
+	if (t2 >= 0 && t2 <= (cy->height))
+	{
+		inter2 = (t_inter *)malloc(sizeof(t_inter));
+		inter2->obj = (void *)cy;
+		inter2->type = CYLINDER;
+		inter2->colour = cy->colour;
+		inter2->distance = fabsf(d2);
+		inter2->point = set_coord(cam.point.x + d2 * ray.x, cam.point.y + d2 * ray.y, cam.point.z + d2 * ray.z);
+		inter2->id = cy->id;
+		inter2->next = NULL;
+	}
+	else // add one more else-if to chek for cap intersection
+		inter2 = NULL;
+
+	
+	// return intersections that are in front of the camera
+	if (inter1 && inter2)
+		inter1->next = inter2;
+	if (inter1)
+		return (inter1);
+	if (inter2)
+		return (inter2);
+	return (NULL);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // any point in ray: P = C + t*ray
 // cylinder is defined by distance to its axis, not to a point or a plane, unlike a sphere
 // cylinder is defined by all points that are at a fixed distance r from the cylinder’s axis
@@ -158,7 +261,7 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 // but in 3D, this “distance to a line” is hard to work with directly — so we project everything onto the plane perpendicular to the axis
 // project both the ray(helper 2) and vector from the cylinder axis to the ray origin(helper 1) onto the plane perpendicular to the cylinder’s axis
 // then the problem becomes 2D problem of a line intersecting a circle of radius r
-t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
+t_inter *find_cylinder_intersection(t_coord ray, t_camera cam, t_cylinder *cy)
 {
 	float a;
 	float b;

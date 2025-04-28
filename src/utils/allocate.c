@@ -6,16 +6,16 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:38:51 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/26 19:54:45 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/27 10:57:40 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-t_colour **allocate_pixels(int width, int height)
+t_colour	**allocate_pixels(int width, int height)
 {
-	t_colour **pixels;
-	int y;
+	t_colour	**pixels;
+	int			y;
 
 	pixels = (t_colour **)malloc(height * sizeof(t_colour *));
 	if (!pixels)
@@ -30,11 +30,10 @@ t_colour **allocate_pixels(int width, int height)
 	return (pixels);
 }
 
-// WE DO NOT NEED THIS IF WE CHECK FOR LIGHT IN THE SHOOT_RAY FUNCTION - OR ? -Z. |||| what? - Yeva
-t_inter ***allocate_inter(int width, int height)
+t_inter	***allocate_inter(int width, int height)
 {
-	t_inter ***section;
-	int y;
+	t_inter	***section;
+	int		y;
 
 	section = (t_inter ***)malloc(height * sizeof(t_inter **));
 	if (!section)

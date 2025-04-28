@@ -6,11 +6,26 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/26 17:35:49 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/27 10:52:38 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+// prints linked list
+void	print_list(t_inter *head, int x, int y)
+{
+	if (!head)
+		return;
+	printf("[%d, %d] -----------------------------------------------\n", x, y);
+	while (head)
+	{
+		printf("Intersection point: (%f, %f, %f) distance: %f, object: %d\n",
+			head->point.x, head->point.y, head->point.z,
+			head->distance, head->type);
+		head = head->next;
+	}
+}
 
 static void	print_spheres(t_sphere *sp)
 {

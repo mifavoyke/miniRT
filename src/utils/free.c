@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 19:47:48 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/27 10:47:49 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	free_scene(t_scene *scene)
 	free(scene);
 }
 
-void	free_section(t_inter **lst, void (*del)(void *)) // took ft_lstclear from libft and adjusted
+void	free_section(t_inter **lst, void (*del)(void *))
 {
 	t_inter	*node;
 	t_inter	*next;
@@ -71,16 +71,16 @@ void	free_section(t_inter **lst, void (*del)(void *)) // took ft_lstclear from l
 	*lst = NULL;
 }
 
-void free_inter(t_inter ***section, int h, int w)
+void	free_inter(t_inter ***section, int h, int w)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = -1;
 	while (++y < h)
 	{
 		if (!section[y])
-			continue;
+			continue ;
 		x = -1;
 		while (++x < w)
 		{
@@ -91,9 +91,9 @@ void free_inter(t_inter ***section, int h, int w)
 	free(section);
 }
 
-void free_pixels(t_colour **p, int h)
+void	free_pixels(t_colour **p, int h)
 {
-	int y;
+	int	y;
 
 	y = 0;
 	while (y < h)

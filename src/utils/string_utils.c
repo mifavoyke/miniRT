@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:09:26 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 19:31:59 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/27 10:55:20 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ int	is_numerical(char *str)
 	{
 		if (dot_comma_limit(str, &i, &comma, &has_dot))
 			return (0);
-		else if (!ft_isdigit(str[i]) && str[i] != ',' && str[i] != '.' && str[i] != '-')
+		else if (!ft_isdigit(str[i])
+			&& str[i] != ',' && str[i] != '.' && str[i] != '-')
 			return (0);
 		i++;
 	}

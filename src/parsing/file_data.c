@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:29:37 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 18:42:06 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/27 10:45:23 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ char	**store_file_contents(char *filename)
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-    {
-        ft_error("File not found or has wrong permissions.");
+	{
+		ft_error("File not found or has wrong permissions.");
 		return (NULL);
-    }
+	}
 	size = count_rows(fd);
 	close(fd);
 	if (size == 0)

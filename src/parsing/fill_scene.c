@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/26 19:28:04 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/27 10:45:42 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	fill_ambient(t_scene *scene, char **values)
 {
 	scene->a_count++;
 	if (scene->a_count > 1)
-	return (ft_error("Dublicate Ambient Light has been detected."));
+		return (ft_error("Dublicate Ambient Light has been detected."));
 	if (!values[1] || !values[2] || values[3])
-	return (ft_error("Ambient Light missing/extra parameters."));
+		return (ft_error("Ambient Light missing/extra parameters."));
 	scene->a.ratio = ft_atof(values[1]);
 	if (scene->a.ratio < 0.0 || scene->a.ratio > 1.0)
 		return (ft_error("Ambient ratio out of range."));
