@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 15:06:40 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/28 22:51:11 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ void move(t_minirt *minirt, float *coord, float translation)
     *coord += translation;
     print_coord(minirt->scene->c.point);
     if (generate_image(minirt))
+    {
+        cleanup(minirt);
         exit(ERROR);
+    }
 }
 
-// Rotates up and down. Rotation matrix:
+// Rotates up and down - pitch. Rotation matrix:
 // Rx = | 1    0        0     |
 //      | 0  cos(a)  -sin(a)  |
 //      | 0  sin(a)   cos(a)  |
@@ -35,7 +38,10 @@ void rotate_x(t_minirt *minirt, t_coord *original_vector, double angle)
     print_coord(new_vector);
     *original_vector = new_vector;
     if (generate_image(minirt))
+    {
+        cleanup(minirt);
         exit(ERROR);
+    }
 }
 
 // Rotates in spiral - yaw. Rotation matrix:
@@ -53,10 +59,13 @@ void rotate_y(t_minirt *minirt, t_coord *original_vector, double angle)
     print_coord(new_vector);
     *original_vector = new_vector;
     if (generate_image(minirt))
+    {
+        cleanup(minirt);
         exit(ERROR);
+    }
 }
 
-// Rotates left and right. Rotation matrix:
+// Rotates left and right - roll. Rotation matrix:
 // Rz = | cos(a)  -sin(a)  0 |
 //      | sin(a)   cos(a)  0 |
 //      |   0        0     1 |
@@ -71,7 +80,10 @@ void rotate_z(t_minirt *minirt, t_coord *original_vector, double angle)
     print_coord(new_vector);
     *original_vector = new_vector;
     if (generate_image(minirt))
+    {
+        cleanup(minirt);
         exit(ERROR);
+    }
 }
 
 void ft_hook(void *param)
@@ -103,7 +115,6 @@ void ft_hook(void *param)
         rotate_z(minirt, &minirt->scene->c.vector, ANGLE_RADIAN);
     if (mlx_is_key_down(minirt->mlx, MLX_KEY_RIGHT))
         rotate_z(minirt, &minirt->scene->c.vector, -ANGLE_RADIAN);
-    // moving objs
 }
 
 void scroll_zoom(double xdelta, double ydelta, void *param)

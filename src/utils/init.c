@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:07:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 16:34:54 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/28 22:18:22 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ void print_controls(void)
 {
     printf("\n=== MINI-RT CONTROLS ===\n");
     printf("Close Program:\n");
-    printf("  [ESC]               → Exit the program\n\n");
+    printf("  [ESC]             → Exit the program\n\n");
     printf("Camera Position:\n");
-    printf("  [W] / [S]           → Move camera forward/backward (Z-axis)\n");
-    printf("  [A] / [D]           → Move camera left/right (X-axis)\n");
-    printf("  Scroll              → Zoom in/out (Y-axis up/down)\n\n");
+    printf("  [W] / [S]         → Move camera forward/backward (Z-axis)\n");
+    printf("  [A] / [D]         → Move camera left/right (X-axis)\n");
+    printf("  Scroll            → Zoom in/out (Y-axis up/down)\n\n");
     printf("Camera Rotation:\n");
-    printf("  [UP] / [DOWN]       → Pitch camera up/down (rotate X-axis)\n");
-    printf("  [LEFT] / [RIGHT]    → Roll camera left/right (rotate Z-axis)\n");
-    printf("  [J] / [K]           → Yaw camera left/right (rotate Y-axis)\n\n");
+    printf("  [UP] / [DOWN]     → Pitch (rotate around X-axis - up/down)\n");
+    printf("  [J] / [K]         → Yaw (rotate Y-axis - left/right)\n\n");
+    printf("  [LEFT] / [RIGHT]  → Roll(rotate around Z-axis-tilt to sides)\n");
     printf("Additional:\n");
-    printf("  Mouse Scroll        → Zoom camera in/out\n");
+    printf("  Mouse Scroll      → Zoom camera in/out\n");
     printf("========================\n\n");
     printf("  Future: Add object control and light control if needed\n");
 }

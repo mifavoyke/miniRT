@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 18:09:08 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/28 22:25:33 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ int shoot_rays(t_minirt *minirt, t_scene *scene) // i moved the allocate interse
 	t_inter *intersection_list;
 
 	Tm = find_transformation_matrix(scene->c);
+	printf("TM: T(%f,%f,%f)  F(%f,%f,%f)  R(%f,%f,%f)  U(%f,%f,%f)", Tm.Tr.x, Tm.Tr.y, Tm.Tr.z, Tm.F.x, Tm.F.y, Tm.F.z, Tm.R.x, Tm.R.y, Tm.R.z, Tm.U.x, Tm.U.y, Tm.U.z);
 	y = -1;
-	printf("height: %d, width: %d\n", minirt->img_height, minirt->img_width);
 	while (++y < minirt->img_height)
 	{
 		x = -1;
@@ -156,14 +156,13 @@ int shoot_rays(t_minirt *minirt, t_scene *scene) // i moved the allocate interse
 			if (minirt->intersection[y][x]) // ERROR happens because when we resize, the new size is checked for x,y, but befre nothing as there so we try to access memory that was not used
 				free_list(&minirt->intersection[y][x], free); // ERROR
 			minirt->intersection[y][x] = intersection_list; // populate the intersection list
-			/*###### following if-else is temporary ###########################*/
+			/*###### following if-else is temporary - but cannot take it out becasue it wont work ??  ###########################*/
 			if (intersection_list)
 				minirt->pixels[y][x] = intersection_list->colour;
 			else
 				minirt->pixels[y][x] = minirt->scene->background;
-			/*##################################################################*/
-			// DECIDE: APPLY LIGHT HERE OR ITERATE OVER THE SCREEN ONE MORE TIME ? AS YOU DO IN LIGHT.C IN THE LAST FUNCTION -Z.
 		}
 	}
 	return (0);
 }
+
