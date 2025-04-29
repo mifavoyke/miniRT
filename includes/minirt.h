@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/28 17:19:10 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:36:28 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ typedef struct s_scene
 	float			viewport_distance;
 	float			viewport_width;
 	float			viewport_height;
+	t_matrix		Tm;
 	t_colour		background;
 }					t_scene;
 
@@ -220,6 +221,7 @@ float get_plane_intersection_t(t_coord ray, t_coord cam_origin, t_plane *pl);
 t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
 t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
 t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
+t_matrix find_transformation_matrix(t_camera c);
 
 // HOOKS
 void resize_hook(int width, int height, void* param);
@@ -264,6 +266,7 @@ void print_list(t_inter *head, int x, int y);
 void merge_sort(t_inter **list_head);
 int minirt_init(t_minirt *minirt, t_scene *scene);
 void	init_scene(t_scene *scene);
+void	print_tm(t_matrix Tm);
 
 
 // UTILS

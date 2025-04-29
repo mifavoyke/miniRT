@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 22:25:33 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/29 12:59:02 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,18 @@
 // 4. translation from point C0 to point Cn is applied as last column
 // final matrix: Tm = [ Rx  Fx  Ux  Tx ]   [ P0x ]
 //					  [ Ry  Fy  Uy  Ty ] * [ P0y ]
-//					  [ Rz  Fz  Uz  Ty ] * [ P0z ]
+//					  [ Rz  Fz  Uz  Tz ] * [ P0z ]
 //					  [  0   0   0   1 ] * [  1  ]
+// this matrix assumes that the camera starts at
+// 			Right = [1, 0, 0]
+// 		  Forward = [0, 1, 0]
+//			   Up = [0, 0, 1]
+// 		 Position = [0, 0, 0]
+// So the initial matrix Tm0 is:
+//				 | 1  0  0  0 |
+//				 | 0  1  0  0 |
+//				 | 0  0  1  0 |
+//				 | 0  0  0  1 |
 t_matrix find_transformation_matrix(t_camera c)
 {
 	t_matrix Tm;
@@ -137,19 +147,16 @@ int shoot_rays(t_minirt *minirt, t_scene *scene) // i moved the allocate interse
 {
 	int x;
 	int y;
-	t_matrix Tm;
 	t_coord ray;
 	t_inter *intersection_list;
 
-	Tm = find_transformation_matrix(scene->c);
-	printf("TM: T(%f,%f,%f)  F(%f,%f,%f)  R(%f,%f,%f)  U(%f,%f,%f)", Tm.Tr.x, Tm.Tr.y, Tm.Tr.z, Tm.F.x, Tm.F.y, Tm.F.z, Tm.R.x, Tm.R.y, Tm.R.z, Tm.U.x, Tm.U.y, Tm.U.z);
 	y = -1;
 	while (++y < minirt->img_height)
 	{
 		x = -1;
 		while (++x < minirt->img_width)
 		{
-			ray = get_viewport_ray(scene, Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
+			ray = get_viewport_ray(scene, scene->Tm, x, y); // get coordinate on viewport as now we can make ray(vector) from camera through it to the scene
 			intersection_list = create_intersection_list(scene, ray);
 			merge_sort(&intersection_list); // order intersection list
 			// print_list(intersection_list, x, y);

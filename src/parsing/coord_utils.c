@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coord_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:34:24 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 18:05:58 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/29 11:08:18 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_coord(t_coord coord)
 {
-	printf("(%.2f, %.2f, %.2f)\n", coord.x, coord.y, coord.z);
+	printf("(%f, %f, %f)\n", coord.x, coord.y, coord.z);
 }
 
 // sets coordinate/vector

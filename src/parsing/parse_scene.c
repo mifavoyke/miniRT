@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:55 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/28 15:08:54 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:35:34 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ t_scene	*create_scene(char *filename)
 		return (NULL);
 	}
 	free_arr(file_data);
+	scene->Tm = find_transformation_matrix(scene->c);
+	print_tm(scene->Tm);
 	scene->viewport_distance = 1.0;
 	scene->viewport_width = get_viewport_width(scene->c.view_degree,
 			scene->viewport_distance);

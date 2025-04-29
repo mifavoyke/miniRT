@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 16:36:01 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:59:17 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,19 @@ void	print_scene(t_scene *scene)
 	print_planes(scene->pl);
 	print_cylinders(scene->cy);
 	printf("\n");
+}
+
+// Tm = [ Rx  Fx  Ux  Tx ]   [ P0x ]
+//		[ Ry  Fy  Uy  Ty ] * [ P0y ]
+//		[ Rz  Fz  Uz  Tz ] * [ P0z ]
+//		[  0   0   0   1 ] * [  1  ]
+void	print_tm(t_matrix Tm)
+{
+	printf("\nTM:");
+	printf("\t[ %f  %f  %f  %f ]\n", Tm.R.x, Tm.F.x, Tm.U.x, Tm.Tr.x);
+	printf("\t[ %f  %f  %f  %f ]\n", Tm.R.y, Tm.F.y, Tm.U.y, Tm.Tr.y);
+	printf("\t[ %f  %f  %f  %f ]\n", Tm.R.z, Tm.F.z, Tm.U.z, Tm.Tr.z);
+	printf("\t[ %f  %f  %f  %f ]\n", 0.0, 0.0, 0.0, 1.0);
 }
 
 // void print_light_math_inputs(t_light_math *inputs)

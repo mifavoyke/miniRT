@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 18:13:28 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:04:25 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,87 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 	return (inter);
 }
 
+// t_inter *check_coat_intersections(t_coord base_ray_vector, t_coord ray, t_camera cam, t_cylinder *cy)
+// {
+// 	float d1;
+// 	float d2;
+// 	float t1;
+// 	float t2;
+// 	float root_part;
+// 	t_inter *inter1 = NULL;
+// 	t_inter *inter2 = NULL;
+// 	t_coord ray_axis_cross; // helper vector (n x a) used multiple times
+
+// 	ray_axis_cross = get_cross_product(ray, cy->vector);
+// 	root_part = get_dot_product(ray_axis_cross, ray_axis_cross) * pow(cy->diameter / 2, 2) - (get_dot_product(cy->vector, cy->vector) * (pow(get_dot_product(base_ray_vector, ray_axis_cross), 2)));
+	
+// 	if (get_dot_product(ray_axis_cross, ray_axis_cross) == 0) // line is parallel to the axis // if rppt_part < 0, there is no intersection, else intersection is the entire ray
+// 		return (NULL);
+// 	d1 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) + sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);
+// 	if (d1 > 1)
+// 	{
+// 		t1 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
+// 		if (t1 >= 0 && t1 <= (cy->height))
+// 			inter1 = make_inter((void *)cy, CYLINDER, d1, ray, cam, cy->colour, cy->id);
+// 	}
+	
+// 	d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) - sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);	
+// 	if (d2 > 1)
+// 	{
+// 		t2 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d2), base_ray_vector));
+// 		if (t2 >= 0 && t2 <= (cy->height))
+// 			inter2 = make_inter((void *)cy, CYLINDER, d2, ray, cam, cy->colour, cy->id);
+// 	}
+	
+// 	if (inter1 && inter2)
+// 		inter1->next = inter2;
+// 	if (inter1)
+// 		return (inter1);
+// 	if (inter2)
+// 		return (inter2);
+// 	return (NULL);
+// }
+
+// t_inter *get_caps_intersections(t_cylinder *cy, t_coord ray, t_coord base_ray_vector, t_camera cam)
+// {
+// 	float t1;
+// 	float t2;
+// 	float d1;
+// 	float d2;
+// 	t_inter *inter1 = NULL;
+// 	t_inter *inter2 = NULL;
+	
+// 	// if ray is parallel to end caps, we do not render them --> NULL
+// 	if (get_dot_product(cy->vector, ray) == 0)
+// 		return (NULL);
+// 	// check bottom cap intersection
+// 	d1 = get_dot_product(cy->vector, base_ray_vector)/ get_dot_product(cy->vector, ray);
+// 	if (d1 > 1)
+// 	{
+// 		t1 = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector), subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
+// 		if (t1 < pow(cy->diameter / 2, 2) && t1 > 0)
+// 			inter1 = make_inter((void *)cy, PLANE, d1, ray, cam, cy->colour, cy->id);
+// 	}
+		
+// 	// check top cap intersection
+// 	d2 = get_dot_product(cy->vector, (add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height)))) / get_dot_product(cy->vector, ray);
+// 	if (d2 > 1)
+// 	{
+// 		t2 = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, d2), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))), 
+// 								subtract_vectors(multiply_vector_by_constant(ray, d2), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))));
+// 		if (t2 < pow(cy->diameter / 2, 2) && t2 > 0)
+// 			inter2 = make_inter((void *)cy, PLANE, d2, ray, cam, cy->colour, cy->id);
+// 	}
+
+// 	if (inter1 && inter2)
+// 		inter1->next = inter2;
+// 	if (inter1)
+// 		return (inter1);
+// 	if (inter2)
+// 		return (inter2);
+// 	return (NULL);
+// }
+
 // any point in ray: P = C + t*ray
 // cylinder is defined by distance to its axis, not to a point or a plane, unlike a sphere
 // cylinder is defined by all points that are at a fixed distance r from the cylinder’s axis
@@ -169,16 +250,22 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 	t_inter *inter2 = NULL;
 	t_inter *inter3 = NULL;
 	t_inter *inter4 = NULL;
-	t_coord base_center;
+	t_coord base_center; // 
 	t_coord ray_axis_cross; // helper vector (n x a) used multiple times
 	t_coord base_ray_vector; // helper vector (b - c) where b os center of the base and c is point on the ray
 	
-	base_center = add_vectors(cy->centre, multiply_vector_by_constant(cy->vector, -(cy->height / 2)));
+	//base_center = add_vectors(cy->centre, multiply_vector_by_constant(cy->vector, -(cy->height / 2)));
+	base_center = subtract_vectors(cy->centre, multiply_vector_by_constant(cy->vector, cy->height / 2));
 	ray_axis_cross = get_cross_product(ray, cy->vector);
 	base_ray_vector = make_vector(cam.point, base_center);
 	root_part = get_dot_product(ray_axis_cross, ray_axis_cross) * pow(cy->diameter / 2, 2) - (get_dot_product(cy->vector, cy->vector) * (pow(get_dot_product(base_ray_vector, ray_axis_cross), 2)));
 	
 	// check cylinder intersections
+	if (root_part < 0) // no intersection
+	{
+		d1 = 0;
+		d2 = 0;	
+	}	
 	if (get_dot_product(ray_axis_cross, ray_axis_cross) == 0) // line is parallel to the axis
 	{
 		if (root_part < 0) // no intersection
@@ -194,41 +281,36 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 	}
 	else
 	{
+		// first coat intersection
 		d1 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) + sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);
+		t1 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
+		if (d1 > 0 && t1 >= 0 && t1 <= (cy->height))  // INTERSECTION WITH COAT
+			inter1 = make_inter((void *)cy, CYLINDER, d1, ray, cam, cy->colour, cy->id);
+		
+		// second coat intersection
 		d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) - sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);	
+		t2 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d2), base_ray_vector));
+		if (d2 > 0 && t2 >= 0 && t2 <= (cy->height)) 	// INTERSECTION WITH COAT
+			inter2 = make_inter((void *)cy, CYLINDER, d2, ray, cam, cy->colour, cy->id);
 	}
-	t1 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
-	t2 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d2), base_ray_vector));
-	if (t1 >= 0 && t1 <= (cy->height))  // INTERSECTION WITH COAT
-		inter1 = make_inter((void *)cy, CYLINDER, d1, ray, cam, cy->colour, cy->id);
-	else
-		inter1 = NULL;
-
-	if (t2 >= 0 && t2 <= (cy->height)) 	// INTERSECTION WITH COAT
-		inter1 = make_inter((void *)cy, CYLINDER, d2, ray, cam, cy->colour, cy->id);
-	else
-		inter2 = NULL;
 
 	// checking caps intersections if the ray is not parallel with them:
 	if (get_dot_product(cy->vector, ray) != 0)
 	{
 		// check bottom cap intersection
 		d3 = get_dot_product(cy->vector, base_ray_vector)/ get_dot_product(cy->vector, ray);
-		t3 = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector), subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
-		if (t3 < pow(cy->diameter / 2, 2) && t3 > 0)  // INTERSECTION WITH BOTTOM CAP
+		t3 = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, d3), base_ray_vector), subtract_vectors(multiply_vector_by_constant(ray, d3), base_ray_vector));
+		if (d1 > 0 && t3 < pow(cy->diameter / 2, 2) && t3 > 0)  // INTERSECTION WITH BOTTOM CAP
 			inter3 = make_inter((void *)cy, PLANE, d3, ray, cam, cy->colour, cy->id);
-		else
-			inter3 = NULL;
 			
 		// check top cap intersection
 		d4 = get_dot_product(cy->vector, (add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height)))) / get_dot_product(cy->vector, ray);
 		t4 = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, d4), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))), 
 							 subtract_vectors(multiply_vector_by_constant(ray, d4), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))));
-		if (t4 < pow(cy->diameter / 2, 2) && t4 > 0)  // INTERSECTION WITH BOTTOM CAP
+		if (d2 > 0 && t4 < pow(cy->diameter / 2, 2) && t4 > 0)  // INTERSECTION WITH BOTTOM CAP
 			inter4 = make_inter((void *)cy, PLANE, d4, ray, cam, cy->colour, cy->id);
 	}
 			
-	
 	// return intersections that are in front of the camera
 	if (inter1)
 	{
