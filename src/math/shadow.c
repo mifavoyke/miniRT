@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 15:21:35 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:58:20 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,26 @@ bool does_ray_intersect_cylinder(t_coord ray_origin, t_coord ray_dir, t_cylinder
 	if ((t1 > 0.001 && t1 < max_distance && fabs(h1) <= cy->height / 2) || (t2 > 0.001 && t2 < max_distance && fabs(h2) <= cy->height / 2))
 		return (true);
 	return (false);
+}
+
+// returns the scalar t at which the ray intersects the plane
+float	get_plane_inter(t_coord ray, t_coord cam_origin, t_plane *pl)
+{
+	t_coord	to_plane;
+	float	denom;
+	float	t;
+
+	to_plane = make_vector(cam_origin, pl->point);
+	denom = get_dot_product(ray, pl->vector);
+	if (fabsf(denom) < 1e-6)
+	{
+		if (fabsf(get_dot_product(to_plane, pl->vector)) < 1e-6)
+			t = 0.1;
+		else
+			t = -1;
+	}
+	t = get_dot_product(to_plane, pl->vector) / denom;
+	return (t);
 }
 
 int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs, int current_id)

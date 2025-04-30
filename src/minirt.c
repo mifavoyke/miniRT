@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/28 18:02:00 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:20:07 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	cleanup(t_minirt *minirt)
 }
 
 // iterate over 2Dpixels array and render color stored for each pixel to screen
-void render_pixels(t_minirt *minirt)
+void	render_pixels(t_minirt *minirt)
 {
 	int			x;
-    int			y;
-    t_colour	c;
+	int			y;
+	t_colour	c;
 
 	y = -1;
 	while (++y < minirt->img_height)
@@ -40,7 +40,7 @@ void render_pixels(t_minirt *minirt)
 	}
 }
 
-int generate_image(t_minirt *minirt)
+int	generate_image(t_minirt *minirt)
 {
 	shoot_rays(minirt, minirt->scene);
 	lighting(minirt);
@@ -54,7 +54,7 @@ int32_t	main(int argc, char *argv[])
 	t_minirt	minirt;
 
 	if (argc != 2)
-		return (ft_error("Wrong input. Use:\t ./minirt [scene].rt\n"));
+		return (ft_error("Wrong input :(. Use:\t ./minirt [scene].rt\n"));
 	scene = create_scene(argv[1]);
 	if (!scene)
 		return (ERROR);
@@ -65,8 +65,6 @@ int32_t	main(int argc, char *argv[])
 	}
 	if (generate_image(&minirt) == ERROR)
 		return (ERROR);
-	print_controls();
-	
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_scroll_hook(minirt.mlx, &scroll_zoom, (void *)&minirt);
 	mlx_resize_hook(minirt.mlx, resize_hook, (void *)&minirt);

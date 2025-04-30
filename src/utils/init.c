@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:07:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 11:17:58 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:18:47 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	minirt_init(t_minirt *rt, t_scene *scene)
 	rt->img = mlx_new_image(rt->mlx, rt->img_width, rt->img_height);
 	if (!rt->img || (mlx_image_to_window(rt->mlx, rt->img, 0, 0) < 0))
 		return (ERROR);
+	print_controls();
 	return (0);
 }
 

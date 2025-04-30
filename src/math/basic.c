@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 15:00:48 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:16:40 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,20 @@ double	scale(double num, double new_min, double new_max, double old_max)
 
 // calculates width of the viewport plane (representing screen) in the 3d space
 // radians re used for calculation in functions !
-float get_viewport_width(float angle_deg, float distance)
+float	get_viewport_width(float angle_deg, float distance)
 {
-	float   viewport_width;
-	float   angle_rad;
+	float	viewport_width;
+	float	angle_rad;
 
 	angle_rad = angle_deg * M_PI / 180.0;
-	viewport_width = 2 * (tan(angle_rad / 2) * distance);  
+	viewport_width = 2 * (tan(angle_rad / 2) * distance);
 	return (viewport_width);
 }
 
-// calculates height of the viewport plane (representing screen) based on viewport width
+// calculates height of viewport plane based on viewport width
+// viewport plane represents screen
 // keeps the width:height ratio of screen 
-float get_viewport_height(float viewport_width)
+float	get_viewport_height(float viewport_width)
 {
 	return (viewport_width * HEIGHT / WIDTH);
 }

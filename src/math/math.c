@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 13:41:15 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:14:38 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	t_coord	ray_vector;
 
 	pv.x = scale(x + 0.5, -scene->viewport_width / 2,
-		scene->viewport_width / 2, WIDTH);
+			scene->viewport_width / 2, WIDTH);
 	pv.y = scene->viewport_distance;
 	pv.z = scale(y + 0.5, scene->viewport_height / 2,
-		-scene->viewport_height / 2, HEIGHT);
+			-scene->viewport_height / 2, HEIGHT);
 	p_new.x = Tm.R.x * pv.x + Tm.F.x * pv.y + Tm.U.x * pv.z + Tm.Tr.x;
 	p_new.y = Tm.R.y * pv.x + Tm.F.y * pv.y + Tm.U.y * pv.z + Tm.Tr.y;
 	p_new.z = Tm.R.z * pv.x + Tm.F.z * pv.y + Tm.U.z * pv.z + Tm.Tr.z;
@@ -81,13 +81,13 @@ t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 
 // creates linked list of intersections of ray with all scene objects
 // --> for one pixel, checks all objects in the scene
-t_inter *create_intersection_list(t_scene *scene, t_coord ray)
+t_inter	*create_intersection_list(t_scene *scene, t_coord ray)
 {
-	t_sphere *temp_sp;
-	t_plane *temp_pl;
-	t_cylinder *temp_cy;
-	t_inter *head;
-	t_inter *new_node;
+	t_sphere	*temp_sp;
+	t_plane		*temp_pl;
+	t_cylinder	*temp_cy;
+	t_inter		*head;
+	t_inter		*new_node;
 
 	head = NULL;
 	new_node = NULL;
@@ -122,12 +122,12 @@ t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 // so the closest intersection in front of the camera is head of the list
 // one by one frees and repopulates minirt->intersections array of linked lists
 // also fills pixels array with colour correspodning to object for each pixel
-int shoot_rays(t_minirt *minirt, t_scene *scene)
+int	shoot_rays(t_minirt *minirt, t_scene *scene)
 {
-	int x;
-	int y;
-	t_coord ray;
-	t_inter *intersection_list;
+	int		x;
+	int		y;
+	t_coord	ray;
+	t_inter	*intersection_list;
 
 	y = -1;
 	while (++y < minirt->img_height)
