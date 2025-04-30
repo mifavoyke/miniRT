@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/23 18:57:51 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:15:01 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,28 @@ t_coord add_vectors(t_coord v1, t_coord v2)
 	new_v.y = v1.y + v2.y;
 	new_v.z = v1.z + v2.z;
 	return (new_v);
+}
+
+// rotates vector around axis by angle in radians using Rodriguez's formula
+// WE USE LEFT-HANDED SYSTEM - F vector is minus cross product of RxU
+// so the sinus component is set to minus: -sinf(angle) 
+t_coord	rotate_vector_around_axis(t_coord v, t_coord axis, float angle)
+{
+	t_coord	result;
+	float	c;
+	float	s;
+
+	c = cosf(angle);
+	s = -sinf(angle);
+	normalize(&axis);
+	result.x = v.x * c
+		+ (1 - c) * (axis.x * (axis.x * v.x + axis.y * v.y + axis.z * v.z))
+		+ s * (axis.y * v.z - axis.z * v.y);
+	result.y = v.y * c
+		+ (1 - c) * (axis.y * (axis.x * v.x + axis.y * v.y + axis.z * v.z))
+		+ s * (axis.z * v.x - axis.x * v.z);
+	result.z = v.z * c
+		+ (1 - c) * (axis.z * (axis.x * v.x + axis.y * v.y + axis.z * v.z))
+		+ s * (axis.x * v.y - axis.y * v.x);
+	return (result);
 }

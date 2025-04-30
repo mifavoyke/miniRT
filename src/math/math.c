@@ -6,53 +6,44 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/29 12:59:02 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:55:57 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-/* THIS FILE IS WHERE THE RENDERING MAGIC HAPPENS (WITHOUT LIGHT) */
-
-// finds transformation matrix of camera from origin to defined position C
-// from C0[0,0,0] and v0(0, 1, 0) to Cn(cx, cy, cz) and vn(vx, vy, vz)
-// to be applied to all points of the viewport - each pixel centre
 // maps camera axis to world axis
-// initially, camera is placed in origin and its forward orientation is along y
-// then:
-// 1. new orientation vn is set as camera's y(forward) axis
-// 2. camera's x(right) axis is found as cross product of camera forward and global up vectors
-// 3. camera's z(camera's up) axis is found as cross product of camera's forward and camera's right directions
-// --> the R, F, U vectors form the matrice's x, y, z columns
-// 4. translation from point C0 to point Cn is applied as last column
-// final matrix: Tm = [ Rx  Fx  Ux  Tx ]   [ P0x ]
-//					  [ Ry  Fy  Uy  Ty ] * [ P0y ]
-//					  [ Rz  Fz  Uz  Tz ] * [ P0z ]
-//					  [  0   0   0   1 ] * [  1  ]
-// this matrix assumes that the camera starts at
-// 			Right = [1, 0, 0]
-// 		  Forward = [0, 1, 0]
-//			   Up = [0, 0, 1]
-// 		 Position = [0, 0, 0]
+// cam orientation is described by vectors R,F,U defined in world coordinates
+// this matrix assumes that init camera local vectors in world coortinates are:
+// 		 Right = [1, 0, 0] - along x
+// 	   Forward = [0, 1, 0] - along y
+//			Up = [0, 0, 1] - along z
+//    Position = [0, 0, 0] - placed in Origin
 // So the initial matrix Tm0 is:
 //				 | 1  0  0  0 |
 //				 | 0  1  0  0 |
 //				 | 0  0  1  0 |
 //				 | 0  0  0  1 |
-t_matrix find_transformation_matrix(t_camera c)
+//  final : Tm = [ Rx  Fx  Ux  Tx ]   [ P0x ]
+//	matrix		 [ Ry  Fy  Uy  Ty ] * [ P0y ]
+//				 [ Rz  Fz  Uz  Tz ] * [ P0z ]
+//				 [  0   0   0   1 ] * [  1  ]
+// if F(0, 0, 1/-1) we would be making cross product of colinear vectors !wrong
+// global up to be able to create cross product
+t_matrix	find_transformation_matrix(t_camera c)
 {
-	t_matrix Tm;
-	t_coord global_up; // global up to be able to create cross product
+	t_matrix	Tm;
+	t_coord		global_up;
 
-	global_up = set_coord(0.0, 0.0, 1.0);
 	Tm.Tr = set_coord(c.point.x, c.point.y, c.point.z);
+	global_up = set_coord(0.0, 0.0, 1.0);
 	Tm.F = c.vector;
-	if (Tm.F.x == 0 && Tm.F.y == 0 && Tm.F.z == 1) // if F (0, 0, 1) - we would be making cross product of colinear vectors which is wrong
+	if (Tm.F.x == 0 && Tm.F.y == 0 && Tm.F.z == 1)
 	{
 		Tm.U = set_coord(0, -1, 0);
 		Tm.R = set_coord(1, 0, 0);
 	}
-	else if (Tm.F.x == 0 && Tm.F.y == 0 && Tm.F.z == -1) // if F (0, 0, -1)
+	else if (Tm.F.x == 0 && Tm.F.y == 0 && Tm.F.z == -1)
 	{
 		Tm.U = set_coord(0, 1, 0);
 		Tm.R = set_coord(1, 0, 0);
@@ -67,21 +58,19 @@ t_matrix find_transformation_matrix(t_camera c)
 	return (Tm);
 }
 
-// maps coordinate from top-left 2d screen to the viewport plane in 3d
-// and finds the final vector from camera to that pixel in 3D => the ray
-// in screen, one pixel is one unit defined by x and y, but they specify start of the pixel
-// the middle of pixel is pixel x, y pls 0.5 --> P[x + 0.5, y + 0.5]
-t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
+// maps coordinate from top-left 2d screen to the viewport plane in 3D
+// and applies Tm to find final vector from camera to that pixel in 3D=>THE RAY
+t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 {
-	t_coord Pv;			// point in viewport without transformation
-	t_coord Pnew;		// point in 3d space relative to camera
-	t_coord ray_vector; // resulting vector
+	t_coord	Pv;
+	t_coord	Pnew;
+	t_coord	ray_vector;
 
-	// transform coordinate of center of the pixel from 2D screen coord relative to top left corner of the screen to 2D viewport coord relative to center of viewport
-	Pv.x = scale(x + 0.5, -scene->viewport_width / 2, scene->viewport_width / 2, WIDTH);
+	Pv.x = scale(x + 0.5, -scene->viewport_width / 2,
+		scene->viewport_width / 2, WIDTH);
 	Pv.y = scene->viewport_distance;
-	Pv.z = scale(y + 0.5, scene->viewport_height / 2, -scene->viewport_height / 2, HEIGHT);
-	// applying transformation matrix to point P0 to get its position in 3D
+	Pv.z = scale(y + 0.5, scene->viewport_height / 2,
+		-scene->viewport_height / 2, HEIGHT);
 	Pnew.x = Tm.R.x * Pv.x + Tm.F.x * Pv.y + Tm.U.x * Pv.z + Tm.Tr.x;
 	Pnew.y = Tm.R.y * Pv.x + Tm.F.y * Pv.y + Tm.U.y * Pv.z + Tm.Tr.y;
 	Pnew.z = Tm.R.z * Pv.x + Tm.F.z * Pv.y + Tm.U.z * Pv.z + Tm.Tr.z;
@@ -90,12 +79,16 @@ t_coord get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	return (ray_vector);
 }
 
-// creates linked list of all intersections of a ray with all scene objects (for one pixel, checks all objects)
-// is not sorted, the intersections are in order same as they are ordered in the .rt file - must be sorted
-// HAS TO BE FREED 
+// void find_oject_intersections(enum e_obj_t type, void *obj, void *func())
+// {
+	
+// }
+
+// creates linked list of intersections of ray with all scene objects
+// --> for one pixel, checks all objects
 t_inter *create_intersection_list(t_scene *scene, t_coord ray)
 {
-	t_sphere *temp_sp; // maybe create a void * list of objects - spheres,planes, cylinders
+	t_sphere *temp_sp;
 	t_plane *temp_pl;
 	t_cylinder *temp_cy;
 	t_inter *head;
@@ -167,9 +160,10 @@ int shoot_rays(t_minirt *minirt, t_scene *scene) // i moved the allocate interse
 			if (intersection_list)
 				minirt->pixels[y][x] = intersection_list->colour;
 			else
-				minirt->pixels[y][x] = minirt->scene->background;
+				minirt->pixels[y][x] = minirt->scene->bg;
 		}
 	}
 	return (0);
 }
+
 

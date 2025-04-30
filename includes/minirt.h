@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/29 21:54:14 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/30 11:15:17 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ typedef struct s_scene
 	float			viewport_width;
 	float			viewport_height;
 	t_matrix		Tm;
-	t_colour		background;
+	t_colour		bg;
 }					t_scene;
 
 typedef struct s_minirt
@@ -200,6 +200,7 @@ t_coord multiply_vector_by_constant(t_coord v, float n);
 t_coord subtract_vectors(t_coord from, t_coord to);
 t_coord move_point_by_vector(t_coord point, t_coord vector);
 t_coord add_vectors(t_coord v1, t_coord v2);
+t_coord	rotate_vector_around_axis(t_coord v, t_coord axis, float angle);
 
 // MATH - basic.c
 int equals(float a, float b, float deviation);
@@ -224,6 +225,10 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 t_matrix find_transformation_matrix(t_camera c);
 
 // HOOKS
+void	move(t_minirt *minirt, t_coord direction, float translation);
+void	rotate_x(t_minirt *minirt, t_coord *original_vector, float angle);
+void	rotate_y(t_minirt *minirt, t_coord *original_vector, float angle);
+void	rotate_z(t_minirt *minirt, t_coord *original_vector, float angle);
 void resize_hook(int width, int height, void* param);
 void ft_hook(void *param);
 void print_controls(void);

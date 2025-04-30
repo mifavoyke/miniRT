@@ -24,6 +24,7 @@ https://www.realtimerendering.com/intersections.html
 * FOR YEVA *
 - NEW: before we were allocating new inter array for each new image, now we just allocate once and when creating new image, free the existing list of intersections there and assign the newly generated list intead - it happend in the math.c - shoot_rays() - seems faster now
 - ALSO i removed the init pixels function and if there is no intersectoin, we assign the default background color in the shoot_rays again
+- CAMERA MOVEMENT: now movement happend relaive to camera, not relative to world origin 
 
 * FOR ZUZANA *
 check the transformations and rotations with keys
@@ -45,6 +46,8 @@ check the transformations and rotations with keys
 - dot product: operation that takes two vectors and returns a single scalar value
 - length of a vector = square root of the dot product of the vector by itself
 - changing camera viewpoint coordinates ensures translation, changing normal vector ensures rotation
+- camera is positioned in 3D space and oriented by a transformation matrix from default position (0, 0, 0) and default forward vector (0, 1, 0) to its specififed orientation and point in 3D
+- in most cases, no, you do not need to explicitly normalize the camera's orientation vectors after applying the rotation matrices, because rotation matrices are orthogonal. This means that, after applying a rotation matrix, the basis vectors (right, forward, up) are guaranteed to remain normalized if they were initially normalized. BUT we normalize to avoid small deviations whn working with floats
 
 TRANSLATION AND ROTATION
 1. Translation (Movement)
@@ -65,6 +68,27 @@ Matrix Representation (2D, counterclockwise by angle θ):
 | sin(θ)   cos(θ)  0 |
 |   0        0     1 
 3. catastrophic cancellation - Still, on computers, we have a limited capacity to represent real numbers with the precision needed to calculate these roots as accurately as possible. Thus the formula suffers from the effect of a loss of significance. This happens when b and the root of the discriminant don't have the same sign but have values very close to each other. Because of the limited numbers used to represent floating numbers on the computer, in that particular case, the numbers would either cancel out when they shouldn't (this is called catastrophic cancellation) or round off to an unacceptable error (you will easily find more information related to this topic on the internet).
+--> how transformation matrix is found:  
+// finds transformation matrix of camera from origin to defined position C
+// from C0[0,0,0] and v0(0, 1, 0) to Cn(cx, cy, cz) and vn(vx, vy, vz)
+// to be applied to all points of the viewport - each pixel centre
+// 1. initially, camera is placed in O[0,0,0] with orientation vector (0,1,0)-y
+// 2. new orientation vn is set as camera's y(forward) axis
+// 3. camera's x(right) axis is found as cross product of camera forward and global up vectors
+// 4. camera's z(camera's up) axis is found as cross product of camera's forward and camera's right directions
+// --> the R, F, U vectors form the matrice's x, y, z columns
+// 5. translation from point C0 to point Cn is applied as last column
+--> mapping pixel from 2d top-left screen to 3D viewport placed in the scene AND creating the ray
+// 0. we start with pixel P0 in screen described by P0[x,y]
+// 1. find Pv - transform pixel from different systems and find its center:
+// from center of pixel in 2D in top left corner of screen
+// to 2D viewport coord relative to center of viewport
+// x,y specify start of the pixel - middle is P[x + 0.5, y + 0.5]
+// 2. apply transformation matrix to point Pv to get its position in 3D
+// Pv = point in viewport without transformation
+// Pnew = point in 3d space relative to camera
+// ray_vector = resulting vector
+
 
 ** PAIN POINTS DURING PROJECT **
 - deciding the origin of the scene to which all objects including camera are relative

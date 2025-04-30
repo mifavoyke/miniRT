@@ -6,12 +6,11 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:55 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/29 12:35:34 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:19:27 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
 
 // gets array of values from one file row
 char	**row_values_into_arr(char *file_row)
@@ -76,20 +75,12 @@ t_scene	*create_scene(char *filename)
 		return (NULL);
 	scene = (t_scene *)malloc(sizeof(t_scene));
 	if (!scene)
-	{
-		free_arr(file_data);
-		return (NULL);
-	}
+		return (free_arr(file_data), NULL);
 	init_scene(scene);
 	if (fill_scene(scene, file_data) == ERROR)
-	{
-		free_arr(file_data);
-		free_scene(scene);
-		return (NULL);
-	}
+		return (free_arr(file_data), free_scene(scene), NULL);
 	free_arr(file_data);
 	scene->Tm = find_transformation_matrix(scene->c);
-	print_tm(scene->Tm);
 	scene->viewport_distance = 1.0;
 	scene->viewport_width = get_viewport_width(scene->c.view_degree,
 			scene->viewport_distance);

@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/29 18:04:25 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:52:41 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 // 2. solve for t - t means how far along the cylinder axis the point is
 // --> -h/2 <= t <= h/2
 // 3. find caps intersections
+// todo: when we are close to cylinder cap, it idapears but the cylinder coat stays - fix ! 
 t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 {
 	float root_part;
