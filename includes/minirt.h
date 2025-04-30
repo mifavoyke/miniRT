@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/30 11:15:17 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:37:53 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ typedef struct s_light_math
 	t_coord			normal; // calculated differently for every object
 	t_coord			shadow_ray;
 	t_coord			shadow_vector;
-	t_coord shadow_origin;
-	float max_length;
+	t_coord			shadow_origin;
+	float			max_length;
 	t_coord			incident_l; // incident light vector
 	float			scalar_nl; // cosine between the normal and incident light vector
 	t_coord			incident_v; // incident vector starting from the camera (viewpoint) to P
@@ -127,6 +127,17 @@ typedef struct s_cylinder
 }						t_cylinder;
 
 /* ----------------------- MATH CALCULATIONS ------------------------------ */
+
+typedef struct s_quadr_coef
+{
+	float			a;
+	float			b;
+	float			c;
+	float			D;
+	float			t1;
+	float			t2;
+}					t_quadr_coef;
+
 typedef struct s_matrix
 {
 	t_coord			R;
@@ -204,25 +215,25 @@ t_coord	rotate_vector_around_axis(t_coord v, t_coord axis, float angle);
 
 // MATH - basic.c
 int equals(float a, float b, float deviation);
-float get_discriminant(float a, float b, float c);
 double scale(double num, double new_min, double new_max, double old_max);
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+void	find_roots(t_quadr_coef *qc);
 
 // MATH - math.c
 float get_viewport_height(float viewport_width);
 float get_viewport_width(float angle_deg, float distance);
-float get_discriminant(float a, float b, float c);
 t_coord make_vector(t_coord from, t_coord to);
 t_coord get_point_on_vector(t_coord C, t_coord v, float d);
 float get_viewport_width(float angle_deg, float distance);
 int shoot_rays(t_minirt *minirt, t_scene *scene);
-float get_plane_intersection_t(t_coord ray, t_coord cam_origin, t_plane *pl);
+float get_plane_inter(t_coord ray, t_coord cam_origin, t_plane *pl);
 
 // MATH - intersections.c
 t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
 t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
 t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 t_matrix find_transformation_matrix(t_camera c);
+
 
 // HOOKS
 void	move(t_minirt *minirt, t_coord direction, float translation);

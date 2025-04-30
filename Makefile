@@ -23,8 +23,9 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/math/light.c \
 		$(SRC_DIR)/math/math.c \
 		$(SRC_DIR)/math/shadow.c \
-		$(SRC_DIR)/math/vector.c \
-		$(SRC_DIR)/math/viewport.c \
+		$(SRC_DIR)/math/vector_i.c \
+		$(SRC_DIR)/math/vector_ii.c \
+		$(SRC_DIR)/math/vector_iii.c \
 		$(SRC_DIR)/parsing/color_utils.c \
 		$(SRC_DIR)/parsing/coord_utils.c \
 		$(SRC_DIR)/parsing/file_data.c \

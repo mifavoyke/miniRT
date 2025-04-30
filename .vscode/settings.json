@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "minirt.h": "c",
-        "vector": "c"
+        "vector": "c",
+        "random": "c"
     }
 }

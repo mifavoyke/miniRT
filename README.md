@@ -24,17 +24,14 @@ https://www.realtimerendering.com/intersections.html
 * FOR YEVA *
 - NEW: before we were allocating new inter array for each new image, now we just allocate once and when creating new image, free the existing list of intersections there and assign the newly generated list intead - it happend in the math.c - shoot_rays() - seems faster now
 - ALSO i removed the init pixels function and if there is no intersectoin, we assign the default background color in the shoot_rays again
-- CAMERA MOVEMENT: now movement happend relaive to camera, not relative to world origin 
+- CAMERA MOVEMENT: now movement happens relative to camera, not relative to world origin 
 
 * FOR ZUZANA *
-check the transformations and rotations with keys
 - i think we should handle being inside objects - now when first inter is behind camera, the second inter - so calculate even inters that are behind the camera and set the other inter to black - if the inter in front of the camera is black, it is inside and no difused light applies
-- redo the rotations with the rotation matrices
 - redo the printf for errors to write to stderr
 - cylinder, maybe parboloid?
 - multithreding - parallelization
 - maybe optimization as in the article "Starter ray tracing math" above
-- handle pixels in resize hook - now they are not freed and not reallocated when the size is different - have to do this 
 - should we change viewport width in minirt struct when resizing? 
 - rename cy->vector to cy->axis
 
@@ -89,6 +86,26 @@ Matrix Representation (2D, counterclockwise by angle θ):
 // Pnew = point in 3d space relative to camera
 // ray_vector = resulting vector
 
+CYLINDER INTRESECTION:
+// any point in ray: P = C + t*ray
+// cylinder is defined by distance to its axis, not to a point or a plane, unlike a sphere
+// cylinder is defined by all points that are at a fixed distance r from the cylinder’s axis
+// to check whether a point lies on the cylinder surface, you need to find how far it is from the axis (not from a point)
+// but in 3D, this “distance to a line” is hard to work with directly — so we project everything onto the plane perpendicular to the axis
+// project both the ray(helper 2) and vector from the cylinder axis to the ray origin(helper 1) onto the plane perpendicular to the cylinder’s axis
+// then the problem becomes 2D problem of a line intersecting a circle of radius r
+// cylinder coat: || a x (p - b) || = r -> a=axis vector, b=cylinder base center, p=any point on coat
+// cylinder height: 0 <= a o (p - b) <= h
+// line: t = c + n*d  -> c=point on line, n=line unit vector, d=distance 
+// t = a o (c + n*d - b)
+// 1. solve for d
+// Solving for d only gives you the distance at which the line intersects the infinite cylinder
+// To see if the intersection occurs within the part we consider the actual cylinder, we need to check if
+// the signed distance t from the cylinder base b along the axis a to the intersection p is within -h/2 and h/2 cylinder
+// 2. solve for t - t means how far along the cylinder axis the point is
+// --> -h/2 <= t <= h/2
+// 3. find caps intersections
+
 
 ** PAIN POINTS DURING PROJECT **
 - deciding the origin of the scene to which all objects including camera are relative
@@ -97,12 +114,13 @@ Matrix Representation (2D, counterclockwise by angle θ):
 - using dummies and drivers - one partner did parsing, other started working with dummy object, later replaces with real data object
 - the program calculates something but it is lot of work to check if the values are actually true
 - working with different orientation and assignment of the axis
+- rotations and trasformation of the camera - we haev to transform around teh local camera axis and specify it with its R,F,U vectors by changing them using Rodriguezes formula and update the transformation matrix
+- cylinder intersection !!!
 
 CHECK OUT
 - Bresenham-algorithm = transforms 2d coordinate to 3d space 
 - camera-to-world transformation matrix
 - gimbal lock and code rotations for rotations of camera
-- are we gonna do preprocessing?
 
 
 * TEST CASES *

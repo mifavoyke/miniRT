@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 11:46:57 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:21:35 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int is_in_shadow(t_minirt *minirt, t_light_math *light_inputs, int current_id)
 	tmp_pl = minirt->scene->pl;
 	while (tmp_pl)
 	{
-		t = get_plane_intersection_t(light_inputs->shadow_ray, light_inputs->shadow_origin, tmp_pl);
+		t = get_plane_inter(light_inputs->shadow_ray, light_inputs->shadow_origin, tmp_pl);
 		if (t > 0.001 && t < light_inputs->max_length)
 			return (1);
 		tmp_pl = tmp_pl->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/26 19:55:15 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/04/30 15:00:48 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,29 @@ int	equals(float a, float b, float deviation)
 	return (fabs(a - b) <= deviation);
 }
 
-// self explanatory
+// gets quadratic coefficients a,b,c, calculates discriminant, and finds roots
+// takes in pointers to t1,t2 and changes their values
 // if D > 0 --> 2 roots (the ray enters and exits - 2 spots)
 //    D = 0 --> 1 root (touches the surface)
 //    D < 0 --> no roots (does not intersect)
-float get_discriminant(float a, float b, float c)
+void	find_roots(t_quadr_coef *qc)
 {
-	return (pow(b, 2) - 4 * a * c);
+	qc->D = pow(qc->b, 2) - (4 * qc->a * qc->c);
+	if (qc->D < 0 || qc->a == 0)
+	{
+		qc->t1 = -1.0;
+		qc->t2 = -1.0;
+	}
+	else if (qc->D == 0)
+	{
+		qc->t1 = (-qc->b + sqrt(qc->D)) / 2 * qc->a;
+		qc->t2 = qc->t1;
+	}
+	else
+	{
+		qc->t1 = (-qc->b + sqrt(qc->D)) / 2 * qc->a;
+		qc->t2 = (-qc->b - sqrt(qc->D)) / 2 * qc->a;
+	}
 }
 
 // linear interpolation function = maps/scales points proportionate and
