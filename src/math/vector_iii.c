@@ -6,11 +6,38 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:33:59 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 13:38:08 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:40:11 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+// checks if two vectors are parallel - their cross product is 0
+// @returns 1 if are parallel, 0 if not 
+int	are_parallel(t_coord vector1, t_coord vector2)
+{
+	t_coord cross;
+
+	cross = get_cross_product(vector1, vector2);
+	if (fabsf(cross.x) < EPSILON
+		&& fabsf(cross.y) < EPSILON
+		&& fabsf(cross.z) < EPSILON)
+		return (1);
+	return (0);
+}
+
+t_coord multiply_transpose(t_matrix R, t_coord v)
+{
+	t_coord result;
+
+	// Multiply vector by the transpose of matrix R
+	// That means dotting v with each ROW of R (which are columns in original matrix)
+	result.x = v.x * R.R.x + v.y * R.F.x + v.z * R.U.x;
+	result.y = v.x * R.R.y + v.y * R.F.y + v.z * R.U.y;
+	result.z = v.x * R.R.z + v.y * R.F.z + v.z * R.U.z;
+
+	return result;
+}
 
 // adds 2 vectors - x1+x2, y1+y2, z1+z2
 t_coord	add_vectors(t_coord v1, t_coord v2)

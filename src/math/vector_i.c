@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 13:38:42 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:14:49 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ float	get_dot_product(t_coord A, t_coord B)
 
 // computes cross product of two normalized vectors
 // results in a vector that is perpendicular to both vectors
+// if cross product of 2 vectors is 0 it means they are parallel
+// !!! when doing cross product, the order of the elements matters
 t_coord	get_cross_product(t_coord A, t_coord B)
 {
 	t_coord	cross_product;

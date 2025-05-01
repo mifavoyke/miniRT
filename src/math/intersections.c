@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 17:10:44 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:18:45 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ t_inter	*find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp)
 	qc.b = 2 * get_dot_product(cam_to_sp, ray);
 	qc.c = get_dot_product(cam_to_sp, cam_to_sp) - pow((sp->diameter) / 2, 2);
 	find_roots(&qc);
-	if (qc.t1 > 0)
+	if (qc.t1 > EPSILON)
 		inter1 = make_inter((void *)sp, SPHERE, qc.t1, ray, cam, sp->colour, sp->id);
-	if (qc.t2 > 0 && qc.t2 != qc.t1)
+	if (qc.t2 > EPSILON && qc.t2 != qc.t1)
 		inter2 = make_inter((void *)sp, SPHERE, qc.t2, ray, cam, sp->colour, sp->id);
 	return (return_object_inters(inter1, inter2));
 }
@@ -89,9 +89,9 @@ t_inter	*find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl)
 	inter = NULL;
 	to_plane = make_vector(cam.point, pl->point);
 	denom = get_dot_product(ray, pl->vector);
-	if (fabsf(denom) < 1e-6)
+	if (fabsf(denom) < EPSILON)
 	{
-		if (fabsf(get_dot_product(to_plane, pl->vector)) < 1e-6)
+		if (fabsf(get_dot_product(to_plane, pl->vector)) < EPSILON)
 			t = 0.1;
 		else
 			t = -1;
@@ -114,11 +114,11 @@ t_inter *get_coat_intersections(t_camera cam, t_coord base_ray_vector, t_coord r
 	t_inter *inter2 = NULL;
 		d1 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) + sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);
 	t1 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
-	if (d1 > 0 && t1 >= 0 && t1 <= (cy->height))
+	if (d1 > EPSILON && t1 >= EPSILON && t1 <= (cy->height))
 		inter1 = make_inter((void *)cy, CYLINDER, d1, ray, cam, cy->colour, cy->id);
 	d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) - sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);	
 	t2 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d2), base_ray_vector));
-	if (d2 > 0 && t2 >= 0 && t2 <= (cy->height))
+	if (d2 > EPSILON && t2 >= EPSILON && t2 <= (cy->height))
 		inter2 = make_inter((void *)cy, CYLINDER, d2, ray, cam, cy->colour, cy->id);
 	return (return_object_inters(inter1, inter2));
 }
@@ -131,21 +131,21 @@ t_inter	*get_cap_intersections(t_coord ray, t_camera cam, t_coord base_ray_vecto
 {
 	float	top_t;
 	float	bottom_t;
-	float	top_dist;
-	float	bottom_dist;
+	float	top_d;
+	float	bottom_d;
 	t_inter *inter3 = NULL;
 	t_inter *inter4 = NULL;
 	if (get_dot_product(cy->vector, ray) != 0)
 	{
-		top_dist = get_dot_product(cy->vector, base_ray_vector)/ get_dot_product(cy->vector, ray);
-		top_t = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, top_dist), base_ray_vector), subtract_vectors(multiply_vector_by_constant(ray, top_dist), base_ray_vector));
-		if (top_dist > 0 && top_t < pow(cy->diameter / 2, 2) && top_t > 0)
-			inter3 = make_inter((void *)cy, PLANE, top_dist, ray, cam, cy->colour, cy->id);
-		bottom_dist = get_dot_product(cy->vector, (add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height)))) / get_dot_product(cy->vector, ray);
-		bottom_t = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, bottom_dist), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))), 
-								subtract_vectors(multiply_vector_by_constant(ray, bottom_dist), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))));
-		if (bottom_dist > 0 && bottom_t < pow(cy->diameter / 2, 2) && bottom_t > 0)
-			inter4 = make_inter((void *)cy, PLANE, bottom_dist, ray, cam, cy->colour, cy->id);
+		top_d = get_dot_product(cy->vector, base_ray_vector)/ get_dot_product(cy->vector, ray);
+		top_t = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, top_d), base_ray_vector), subtract_vectors(multiply_vector_by_constant(ray, top_d), base_ray_vector));
+		if (top_d > EPSILON && top_t < pow(cy->diameter / 2, 2) && top_t > EPSILON)
+			inter3 = make_inter((void *)cy, PLANE, top_d, ray, cam, cy->colour, cy->id);
+		bottom_d = get_dot_product(cy->vector, (add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height)))) / get_dot_product(cy->vector, ray);
+		bottom_t = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, bottom_d), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))), 
+								subtract_vectors(multiply_vector_by_constant(ray, bottom_d), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))));
+		if (bottom_d > EPSILON && bottom_t < pow(cy->diameter / 2, 2) && bottom_t > EPSILON)
+			inter4 = make_inter((void *)cy, PLANE, bottom_d, ray, cam, cy->colour, cy->id);
 	}
 	return (return_object_inters(inter3, inter4));
 }
@@ -168,7 +168,7 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 	base_ray_vector = make_vector(cam.point, base_center);
 	ray_axis_cross = get_cross_product(ray, cy->vector);
 	root_part = get_dot_product(ray_axis_cross, ray_axis_cross) * pow(cy->diameter / 2, 2) - (get_dot_product(cy->vector, cy->vector) * (pow(get_dot_product(base_ray_vector, ray_axis_cross), 2)));
-	if (fabsf(root_part) < 1e-6 || fabsf(get_dot_product(ray_axis_cross, ray_axis_cross)) < 1e-6) // no intersection OR line is parallel to the axis
+	if (fabsf(root_part) < EPSILON || fabsf(get_dot_product(ray_axis_cross, ray_axis_cross)) < EPSILON) // no intersection OR line is parallel to the axis
 	{
 		coat_inters = NULL; // there is no intersection with coat or the ray is contained in the coat
 		caps_inters = get_cap_intersections(ray, cam, base_ray_vector, cy); // there will probably be 0 or 2 cap intersections
@@ -179,4 +179,63 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 		caps_inters = get_cap_intersections(ray, cam, base_ray_vector, cy); // there will be 1 or 2 cap inters
 	}		
 	return (return_object_inters(coat_inters, caps_inters));
+}
+
+t_inter *find_paraboloid_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
+{
+	// paraboloid:
+	t_coord axis = set_coord(0.0,0.0,1.0); // must be normalized
+	float f = 1.0;// focal_point - distance from vertex to focus - defines how wide/narrow it is going to be
+	t_coord vertex = set_coord(0,20,5);
+	// float height = 20; // height from vertex to the bottom
+	
+	// getting the transformation matrix from world to local paraboloid axis - origin [0,0,0], z is (0,0,1)
+	t_coord helper_vector = set_coord(0,1,0);
+	if (are_parallel(helper_vector, axis))
+		helper_vector = set_coord(1,0,0);
+	
+	t_matrix R;
+	R.U = axis;
+	R.R = get_cross_product(R.U, helper_vector);	
+	normalize(&R.R);
+	R.F = get_cross_product(R.R, R.U);
+	normalize(&R.F);
+
+	// transform the ray from world to paraboloid space by applying the transpose of matrix R
+	// transpose of R is used to "bring a vector into that local frame
+	// o' (origin in paraboloid space) = R(o - V)
+	// d' (direction in paraboloid space) = Rd
+	t_coord transformed_ray_direction = multiply_transpose(R, ray);
+	t_coord transformed_ray_origin = multiply_transpose(R, make_vector(vertex, cam.point));
+
+	float a;
+	float b;
+	float c;
+	float D;
+	float			t1;
+	float			t2;
+	t_inter	*inter1 = NULL;
+	t_inter *inter2 = NULL;
+
+	a = pow(transformed_ray_direction.x, 2) + pow(transformed_ray_direction.y, 2);
+	b = (2 * transformed_ray_direction.x * transformed_ray_direction.x) + (2 * transformed_ray_direction.y * transformed_ray_direction.y) - (4 * f * transformed_ray_direction.z);
+	c = pow(transformed_ray_origin.x, 2) + pow(transformed_ray_origin.y, 2) - (4 * f * transformed_ray_origin.z);
+	D = pow(b, 2) - 4 * a * c;
+	if (D > 0)
+		return (NULL); // no intersection
+	else if (D == 0)
+	{
+		t1 = -b + sqrt(D) / (2 * a);
+		t2 = t1;
+	}
+	else
+	{
+		t1 = -b + sqrt(D) / (2 * a);
+		t2 = -b - sqrt(D) / (2 * a);
+	}
+	if (t1 > EPSILON)
+		inter1 = make_inter((void *)cy, CYLINDER, t2, ray, cam, cy->colour, cy->id);
+	if (t2 > EPSILON && t2 != t1)
+		inter2 = make_inter((void *)cy, CYLINDER, t2, ray, cam, cy->colour, cy->id);
+	return (return_object_inters(inter1, inter2));
 }

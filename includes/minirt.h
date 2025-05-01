@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/04/30 16:37:53 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:19:04 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 #define ANGLE_RADIAN 0.2
 #define ZOOM 0.5
 #define TRANSLATION 5
+#define EPSILON 1e-6
 
 /* ------------------------ DATA STRUCTURES --------------------------- */
 typedef struct s_colour
@@ -212,6 +213,9 @@ t_coord subtract_vectors(t_coord from, t_coord to);
 t_coord move_point_by_vector(t_coord point, t_coord vector);
 t_coord add_vectors(t_coord v1, t_coord v2);
 t_coord	rotate_vector_around_axis(t_coord v, t_coord axis, float angle);
+int	are_parallel(t_coord vector1, t_coord vector2);
+t_coord multiply_transpose(t_matrix R, t_coord v);
+
 
 // MATH - basic.c
 int equals(float a, float b, float deviation);
@@ -233,6 +237,8 @@ t_inter *find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
 t_inter *find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
 t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
 t_matrix find_transformation_matrix(t_camera c);
+t_inter *find_paraboloid_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
+
 
 
 // HOOKS

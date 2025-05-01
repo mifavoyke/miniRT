@@ -18,7 +18,11 @@ cylinder line intersection:
 http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersection.php
 https://en.wikipedia.org/wiki/Line-cylinder_intersection
 Intersection of a ray with different objects (or objects with objects)
+https://www.cs.uaf.edu/2012/spring/cs481/section/0/lecture/01_26_ray_intersections.html
 https://www.realtimerendering.com/intersections.html
+Torus (donut) intersection:
+https://arxiv.org/pdf/2301.03191
+
 
 
 * FOR YEVA *
@@ -29,11 +33,13 @@ https://www.realtimerendering.com/intersections.html
 * FOR ZUZANA *
 - i think we should handle being inside objects - now when first inter is behind camera, the second inter - so calculate even inters that are behind the camera and set the other inter to black - if the inter in front of the camera is black, it is inside and no difused light applies
 - redo the printf for errors to write to stderr
-- cylinder, maybe parboloid?
-- multithreding - parallelization
+- donust or parboloid?
+- multithreding - parallelization?
 - maybe optimization as in the article "Starter ray tracing math" above
 - should we change viewport width in minirt struct when resizing? 
 - rename cy->vector to cy->axis
+- inside objects: remove absolute values for t and do a is_insid efunction that checks all ids before the input element and if the id exists before, our point is secnd one meaning we are inside and colour it to the colour of the object toend down to more dark AND render the first pont bigger than 0
+- adding bounding boxes makes it much faster but no time to do it here 
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 
@@ -45,6 +51,13 @@ https://www.realtimerendering.com/intersections.html
 - changing camera viewpoint coordinates ensures translation, changing normal vector ensures rotation
 - camera is positioned in 3D space and oriented by a transformation matrix from default position (0, 0, 0) and default forward vector (0, 1, 0) to its specififed orientation and point in 3D
 - in most cases, no, you do not need to explicitly normalize the camera's orientation vectors after applying the rotation matrices, because rotation matrices are orthogonal. This means that, after applying a rotation matrix, the basis vectors (right, forward, up) are guaranteed to remain normalized if they were initially normalized. BUT we normalize to avoid small deviations whn working with floats
+
+In graphics/math practice:
+It’s very common to treat positions and vectors interchangeably when doing algebra — because both are just 3D tuples (𝑥,𝑦,𝑧)
+The distinction (point vs. vector) matters conceptually in geometry: 
+A point defines a location in space.
+A vector defines a direction and magnitude.
+But for calculations like intersections, we often "abuse" this distinction when we’re only interested in the component-wise operations.
 
 TRANSLATION AND ROTATION
 1. Translation (Movement)

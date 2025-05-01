@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:28:02 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 13:39:43 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:14:16 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ t_coord	get_point_on_vector(t_coord C, t_coord v, float d)
 }
 
 // if  cross product of 2 vectors is (0,0,0), they are collinear
+// collinear means that 3 or more points of one line lay on the other line
 // @returns 1 if are collinear, 0 if not
 bool	are_collinear(t_coord A, t_coord B)
 {
 	t_coord	cross_product;
 
 	cross_product = get_cross_product(A, B);
-	return (fabs(cross_product.x) < 1e-6
-		&& fabs(cross_product.y) < 1e-6
-		&& fabs(cross_product.z) < 1e-6);
+	return (fabs(cross_product.x) < EPSILON
+		&& fabs(cross_product.y) < EPSILON
+		&& fabs(cross_product.z) < EPSILON);
 }
 
 // gets the difference between vectors
