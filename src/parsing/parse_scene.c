@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:55 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/30 11:19:27 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:31:16 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // gets array of values from one file row
-char	**row_values_into_arr(char *file_row)
+static char	**row_values_into_arr(char *file_row)
 {
 	char	*normalised;
 	char	**values;
@@ -34,7 +34,7 @@ char	**row_values_into_arr(char *file_row)
 }
 
 // iterates each line, normalizes whitespace, puts all elements into array, 
-int	fill_scene(t_scene *scene, char **file_rows)
+static int	fill_scene(t_scene *scene, char **file_rows)
 {
 	char	**values;
 	int		i;
@@ -45,7 +45,6 @@ int	fill_scene(t_scene *scene, char **file_rows)
 		values = row_values_into_arr(file_rows[i]);
 		if (!values)
 			continue ;
-		print_arr(values);
 		if (!is_valid_input(values))
 		{
 			printf("Input contains invalid characters. Check the .rt file.\n");
@@ -85,5 +84,6 @@ t_scene	*create_scene(char *filename)
 	scene->viewport_width = get_viewport_width(scene->c.view_degree,
 			scene->viewport_distance);
 	scene->viewport_height = get_viewport_height(scene->viewport_width);
+	print_scene(scene);
 	return (scene);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/01 16:19:42 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:54:54 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_matrix	find_transformation_matrix(t_camera c)
 
 // maps coordinate from top-left 2d screen to the viewport plane in 3D
 // and applies Tm to find final vector from camera to that pixel in 3D=>THE RAY
-t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
+static t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 {
 	t_coord	pv;
 	t_coord	p_new;
@@ -81,7 +81,7 @@ t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 
 // creates linked list of intersections of ray with all scene objects
 // --> for one pixel, checks all objects in the scene
-t_inter	*create_intersection_list(t_scene *scene, t_coord ray)
+static t_inter	*create_intersection_list(t_scene *scene, t_coord ray)
 {
 	t_sphere	*temp_sp;
 	t_plane		*temp_pl;

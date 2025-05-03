@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 17:20:07 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:51:52 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cleanup(t_minirt *minirt)
 }
 
 // iterate over 2Dpixels array and render color stored for each pixel to screen
-void	render_pixels(t_minirt *minirt)
+static void	render_pixels(t_minirt *minirt)
 {
 	int			x;
 	int			y;
@@ -45,7 +45,7 @@ int	generate_image(t_minirt *minirt)
 	shoot_rays(minirt, minirt->scene);
 	lighting(minirt);
 	render_pixels(minirt);
-	return (0);
+	return (SUCCESS);
 }
 
 int32_t	main(int argc, char *argv[])
@@ -54,10 +54,11 @@ int32_t	main(int argc, char *argv[])
 	t_minirt	minirt;
 
 	if (argc != 2)
-		return (ft_error("Wrong input :(. Use:\t ./minirt [scene].rt\n"));
+		return (ft_error("Wrong input. Use:\t ./minirt [scene].rt\n"));
 	scene = create_scene(argv[1]);
 	if (!scene)
 		return (ERROR);
+	// print_scene(minirt.scene);
 	if (minirt_init(&minirt, scene) == ERROR)
 	{
 		free_scene(minirt.scene);
@@ -70,5 +71,5 @@ int32_t	main(int argc, char *argv[])
 	mlx_resize_hook(minirt.mlx, resize_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);
 	cleanup(&minirt);
-	return (0);
+	return (SUCCESS);
 }

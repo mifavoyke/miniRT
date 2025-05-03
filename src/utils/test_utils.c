@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/29 12:59:17 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:34:34 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	print_spheres(t_sphere *sp)
 		printf("  No spheres in the scene.\n");
 	while (tmp)
 	{
+		printf("  ID: %d\n", tmp->id);
 		printf("  Centre: ");
 		print_coord(tmp->centre);
 		printf("  Diameter: %.2f\n", tmp->diameter);
@@ -50,13 +51,14 @@ static void	print_spheres(t_sphere *sp)
 static void	print_planes(t_plane *pl)
 {
 	t_plane	*tmp;
-
+	
 	tmp = pl;
 	printf("\nPlanes:\n");
 	if (!pl)
 		printf("  No planes in the scene.\n");
 	while (tmp)
 	{
+		printf("  ID: %d\n", tmp->id);
 		printf("  Point: ");
 		print_coord(tmp->point);
 		printf("  Normal Vector: ");
@@ -78,6 +80,7 @@ static void	print_cylinders(t_cylinder *cy)
 		printf("  No cylinders in the scene.\n");
 	while (tmp)
 	{
+		printf("  ID: %d\n", tmp->id);
 		printf("  Centre: ");
 		print_coord(tmp->centre);
 		printf("  Normal Vector: ");
@@ -98,7 +101,7 @@ void	print_camera(t_camera *c)
 	print_coord(c->point);
 	printf("  Vector: ");
 	print_coord(c->vector);
-	printf("  View Degree: %f\n", c->view_degree);
+	printf("  View Degree: %.2f\n", c->view_degree);
 }
 
 void	print_light(t_light *l)
@@ -124,7 +127,7 @@ void	print_ambient(t_ambient *a)
 // prints the scene with all its attributes
 void	print_scene(t_scene *scene)
 {
-	printf("\n--- Scene Parameters ---\n");
+	printf("\n=== Scene Parameters ===\n");
 	print_ambient(&scene->a);
 	print_camera(&scene->c);
 	print_light(&scene->l);
@@ -135,7 +138,6 @@ void	print_scene(t_scene *scene)
 	print_spheres(scene->sp);
 	print_planes(scene->pl);
 	print_cylinders(scene->cy);
-	printf("\n");
 }
 
 // Tm = [ Rx  Fx  Ux  Tx ]   [ P0x ]
@@ -150,68 +152,3 @@ void	print_tm(t_matrix Tm)
 	printf("\t[ %f  %f  %f  %f ]\n", Tm.R.z, Tm.F.z, Tm.U.z, Tm.Tr.z);
 	printf("\t[ %f  %f  %f  %f ]\n", 0.0, 0.0, 0.0, 1.0);
 }
-
-// void print_light_math_inputs(t_light_math *inputs)
-// {
-// 	printf("Normal Vector: (%f, %f, %f)\n", inputs->normal.x, inputs->normal.y,
-// 		inputs->normal.z);
-// 	printf("Incident Light Vector: (%f, %f, %f)\n", inputs->incident_l.x,
-// 		inputs->incident_l.y, inputs->incident_l.z);
-// 	printf("Scalar NL: %f\n", inputs->scalar_nl);
-// 	printf("Incident View Vector: (%f, %f, %f)\n", inputs->incident_v.x,
-//		inputs->incident_v.y, inputs->incident_v.z);
-// 	printf("Reflected Vector: (%f, %f, %f)\n", inputs->reflected_vector.x,
-// 		 inputs->reflected_vector.y, inputs->reflected_vector.z);
-// 	printf("Scalar VR: %f\n", inputs->scalar_vr);
-// 	printf("Reflectivity: %f\n", inputs->reflectivity);
-// }
-
-// // Euclidean space vs Cartesian
-
-// void draw_shadow_rays(t_minirt *minirt)
-// {
-// 	int x, y;
-// 	t_coord intersection_point;
-// 	t_coord light_point = minirt->scene->l.lightpoint;
-// 	t_colour white = set_colour(255, 255, 255, 255);
-
-// 	for (y = 0; y < minirt->img_height; y++)
-// 	{
-// 		for (x = 0; x < minirt->img_width; x++)
-// 		{
-// 			if (minirt->intersection[y][x])
-// 			{
-// 				intersection_point = minirt->intersection[y][x]->point;
-// 				if (x % 10 == 0 && y % 10 == 0)
-// 					draw_line(minirt, intersection_point, light_point, white);
-// 			}
-// 		}
-// 	}
-// }
-
-// void draw_line(t_minirt *minirt, t_coord start, t_coord end, t_colour color)
-// {
-// 	float dx = end.x - start.x;
-// 	float dy = end.y - start.y;
-// 	float dz = end.z - start.z;
-// 	float steps = fmax(fmax(fabs(dx), fabs(dy)), fabs(dz));
-// 	float x_inc = dx / steps;
-// 	float y_inc = dy / steps;
-// 	// float z_inc = dz / steps;
-
-// 	float x = start.x;
-// 	float y = start.y;
-// 	// float z = start.z;
-// 	int i = 0;
-// 	while (i++ < steps)
-// 	{
-// 		int px = (int)x;
-// 		int py = (int)y;
-// 		if (px >= 0 && px < minirt->img_width && py >= 0
-// 			&& py < minirt->img_height)
-// 			minirt->pixels[py][px] = color;
-// 		x += x_inc;
-// 		y += y_inc;
-// 		// z += z_inc;
-// 	}
-// }

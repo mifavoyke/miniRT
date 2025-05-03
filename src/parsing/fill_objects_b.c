@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   fill_objects_b.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:45:17 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 18:15:29 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/03 11:33:46 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // appends new allocated cylinder instance to the sphere list
-void	append_cylinder(t_cylinder **cylinder_list, t_cylinder *new_cylinder)
+static void	append_cylinder(t_cylinder **cylinder_list, t_cylinder *new_cylinder)
 {
 	t_cylinder	*tmp;
 
@@ -30,7 +30,7 @@ void	append_cylinder(t_cylinder **cylinder_list, t_cylinder *new_cylinder)
 
 // checks possible error values for cylinder and writes respective message
 // returns 1 if any value is wrong, 0 if all are OK
-int	check_error_values_cylinder(t_cylinder *cylinder)
+static int	check_error_values_cylinder(t_cylinder *cylinder)
 {
 	if (invalid_coord(&cylinder->centre))
 		return (ERROR);
@@ -49,7 +49,7 @@ int	check_error_values_cylinder(t_cylinder *cylinder)
 // fills cylinder object from array of values from one row with identifier cy
 // if any exist before, appends new sphere node after the existing ones
 // expects cy  POINT[x,y,z]  diameter(0-180˚)  colour(r,g,b)
-int	fill_cylinder(t_scene *scene, char **values, int i)
+int	fill_cylinder(t_scene *scene, char **values, int *i)
 {
 	t_cylinder	*new_cyl;
 
@@ -71,7 +71,8 @@ int	fill_cylinder(t_scene *scene, char **values, int i)
 		free(new_cyl);
 		return (ERROR);
 	}
-	new_cyl->id = i - 1;
+	new_cyl->id = *i;
+	(*i)++;
 	new_cyl->next = NULL;
 	append_cylinder(&(scene->cy), new_cyl);
 	scene->cy_count++;

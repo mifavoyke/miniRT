@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   fill_objects_a.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:27:16 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 18:14:58 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/03 11:33:35 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // appends new allocated sphere instance to the sphere list
-void	append_sphere(t_sphere **sphere_list, t_sphere *new_sphere)
+static void	append_sphere(t_sphere **sphere_list, t_sphere *new_sphere)
 {
 	t_sphere	*tmp;
 
@@ -28,8 +28,8 @@ void	append_sphere(t_sphere **sphere_list, t_sphere *new_sphere)
 	}
 }
 
-// appends new allocated sphere instance to the sphere list
-void	append_plane(t_plane **plane_list, t_plane *new_plane)
+// appends new allocated plane instance to the plane list
+static void	append_plane(t_plane **plane_list, t_plane *new_plane)
 {
 	t_plane	*tmp;
 
@@ -47,7 +47,7 @@ void	append_plane(t_plane **plane_list, t_plane *new_plane)
 // fills the sphere object from array of values from one row with identifier sp
 // if any exist before, appends new sphere node after the existing ones
 // expects sp  POINT[x,y,z]  diameter(0-180˚)  colour(r,g,b)
-int	fill_sphere(t_scene *scene, char **values, int i)
+int	fill_sphere(t_scene *scene, char **values, int *i)
 {
 	t_sphere	*new_sphere;
 
@@ -68,17 +68,18 @@ int	fill_sphere(t_scene *scene, char **values, int i)
 		free(new_sphere);
 		return (ERROR);
 	}
-	new_sphere->id = i - 1;
+	new_sphere->id = *i;
+	(*i)++;
 	new_sphere->next = NULL;
 	append_sphere(&(scene->sp), new_sphere);
 	scene->sp_count++;
-	return (0);
+	return (SUCCESS);
 }
 
 // fills the plane object from array of values from one row with identifier pl
 // if any exist before, appends new sphere node after the existing ones
 // expects pl  POINT[x,y,z]  normal_vector(x,y,z)  colour(r,g,b)
-int	fill_plane(t_scene *scene, char **values, int i)
+int	fill_plane(t_scene *scene, char **values, int *i)
 {
 	t_plane	*new_pl;
 
@@ -100,9 +101,10 @@ int	fill_plane(t_scene *scene, char **values, int i)
 		free(new_pl);
 		return (ERROR);
 	}
-	new_pl->id = i - 1;
+	new_pl->id = *i;
+	(*i)++;
 	new_pl->next = NULL;
 	append_plane(&(scene->pl), new_pl);
 	scene->pl_count++;
-	return (0);
+	return (SUCCESS);
 }

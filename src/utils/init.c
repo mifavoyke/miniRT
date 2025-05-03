@@ -3,31 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:07:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 17:18:47 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:54:06 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
-// prints possible key controls 
-void	print_controls(void)
-{
-	printf("\n=== MINI-RT CONTROLS ===\n");
-	printf("Close Program:\n");
-	printf("  [ESC]             → Exit the program\n");
-	printf("Camera Position:\n");
-	printf("  [W] / [S]         → Move camera up/down (Z-axis)\n");
-	printf("  [A] / [D]         → Move camera left/right (X-axis)\n");
-	printf("  Scroll            → Zoom in/out (Y-axis forward/back)\n");
-	printf("Camera Rotation:\n");
-	printf("  [UP] / [DOWN]     → Pitch (rotate around X-axis - up/down)\n");
-	printf("  [J] / [K]         → Roll (rotate Y-axis - tilt to sides)\n");
-	printf("  [LEFT] / [RIGHT]  → Yaw (rotate around Z-axis-left/right)\n");
-	printf("========================\n");
-}
 
 int	minirt_init(t_minirt *rt, t_scene *scene)
 {
@@ -51,7 +34,7 @@ int	minirt_init(t_minirt *rt, t_scene *scene)
 	if (!rt->img || (mlx_image_to_window(rt->mlx, rt->img, 0, 0) < 0))
 		return (ERROR);
 	print_controls();
-	return (0);
+	return (SUCCESS);
 }
 
 // initilizes all allocated values in the scene to NULL

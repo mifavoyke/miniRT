@@ -2,21 +2,6 @@ A   0.4							    204,0,204
 C   0,0,0	    0,1,0	90
 L   30,0,20				0.6	        255,255,255
 
-# sphere first, cylinder behind it and plane cutting through the middle perpendicular to x axis
-# pl	0,50,0	    0,-1,0		        100,0,0
-# cy  0,20,0      0.707,0,0.707   5   20      10,0,255 # tilted cylinder
-# cy     0,20,-10     0,0,1         5   10 255,255,0
-
-# a sphere between 2 vertical planes cutting its sides and a plane behind 
-# pl	-4,0,0	    1,0,0		        255,0,0 
-# sp  0,10,0				10	 	    255,0,255
-# pl	4,0,0	    1,0,0		        255,255,0 
-# pl	0,40,0	    0,1,0		        50,50,50 
-
-# sphere in a box
 sp  0,10,0				10	 	    255,0,255 
-# pl	-100,0,0	    1,0,0		        20,100,20 # green left wall
-# pl	100,0,0	    1,0,0		        100,20,0 # maroon right wall
-pl	0,0,-100	    0,0,1		        20,20,100 # purple floor
-# pl	0,0,100	    0,0,1		        200,0,20 # the red one - ceiling 
+pl	0,0,-100	    0,0,1		        20,20,100
 # some shit happens when we put 180 degrees view

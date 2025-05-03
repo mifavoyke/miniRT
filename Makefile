@@ -35,9 +35,9 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/parsing/parse_scene.c \
 		$(SRC_DIR)/parsing/parse_utils.c \
 		$(SRC_DIR)/utils/allocate.c \
-		$(SRC_DIR)/utils/array_utils.c \
 		$(SRC_DIR)/utils/free.c \
 		$(SRC_DIR)/utils/ft_atof.c \
+		$(SRC_DIR)/utils/print.c \
 		$(SRC_DIR)/utils/hooks.c \
 		$(SRC_DIR)/utils/hook_functions.c \
 		$(SRC_DIR)/utils/init.c \
@@ -90,7 +90,7 @@ fclean: clean
 	@make fclean -C $(LIBFT_DIR)
 
 valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=mlx.supp ./$(NAME) scenes/basic.rt
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=mlx.supp ./$(NAME) scenes/stack.rt
 
 re: fclean all
 

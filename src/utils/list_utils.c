@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:14:57 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/27 10:57:07 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/03 11:00:13 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	append_node(t_inter *new_node, t_inter **head)
 // splits linked list into two halves using the fast and slow pointer approach
 // when found half, set the next as head of a new list so new list has a start
 // in the first list, set last_element->next as NULL so first list has an end
-void	split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
+static void	split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 {
 	t_inter	*slow;
 	t_inter	*fast;
@@ -61,7 +61,7 @@ void	split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
 
 // recursively merges the separated parts of the list into a single sorted list
 // the result is accumulated 
-t_inter	*compare_and_merge(t_inter *first_half, t_inter *second_half)
+static t_inter	*compare_and_merge(t_inter *first_half, t_inter *second_half)
 {
 	t_inter	*result;
 

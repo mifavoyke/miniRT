@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:06:08 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/26 19:11:14 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/03 11:09:10 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

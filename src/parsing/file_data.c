@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   file_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:29:37 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/27 10:45:23 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/03 10:48:40 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // counts all rows of the file
-int	count_rows(int fd)
+static int	count_rows(int fd)
 {
 	int		i;
 	char	*one_line;
@@ -35,7 +35,7 @@ int	count_rows(int fd)
 
 // stores lines from the .rt file in an array
 // @returns array of lines from the file
-char	**get_file_data(int fd, int size)
+static char	**get_file_data(int fd, int size)
 {
 	int		i;
 	char	*one_line;

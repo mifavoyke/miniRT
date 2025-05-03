@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/27 10:45:42 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/03 11:39:31 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	identify_object(t_scene *scene, char *identifier, char **values)
 {
 	static int	id;
 
-	id = 1;
 	if (!ft_strncmp(identifier, "A\0", 2))
 		return (fill_ambient(scene, values));
 	else if (!ft_strncmp(identifier, "C\0", 2))
@@ -95,19 +94,10 @@ int	identify_object(t_scene *scene, char *identifier, char **values)
 	else if (!ft_strncmp(identifier, "L\0", 2))
 		return (fill_light(scene, values));
 	else if (!ft_strncmp(identifier, "sp\0", 3))
-	{
-		id++;
-		return (fill_sphere(scene, values, id));
-	}
+		return (fill_sphere(scene, values, &id));
 	else if (!ft_strncmp(identifier, "pl\0", 3))
-	{
-		id++;
-		return (fill_plane(scene, values, id));
-	}
+		return (fill_plane(scene, values, &id));
 	else if (!ft_strncmp(identifier, "cy\0", 3))
-	{
-		id++;
-		return (fill_cylinder(scene, values, id));
-	}
+		return (fill_cylinder(scene, values, &id));
 	return (ft_error("Unknown object type."));
 }

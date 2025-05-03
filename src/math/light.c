@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 11:46:44 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/03 13:34:19 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,39 +41,46 @@ t_coord calculate_cylider_normal(t_cylinder *cy, t_coord intersection_p)
     return (normal);
 }
 
-void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, t_coord viewpoint)
+t_coord get_surface_normal(t_inter *intersection)
 {
     t_sphere *sp;
     t_plane *pl;
     t_cylinder *cy;
-    t_coord offset;
 
     if (intersection->type == SPHERE)
     {
         sp = (t_sphere *)intersection->obj;
-        vars->normal = make_vector(sp->centre, intersection->point); // normal of the sphere which is always the vector from the centre of the sphere to the intersection point
+        return (make_vector(sp->centre, intersection->point));
     }
     else if (intersection->type == PLANE)
     {
         pl = (t_plane *)intersection->obj;
-        vars->normal = set_coord(pl->vector.x, pl->vector.y, pl->vector.z);
+        return (set_coord(pl->vector.x, pl->vector.y, pl->vector.z));
     }
     else if (intersection->type == CYLINDER)
     {
         cy = (t_cylinder *)intersection->obj;
         if (cy->vector.z == 1 || cy->vector.z == -1)
-            vars->normal = make_vector(cy->centre, intersection->point);
+            return (make_vector(cy->centre, intersection->point));
         else
-            vars->normal = calculate_cylider_normal(cy, intersection->point);
+            return (calculate_cylider_normal(cy, intersection->point));
     }
+    return (set_coord(0, 0, 0));
+}
+
+void init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, t_coord viewpoint)
+{
+    t_coord offset;
+
+    vars->normal = get_surface_normal(intersection);
     normalize(&vars->normal);
 
     vars->shadow_ray = make_vector(intersection->point, lightpoint);
     vars->max_length = sqrtf(get_dot_product(vars->shadow_ray, vars->shadow_ray));
     normalize(&vars->shadow_ray);
-    offset = multiply_vector_by_constant(vars->shadow_ray, 1e-6);
+    offset = multiply_vector_by_constant(vars->shadow_ray, EPSILON);
     vars->shadow_origin = move_point_by_vector(intersection->point, offset);
-    
+
     vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
     vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
@@ -121,17 +128,28 @@ t_colour apply_light(t_colour original, t_colour light, float reflectivity)
     return (final_color);
 }
 
-// 1 Calculate normal, incident vectors a) from the lightpoint to the intersection point; b) from viewpoint (camera) to the intersection point
-// 2 Calculate reflected vector
-// 3 Calculate the specular light with a Phong model
-// 4 Add the diffuse and ambient light
-// 5 Apply the reflectivity to a pixel
-int lighting(t_minirt *minirt)
+static t_colour compute_pixel_light(t_scene *scene, t_inter *inter, t_coord lightpoint, t_coord viewpoint)
 {
     t_light_math light_inputs;
+
+    init_inputs(inter, &light_inputs, lightpoint, viewpoint);
+    if (is_in_shadow(scene, &light_inputs, inter->id))
+        light_inputs.reflectivity = scene->a.ratio;
+    else
+    {
+        reflected_vector(&light_inputs);
+        specular_light(&light_inputs, scene->l.brightness);
+        light_inputs.reflectivity += scene->a.ratio + diffuse_light(light_inputs.scalar_nl, scene->l.brightness);
+        if (light_inputs.reflectivity > 1.0f)
+            light_inputs.reflectivity = 1.0f;
+    }
+    return (apply_light(inter->colour, scene->l.colour, light_inputs.reflectivity));
+}
+
+int lighting(t_minirt *minirt)
+{
     int y;
     int x;
-    int id;
 
     y = -1;
     while (++y < minirt->img_height)
@@ -141,28 +159,7 @@ int lighting(t_minirt *minirt)
         {
             if (minirt->intersection[y][x])
             {
-                id = minirt->intersection[y][x]->id;
-                init_inputs(minirt->intersection[y][x], &light_inputs, minirt->scene->l.lightpoint, minirt->scene->c.point);
-                if (is_in_shadow(minirt, &light_inputs, id))
-                {
-                    light_inputs.reflectivity = minirt->scene->a.ratio;
-                    // printf("Shadow hit the plane\n");
-                    // minirt->pixels[y][x] = set_colour(0, 10, 0, 255);
-                }
-                else
-                {
-                    if (minirt->intersection[y][x]->type != PLANE)
-                    {
-                        reflected_vector(&light_inputs);
-                        specular_light(&light_inputs, minirt->scene->l.brightness); // temprorarily removed the specular light
-                    }
-                    light_inputs.reflectivity += minirt->scene->a.ratio + diffuse_light(light_inputs.scalar_nl, minirt->scene->l.brightness);
-                    if (light_inputs.reflectivity > 1.0)
-                        light_inputs.reflectivity = 1.0;
-                    // draw_line(minirt, minirt->intersection[y][x]->point, minirt->scene->l.lightpoint, set_colour(255, 255, 255, 255));
-                    // minirt->pixels[y][x] = set_colour(255, 0, 0, 255);
-                }
-                minirt->pixels[y][x] = apply_light(minirt->intersection[y][x]->colour, minirt->scene->l.colour, light_inputs.reflectivity);
+                minirt->pixels[y][x] = compute_pixel_light(minirt->scene, minirt->intersection[y][x], minirt->scene->l.lightpoint, minirt->scene->c.point);
             }
         }
     }
