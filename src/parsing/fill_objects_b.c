@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   fill_objects_b.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:45:17 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/03 11:33:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:59:48 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // appends new allocated cylinder instance to the sphere list
-static void	append_cylinder(t_cylinder **cylinder_list, t_cylinder *new_cylinder)
+static void	append_cylinder(t_cylinder **cylinder_list, t_cylinder *new_cyl)
 {
 	t_cylinder	*tmp;
 
 	if (!cylinder_list || !*cylinder_list)
-		*cylinder_list = new_cylinder;
+		*cylinder_list = new_cyl;
 	else
 	{
 		tmp = *cylinder_list;
 		while (tmp->next)
 			tmp = tmp->next;
-		tmp->next = new_cylinder;
+		tmp->next = new_cyl;
 	}
 }
 
@@ -71,8 +71,7 @@ int	fill_cylinder(t_scene *scene, char **values, int *i)
 		free(new_cyl);
 		return (ERROR);
 	}
-	new_cyl->id = *i;
-	(*i)++;
+	new_cyl->id = (*i)++;
 	new_cyl->next = NULL;
 	append_cylinder(&(scene->cy), new_cyl);
 	scene->cy_count++;

@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 17:16:40 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:19:45 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,21 @@ int	equals(float a, float b, float deviation)
 //    D < 0 --> no roots (does not intersect)
 void	find_roots(t_quadr_coef *qc)
 {
-	qc->D = pow(qc->b, 2) - (4 * qc->a * qc->c);
-	if (qc->D < 0 || qc->a == 0)
+	qc->discriminant = pow(qc->b, 2) - (4 * qc->a * qc->c);
+	if (qc->discriminant < 0 || qc->a == 0)
 	{
 		qc->t1 = -1.0;
 		qc->t2 = -1.0;
 	}
-	else if (qc->D == 0)
+	else if (qc->discriminant == 0)
 	{
-		qc->t1 = (-qc->b + sqrt(qc->D)) / 2 * qc->a;
+		qc->t1 = (-qc->b + sqrt(qc->discriminant)) / 2 * qc->a;
 		qc->t2 = qc->t1;
 	}
 	else
 	{
-		qc->t1 = (-qc->b + sqrt(qc->D)) / 2 * qc->a;
-		qc->t2 = (-qc->b - sqrt(qc->D)) / 2 * qc->a;
+		qc->t1 = (-qc->b + sqrt(qc->discriminant)) / 2 * qc->a;
+		qc->t2 = (-qc->b - sqrt(qc->discriminant)) / 2 * qc->a;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 11:16:11 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:27:32 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	move(t_minirt *minirt, t_coord direction, float translation)
 	t_matrix	*tm;
 
 	cam = &(minirt->scene->c);
-	tm = &(minirt->scene->Tm);
+	tm = &(minirt->scene->tm);
 	cam->point.x += direction.x * translation;
 	cam->point.y += direction.y * translation;
 	cam->point.z += direction.z * translation;
-	tm->Tr.x = cam->point.x;
-	tm->Tr.y = cam->point.y;
-	tm->Tr.z = cam->point.z;
+	tm->translation.x = cam->point.x;
+	tm->translation.y = cam->point.y;
+	tm->translation.z = cam->point.z;
 	if (generate_image(minirt) == ERROR)
 	{
 		cleanup(minirt);
@@ -42,14 +42,14 @@ void	rotate_x(t_minirt *minirt, t_coord *original_vector, float angle)
 {
 	t_matrix	*tm;
 
-	tm = &(minirt->scene->Tm);
-	tm->F = rotate_vector_around_axis(tm->F, tm->R, angle);
-	tm->U = rotate_vector_around_axis(tm->U, tm->R, angle);
-	normalize(&tm->F);
-	normalize(&tm->U);
-	tm->R = get_cross_product(tm->F, tm->U);
-	normalize(&tm->R);
-	*original_vector = tm->F;
+	tm = &(minirt->scene->tm);
+	tm->forward = rotate_vector_around_axis(tm->forward, tm->right, angle);
+	tm->up = rotate_vector_around_axis(tm->up, tm->right, angle);
+	normalize(&tm->forward);
+	normalize(&tm->up);
+	tm->right = get_cross_product(tm->forward, tm->up);
+	normalize(&tm->right);
+	*original_vector = tm->forward;
 	if (generate_image(minirt) == ERROR)
 	{
 		cleanup(minirt);
@@ -66,11 +66,11 @@ void	rotate_y(t_minirt *minirt, t_coord *original_vector, float angle)
 	t_matrix	*tm;
 
 	(void)original_vector;
-	tm = &(minirt->scene->Tm);
-	tm->R = rotate_vector_around_axis(tm->R, tm->F, angle);
-	tm->U = rotate_vector_around_axis(tm->U, tm->F, angle);
-	normalize(&tm->R);
-	normalize(&tm->U);
+	tm = &(minirt->scene->tm);
+	tm->right = rotate_vector_around_axis(tm->right, tm->forward, angle);
+	tm->up = rotate_vector_around_axis(tm->up, tm->forward, angle);
+	normalize(&tm->right);
+	normalize(&tm->up);
 	if (generate_image(minirt) == ERROR)
 	{
 		cleanup(minirt);
@@ -85,14 +85,14 @@ void	rotate_z(t_minirt *minirt, t_coord *original_vector, float angle)
 {
 	t_matrix	*tm;
 
-	tm = &(minirt->scene->Tm);
-	tm->R = rotate_vector_around_axis(tm->R, tm->U, angle);
-	tm->F = rotate_vector_around_axis(tm->F, tm->U, angle);
-	normalize(&tm->R);
-	normalize(&tm->F);
-	tm->U = get_cross_product(tm->R, tm->F);
-	normalize(&tm->U);
-	*original_vector = tm->F;
+	tm = &(minirt->scene->tm);
+	tm->right = rotate_vector_around_axis(tm->right, tm->up, angle);
+	tm->forward = rotate_vector_around_axis(tm->forward, tm->up, angle);
+	normalize(&tm->right);
+	normalize(&tm->forward);
+	tm->up = get_cross_product(tm->right, tm->forward);
+	normalize(&tm->up);
+	*original_vector = tm->forward;
 	if (generate_image(minirt) == ERROR)
 	{
 		cleanup(minirt);

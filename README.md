@@ -32,14 +32,14 @@ https://arxiv.org/pdf/2301.03191
 
 * FOR ZUZANA *
 - i think we should handle being inside objects - now when first inter is behind camera, the second inter - so calculate even inters that are behind the camera and set the other inter to black - if the inter in front of the camera is black, it is inside and no difused light applies
+- inside objects: remove absolute values for t and do a is_insid efunction that checks all ids before the input element and if the id exists before, our point is secnd one meaning we are inside and colour it to the colour of the object toend down to more dark AND render the first pont bigger than 0
+- also there should be no light when we are inside the object 
 - redo the printf for errors to write to stderr
 - donust or parboloid?
 - multithreding - parallelization?
 - maybe optimization as in the article "Starter ray tracing math" above
 - should we change viewport width in minirt struct when resizing? 
 - rename cy->vector to cy->axis
-- inside objects: remove absolute values for t and do a is_insid efunction that checks all ids before the input element and if the id exists before, our point is secnd one meaning we are inside and colour it to the colour of the object toend down to more dark AND render the first pont bigger than 0
-- adding bounding boxes makes it much faster but no time to do it here 
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 
@@ -140,3 +140,4 @@ CHECK OUT
 1. order of the objects and intersections is correct from the camera view
 2. object behind the camera
 3. when rendering plane, ray and plane are parallel or even contained (plane normal  * ray = 0)
+4. parsing: missing/extra parameters

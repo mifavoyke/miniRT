@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/03 11:34:34 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:25:39 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ void	print_scene(t_scene *scene)
 void	print_tm(t_matrix Tm)
 {
 	printf("\nTM:");
-	printf("\t[ %f  %f  %f  %f ]\n", Tm.R.x, Tm.F.x, Tm.U.x, Tm.Tr.x);
-	printf("\t[ %f  %f  %f  %f ]\n", Tm.R.y, Tm.F.y, Tm.U.y, Tm.Tr.y);
-	printf("\t[ %f  %f  %f  %f ]\n", Tm.R.z, Tm.F.z, Tm.U.z, Tm.Tr.z);
+	printf("\t[ %f  %f  %f  %f ]\n", Tm.right.x, Tm.forward.x, Tm.up.x, Tm.translation.x);
+	printf("\t[ %f  %f  %f  %f ]\n", Tm.right.y, Tm.forward.y, Tm.up.y, Tm.translation.y);
+	printf("\t[ %f  %f  %f  %f ]\n", Tm.right.z, Tm.forward.z, Tm.up.z, Tm.translation.z);
 	printf("\t[ %f  %f  %f  %f ]\n", 0.0, 0.0, 0.0, 1.0);
 }

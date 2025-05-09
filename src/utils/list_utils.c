@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:14:57 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/03 11:00:13 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:52:31 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ void	append_node(t_inter *new_node, t_inter **head)
 // splits linked list into two halves using the fast and slow pointer approach
 // when found half, set the next as head of a new list so new list has a start
 // in the first list, set last_element->next as NULL so first list has an end
-static void	split_list(t_inter *list, t_inter **first_half, t_inter **second_half)
+static void	split_list(t_inter *l, t_inter **first_half, t_inter **second_half)
 {
 	t_inter	*slow;
 	t_inter	*fast;
 
-	if (!list)
+	if (!l)
 		return ;
-	slow = list;
-	fast = list->next;
+	slow = l;
+	fast = l->next;
 	while (fast)
 	{
 		fast = fast->next;
@@ -54,7 +54,7 @@ static void	split_list(t_inter *list, t_inter **first_half, t_inter **second_hal
 			fast = fast->next;
 		}
 	}
-	*first_half = list;
+	*first_half = l;
 	*second_half = slow->next;
 	slow->next = NULL;
 }

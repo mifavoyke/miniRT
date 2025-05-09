@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:33:59 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/01 15:40:11 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:23:22 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // @returns 1 if are parallel, 0 if not 
 int	are_parallel(t_coord vector1, t_coord vector2)
 {
-	t_coord cross;
+	t_coord	cross;
 
 	cross = get_cross_product(vector1, vector2);
 	if (fabsf(cross.x) < EPSILON
@@ -26,17 +26,16 @@ int	are_parallel(t_coord vector1, t_coord vector2)
 	return (0);
 }
 
-t_coord multiply_transpose(t_matrix R, t_coord v)
+// multiply vector by the transpose of matrix R
+// transpose of matrix R is matrix where rows become columns and vice versa
+// it means dotting v with each row of R (which are columns in original matrix)
+t_coord	multiply_transpose(t_matrix R, t_coord v)
 {
-	t_coord result;
-
-	// Multiply vector by the transpose of matrix R
-	// That means dotting v with each ROW of R (which are columns in original matrix)
-	result.x = v.x * R.R.x + v.y * R.F.x + v.z * R.U.x;
-	result.y = v.x * R.R.y + v.y * R.F.y + v.z * R.U.y;
-	result.z = v.x * R.R.z + v.y * R.F.z + v.z * R.U.z;
-
-	return result;
+	t_coord	result;
+	result.x = v.x * R.right.x + v.y * R.forward.x + v.z * R.up.x;
+	result.y = v.x * R.right.y + v.y * R.forward.y + v.z * R.up.y;
+	result.z = v.x * R.right.z + v.y * R.forward.z + v.z * R.up.z;
+	return (result);
 }
 
 // adds 2 vectors - x1+x2, y1+y2, z1+z2

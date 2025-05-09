@@ -2,6 +2,12 @@
     "files.associations": {
         "minirt.h": "c",
         "vector": "c",
-        "random": "c"
+        "random": "c",
+        "unistd.h": "c",
+        "stdlib.h": "c",
+        "mlx42.h": "c",
+        "fcntl.h": "c",
+        "float.h": "c",
+        "libft.h": "c"
     }
 }

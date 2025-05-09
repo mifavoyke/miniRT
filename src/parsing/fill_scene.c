@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/03 11:39:31 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:53:18 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ int	fill_camera(t_scene *scene, char **values)
 
 // creates a visual "sun" sphere at the light's position.
 // this does NOT append the sphere to the scene. Store it manually.
-t_sphere *fill_lightsource_object(t_light light)
+t_sphere	*fill_lightsource_object(t_light light)
 {
-	t_sphere *light_sphere;
+	t_sphere	*light_sphere;
 
 	light_sphere = malloc(sizeof(t_sphere));
 	if (!light_sphere)

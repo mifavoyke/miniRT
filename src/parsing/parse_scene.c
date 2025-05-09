@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:55 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/03 12:31:16 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:28:24 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_scene	*create_scene(char *filename)
 	if (fill_scene(scene, file_data) == ERROR)
 		return (free_arr(file_data), free_scene(scene), NULL);
 	free_arr(file_data);
-	scene->Tm = find_transformation_matrix(scene->c);
+	scene->tm = find_transformation_matrix(scene->c);
 	scene->viewport_distance = 1.0;
 	scene->viewport_width = get_viewport_width(scene->c.view_degree,
 			scene->viewport_distance);

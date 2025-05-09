@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/30 11:14:12 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:28:08 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	scroll_zoom(double xdelta, double ydelta, void *param)
 	(void)xdelta;
 	minirt = (t_minirt *)param;
 	if (ydelta > 0)
-		move(minirt, minirt->scene->Tm.F, ZOOM);
+		move(minirt, minirt->scene->tm.forward, ZOOM);
 	else if (ydelta < 0)
-		move(minirt, minirt->scene->Tm.F, -ZOOM);
+		move(minirt, minirt->scene->tm.forward, -ZOOM);
 }
 
 // hooks keys to control the program to relevant functions
@@ -34,13 +34,13 @@ void	ft_hook(void *param)
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(minirt->mlx);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_D))
-		move(minirt, minirt->scene->Tm.R, TRANSLATION);
+		move(minirt, minirt->scene->tm.right, TRANSLATION);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_A))
-		move(minirt, minirt->scene->Tm.R, -TRANSLATION);
+		move(minirt, minirt->scene->tm.right, -TRANSLATION);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_W))
-		move(minirt, minirt->scene->Tm.U, TRANSLATION);
+		move(minirt, minirt->scene->tm.up, TRANSLATION);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_S))
-		move(minirt, minirt->scene->Tm.U, -TRANSLATION);
+		move(minirt, minirt->scene->tm.up, -TRANSLATION);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_UP))
 		rotate_x(minirt, &minirt->scene->c.vector, -ANGLE_RADIAN);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_DOWN))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/03 13:33:29 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:32:14 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,9 @@ bool does_ray_intersect_sphere(t_coord ray_origin, t_coord ray_dir, t_sphere *sp
 // 	return (0);
 // }
 
-t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
-t_inter	*find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
-t_inter	*find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
+t_inter *find_cylinder_inters(t_coord ray, t_camera cam, t_cylinder *cy);
+t_inter	*find_plane_inters(t_coord ray, t_camera cam, t_plane *pl);
+t_inter	*find_sphere_inters(t_coord ray, t_camera cam, t_sphere *sp);
 
 int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/03 10:54:54 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:32:34 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,25 @@ t_matrix	find_transformation_matrix(t_camera c)
 	t_matrix	tm;
 	t_coord		global_up;
 
-	tm.Tr = set_coord(c.point.x, c.point.y, c.point.z);
+	tm.translation = set_coord(c.point.x, c.point.y, c.point.z);
 	global_up = set_coord(0.0, 0.0, 1.0);
-	tm.F = c.vector;
-	if (tm.F.x == 0 && tm.F.y == 0 && tm.F.z == 1)
+	tm.forward = c.vector;
+	if (tm.forward.x == 0 && tm.forward.y == 0 && tm.forward.z == 1)
 	{
-		tm.U = set_coord(0, -1, 0);
-		tm.R = set_coord(1, 0, 0);
+		tm.up = set_coord(0, -1, 0);
+		tm.right = set_coord(1, 0, 0);
 	}
-	else if (tm.F.x == 0 && tm.F.y == 0 && tm.F.z == -1)
+	else if (tm.forward.x == 0 && tm.forward.y == 0 && tm.forward.z == -1)
 	{
-		tm.U = set_coord(0, 1, 0);
-		tm.R = set_coord(1, 0, 0);
+		tm.up = set_coord(0, 1, 0);
+		tm.right = set_coord(1, 0, 0);
 	}
 	else
 	{
-		tm.R = get_cross_product(tm.F, global_up);
-		normalize(&tm.R);
-		tm.U = get_cross_product(tm.R, tm.F);
-		normalize(&tm.U);
+		tm.right = get_cross_product(tm.forward, global_up);
+		normalize(&tm.right);
+		tm.up = get_cross_product(tm.right, tm.forward);
+		normalize(&tm.up);
 	}
 	return (tm);
 }
@@ -71,9 +71,12 @@ static t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 	pv.y = scene->viewport_distance;
 	pv.z = scale(y + 0.5, scene->viewport_height / 2,
 			-scene->viewport_height / 2, HEIGHT);
-	p_new.x = Tm.R.x * pv.x + Tm.F.x * pv.y + Tm.U.x * pv.z + Tm.Tr.x;
-	p_new.y = Tm.R.y * pv.x + Tm.F.y * pv.y + Tm.U.y * pv.z + Tm.Tr.y;
-	p_new.z = Tm.R.z * pv.x + Tm.F.z * pv.y + Tm.U.z * pv.z + Tm.Tr.z;
+	p_new.x = Tm.right.x * pv.x + Tm.forward.x * pv.y + Tm.up.x * pv.z
+		+ Tm.translation.x;
+	p_new.y = Tm.right.y * pv.x + Tm.forward.y * pv.y + Tm.up.y * pv.z
+		+ Tm.translation.y;
+	p_new.z = Tm.right.z * pv.x + Tm.forward.z * pv.y + Tm.up.z * pv.z
+		+ Tm.translation.z;
 	ray_vector = make_vector(scene->c.point, p_new);
 	normalize(&ray_vector);
 	return (ray_vector);
@@ -96,24 +99,24 @@ static t_inter	*create_intersection_list(t_scene *scene, t_coord ray)
 	temp_pl = scene->pl;
 	while (temp_sp)
 	{
-		new_node = find_sphere_intersections(ray, scene->c, (void *)temp_sp);
+		new_node = find_sphere_inters(ray, scene->c, (void *)temp_sp);
 		append_node(new_node, &head);
 		temp_sp = temp_sp->next;
 	}
 	if (scene->light_sphere)
 	{
-		new_node = find_sphere_intersections(ray, scene->c, (void *)scene->light_sphere);
+		new_node = find_sphere_inters(ray, scene->c, (void *)scene->light_sphere);
 		append_node(new_node, &head);
 	}
 	while (temp_cy)
 	{
-		new_node = find_cylinder_intersections(ray, scene->c, (void *)temp_cy);
+		new_node = find_cylinder_inters(ray, scene->c, (void *)temp_cy);
 		append_node(new_node, &head);
 		temp_cy = temp_cy->next;
 	}
 	while (temp_pl)
 	{
-		new_node = find_plane_intersections(ray, scene->c, (void *)temp_pl);
+		new_node = find_plane_inters(ray, scene->c, (void *)temp_pl);
 		append_node(new_node, &head);
 		temp_pl = temp_pl->next;
 	}
@@ -140,7 +143,7 @@ int	shoot_rays(t_minirt *minirt, t_scene *scene)
 		x = -1;
 		while (++x < minirt->img_width)
 		{
-			ray = get_viewport_ray(scene, scene->Tm, x, y);
+			ray = get_viewport_ray(scene, scene->tm, x, y);
 			intersection_list = create_intersection_list(scene, ray);
 			if (minirt->intersection[y][x])
 				free_list(&minirt->intersection[y][x], free);

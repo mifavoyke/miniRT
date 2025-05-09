@@ -19,13 +19,16 @@ endif
 
 SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/math/basic.c \
-		$(SRC_DIR)/math/intersections.c \
 		$(SRC_DIR)/math/light.c \
 		$(SRC_DIR)/math/math.c \
 		$(SRC_DIR)/math/shadow.c \
 		$(SRC_DIR)/math/vector_i.c \
 		$(SRC_DIR)/math/vector_ii.c \
 		$(SRC_DIR)/math/vector_iii.c \
+		$(SRC_DIR)/math/intersections/cylinder_intersections.c \
+		$(SRC_DIR)/math/intersections/plane_intersections.c \
+		$(SRC_DIR)/math/intersections/sphere_intersections.c \
+		$(SRC_DIR)/math/intersections/utils_intersections.c \
 		$(SRC_DIR)/parsing/color_utils.c \
 		$(SRC_DIR)/parsing/coord_utils.c \
 		$(SRC_DIR)/parsing/file_data.c \
@@ -46,8 +49,8 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/utils/test_utils.c \
 		$(SRC_DIR)/utils/utils.c 
 
-# OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-OBJS = $(SRCS:.c=.o) # when we put object files into a directory it does not take the files from subdirectiories of src/
+OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+# OBJS = $(SRCS:.c=.o) # when we put object files into a directory it does not take the files from subdirectiories of src/
 
 all: libmlx libft $(NAME)
 
@@ -73,14 +76,19 @@ libft:
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(HEADERS) -L$(LIBFT_DIR) -lft -o $(NAME)
-	@$(RM) $(OBJS)
+
+# @$(RM) $(OBJS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/parsing
+	@mkdir -p $(OBJ_DIR)/math
+	@mkdir -p $(OBJ_DIR)/utils
+	@mkdir -p $(OBJ_DIR)/math/intersections
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@$(RM) $(OBJS)
+	@$(RM) $(OBJ_DIR)
 	@$(RM) $(MLX42_BUILD)
 	@make clean -C $(LIBFT_DIR)
 
@@ -89,8 +97,8 @@ fclean: clean
 	@$(RM) ./lib/MLX42
 	@make fclean -C $(LIBFT_DIR)
 
-valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=mlx.supp ./$(NAME) scenes/stack.rt
+# valgrind:
+# 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=mlx.supp ./$(NAME) scenes/stack.rt
 
 re: fclean all
 
