@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 11:19:45 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:10:11 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,28 @@ int	equals(float a, float b, float deviation)
 // if D > 0 --> 2 roots (the ray enters and exits - 2 spots)
 //    D = 0 --> 1 root (touches the surface)
 //    D < 0 --> no roots (does not intersect)
-void	find_roots(t_quadr_coef *qc)
+t_roots	find_roots(float a, float b, float c)
 {
-	qc->discriminant = pow(qc->b, 2) - (4 * qc->a * qc->c);
-	if (qc->discriminant < 0 || qc->a == 0)
+	float	discriminant;
+	t_roots	roots;
+	
+	discriminant = pow(b, 2) - (4 * a * c);
+	if (discriminant < 0 || a == 0)
 	{
-		qc->t1 = -1.0;
-		qc->t2 = -1.0;
+		roots.t1 = -1.0;
+		roots.t2 = -1.0;
 	}
-	else if (qc->discriminant == 0)
+	else if (discriminant == 0)
 	{
-		qc->t1 = (-qc->b + sqrt(qc->discriminant)) / 2 * qc->a;
-		qc->t2 = qc->t1;
+		roots.t1 = (-b + sqrt(discriminant)) / 2 * a;
+		roots.t2 = roots.t1;
 	}
 	else
 	{
-		qc->t1 = (-qc->b + sqrt(qc->discriminant)) / 2 * qc->a;
-		qc->t2 = (-qc->b - sqrt(qc->discriminant)) / 2 * qc->a;
+		roots.t1 = (-b + sqrt(discriminant)) / 2 * a;
+		roots.t2 = (-b - sqrt(discriminant)) / 2 * a;
 	}
+	return (roots);
 }
 
 // linear interpolation function = maps/scales points proportionate and
