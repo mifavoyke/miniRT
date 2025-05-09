@@ -153,6 +153,7 @@ typedef struct s_inter
 	t_colour		colour;
 	void			*obj;
 	float			distance;
+	float			ld;
 	int				id;
 	struct s_inter	*next;
 }					t_inter;
@@ -202,12 +203,12 @@ double		scale(double num, double new_min, double new_max, double old_max);
 void		find_roots(t_quadr_coef *qc);
 
 // INTERSECTIONS
-t_inter		*find_sphere_inters(t_coord ray, t_camera cam, t_sphere *sp);
-t_inter		*find_plane_inters(t_coord ray, t_camera cam, t_plane *pl);
-t_inter		*find_cylinder_inters(t_coord ray, t_camera cam, t_cylinder *cy);
+t_inter		*find_sphere_inters(t_coord ray, t_scene *scene, t_sphere *sp);
+t_inter		*find_plane_inters(t_coord ray, t_scene *scene, t_plane *pl);
+t_inter		*find_cylinder_inters(t_coord ray, t_scene *scene, t_cylinder *cy);
 void		merge_sort(t_inter **list_head);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
-t_inter		*make_inter(void *obj, float t, t_coord ray, t_camera cam);
+t_inter		*make_inter(void *obj, float t, t_coord ray, t_scene *scene);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
 
 // VECTOR MATH
@@ -225,6 +226,7 @@ int			are_parallel(t_coord vector1, t_coord vector2);
 t_coord		multiply_transpose(t_matrix R, t_coord v);
 t_coord		add_vectors(t_coord v1, t_coord v2);
 t_coord		rotate_vector_around_axis(t_coord v, t_coord axis, float angle);
+float		get_two_points_distance(t_coord a, t_coord b);
 
 // LIGHT
 int			lighting(t_minirt *minirt);

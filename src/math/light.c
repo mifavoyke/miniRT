@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
 /*   Updated: 2025/05/09 14:22:01 by yhusieva         ###   ########.fr       */
@@ -143,6 +143,7 @@ static t_colour compute_pixel_light(t_scene *scene, t_inter *inter, t_coord ligh
             specular_light(&light_inputs, scene->l->brightness);
         }
         light_inputs.reflectivity += scene->a.ratio + diffuse_light(light_inputs.scalar_nl, scene->l->brightness);
+
         if (light_inputs.reflectivity > 1.0f)
             light_inputs.reflectivity = 1.0f;
     }

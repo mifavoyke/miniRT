@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:33:59 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 11:23:22 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:13:31 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,16 @@ t_coord	rotate_vector_around_axis(t_coord v, t_coord axis, float angle)
 		+ (1 - c) * (axis.z * (axis.x * v.x + axis.y * v.y + axis.z * v.z))
 		+ s * (axis.x * v.y - axis.y * v.x);
 	return (result);
+}
+
+// gets distance among 2 points in space 
+float	get_two_points_distance(t_coord a, t_coord b)
+{
+	float	distance;
+
+	distance = sqrt(
+		(a.x - b.x) * (a.x - b.x)
+		+ (a.y - b.y) * (a.y - b.y)
+		+ (a.z - b.z) * (a.z - b.z));
+	return (distance);
 }
