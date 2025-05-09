@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane_intersections.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:05:12 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:17:08 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:23:03 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ float	get_plane_inter_root(t_coord ray, t_coord origin, t_plane *pl)
 // combined: t = - ((Q - C) o n) / (ray o n)
 // t = ((point in plane - point on line=camera) o normal) / (ray o normal)
 // t = parameter applied to ray that tells how far to move along direction
-float	*find_plane_inters(t_coord ray, t_coord origin, t_plane *pl)
+t_inter	*find_plane_inters(t_coord ray, t_coord origin, t_plane *pl)
 {
 	t_inter	*inter;
 	float	t;

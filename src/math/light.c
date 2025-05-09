@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:16:38 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:53:08 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static t_colour compute_pixel_light(t_scene *scene, t_inter *inter, t_coord ligh
             specular_light(&light_inputs, scene->l->brightness);
         }
         light_inputs.reflectivity += scene->a.ratio + diffuse_light(light_inputs.scalar_nl, scene->l->brightness);
-
         if (light_inputs.reflectivity > 1.0f)
             light_inputs.reflectivity = 1.0f;
     }
@@ -71,6 +70,7 @@ int lighting(t_minirt *minirt)
 {
     int y;
     int x;
+    t_light *tmp_l;
 
     y = -1;
     while (++y < minirt->img_height)
@@ -80,7 +80,12 @@ int lighting(t_minirt *minirt)
         {
             if (minirt->intersection[y][x])
             {
-                minirt->pixels[y][x] = compute_pixel_light(minirt->scene, minirt->intersection[y][x], minirt->scene->l->lightpoint, minirt->scene->c.point);
+                tmp_l = minirt->scene->l;
+                while (tmp_l)
+                {
+                    minirt->pixels[y][x] = compute_pixel_light(minirt->scene, minirt->intersection[y][x], minirt->scene->l->lightpoint, minirt->scene->c.point);
+                    tmp_l = tmp_l->next;
+                }
             }
         }
     }
