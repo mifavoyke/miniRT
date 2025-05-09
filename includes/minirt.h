@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 14:22:47 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:28:12 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ t_inter		*find_plane_inters(t_coord ray, t_scene *scene, t_plane *pl);
 t_inter		*find_cylinder_inters(t_coord ray, t_scene *scene, t_cylinder *cy);
 void		merge_sort(t_inter **list_head);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
-t_inter		*make_inter(void *obj, float t, t_coord ray, t_camera cam);
+t_inter		*make_inter(void *obj, float t, t_coord ray, t_scene *scene);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
 
 // VECTOR MATH

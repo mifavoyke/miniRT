@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:04:40 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:22:58 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:27:58 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ t_inter	*find_sphere_inters(t_coord ray, t_scene *scene, t_sphere *sp)
 	find_roots(&qc);
 	if (qc.t1 > EPSILON)
 	{
-		inter1 = make_inter((void *)sp, qc.t1, ray, cam);
+		inter1 = make_inter((void *)sp, qc.t1, ray, scene);
 		set_id_colour_type(inter1, sp->id, SPHERE, sp->colour);
 	}
 	if (qc.t2 > EPSILON && qc.t2 != qc.t1)
 	{
-		inter2 = make_inter((void *)sp, qc.t2, ray, cam);
+		inter2 = make_inter((void *)sp, qc.t2, ray, scene);
 		set_id_colour_type(inter2, sp->id, SPHERE, sp->colour);
 	}
 	return (return_object_inters(inter1, inter2));

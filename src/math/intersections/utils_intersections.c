@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:03:06 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 12:19:10 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:27:47 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void	set_id_colour_type(t_inter *inter, int id, enum e_obj_t t, t_colour c)
 
 // allocates intersection node and fills it with required data
 // color, id and type have to be set outside of func BECAUSE OF FCKING NORMINET
-t_inter	*make_inter(void *obj, float t, t_coord ray, t_camera cam)
+t_inter	*make_inter(void *obj, float t, t_coord ray, t_scene *scene)
 {
 	t_inter	*inter;
+	t_camera cam = scene->c;
 
 	inter = (t_inter *)malloc(sizeof(t_inter));
 	if (!inter)

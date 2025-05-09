@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:05:12 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:22:55 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:28:22 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_inter	*find_plane_inters(t_coord ray, t_scene *scene, t_plane *pl)
 	t = get_dot_product(to_plane, pl->vector) / denom;
 	if (t > 0)
 	{
-		inter = make_inter((void *)pl, t, ray, cam);
+		inter = make_inter((void *)pl, t, ray, scene);
 		set_id_colour_type(inter, pl->id, PLANE, pl->colour);
 	}
 	return (inter);

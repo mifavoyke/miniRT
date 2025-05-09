@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:26:32 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:28:50 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_inter *get_coat_inters(t_scene *scene, t_coord base_ray_vector, t_coord ray_ax
 	float	d2;
 	t_inter	*inter1;
 	t_inter	*inter2;
-	t_camera cam = scene->c;
 
 	inter1 = NULL;
 	inter2 = NULL;
@@ -29,14 +28,14 @@ t_inter *get_coat_inters(t_scene *scene, t_coord base_ray_vector, t_coord ray_ax
 	t1 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d1), base_ray_vector));
 	if (d1 > EPSILON && t1 >= EPSILON && t1 <= (cy->height))
 	{
-		inter1 = make_inter((void *)cy, d1, ray, cam);
+		inter1 = make_inter((void *)cy, d1, ray, scene);
 		set_id_colour_type(inter1, cy->id, CYLINDER, cy->colour);
 	}
 	d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vector, cy->vector)) - sqrt(root_part)) / get_dot_product(ray_axis_cross, ray_axis_cross);	
 	t2 = get_dot_product(cy->vector, subtract_vectors(multiply_vector_by_constant(ray, d2), base_ray_vector));
 	if (d2 > EPSILON && t2 >= EPSILON && t2 <= (cy->height))
 	{
-		inter2 = make_inter((void *)cy, d2, ray, cam);
+		inter2 = make_inter((void *)cy, d2, ray, scene);
 		set_id_colour_type(inter2, cy->id, CYLINDER, cy->colour);
 	}
 	return (return_object_inters(inter1, inter2));
@@ -54,7 +53,6 @@ t_inter	*get_cap_inters(t_coord ray, t_scene *scene, t_coord base_ray_vector, t_
 	float	bottom_d;
 	t_inter *inter3 = NULL;
 	t_inter *inter4 = NULL;
-	t_camera cam = scene->c;
 
 	if (get_dot_product(cy->vector, ray) != 0)
 	{
@@ -62,7 +60,7 @@ t_inter	*get_cap_inters(t_coord ray, t_scene *scene, t_coord base_ray_vector, t_
 		top_t = get_dot_product(subtract_vectors(multiply_vector_by_constant(ray, top_d), base_ray_vector), subtract_vectors(multiply_vector_by_constant(ray, top_d), base_ray_vector));
 		if (top_d > EPSILON && top_t < pow(cy->diameter / 2, 2) && top_t > EPSILON)
 		{
-			inter3 = make_inter((void *)cy, top_d, ray, cam);
+			inter3 = make_inter((void *)cy, top_d, ray, scene);
 			set_id_colour_type(inter3, cy->id, PLANE, cy->colour);
 		}
 		bottom_d = get_dot_product(cy->vector, (add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height)))) / get_dot_product(cy->vector, ray);
@@ -70,7 +68,7 @@ t_inter	*get_cap_inters(t_coord ray, t_scene *scene, t_coord base_ray_vector, t_
 								subtract_vectors(multiply_vector_by_constant(ray, bottom_d), add_vectors(base_ray_vector, multiply_vector_by_constant(cy->vector, cy->height))));
 		if (bottom_d > EPSILON && bottom_t < pow(cy->diameter / 2, 2) && bottom_t > EPSILON)
 		{
-			inter4 = make_inter((void *)cy, bottom_d, ray, cam);
+			inter4 = make_inter((void *)cy, bottom_d, ray, scene);
 			set_id_colour_type(inter4, cy->id, PLANE, cy->colour);
 		}
 	}
