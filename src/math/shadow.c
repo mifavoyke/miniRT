@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 11:32:14 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:04:46 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
-void debug_shadow_ray(t_coord ray_origin, t_coord ray_dir, float t1, float t2, float max_distance)
-{
-	printf("SHADOW DEBUG:\n");
-	printf("Ray origin:     (%f, %f, %f)\n", ray_origin.x, ray_origin.y, ray_origin.z);
-	printf("Ray direction:  (%f, %f, %f)\n", ray_dir.x, ray_dir.y, ray_dir.z);
-	printf("t1 = %f, t2 = %f\n", t1, t2);
-	printf("max_distance:   %f\n", max_distance);
-}
 
 float vector_length_squared(t_coord v)
 {

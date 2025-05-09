@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   fill_objects_a.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:27:16 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/09 10:59:05 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:27:58 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // appends new allocated sphere instance to the sphere list
-static void	append_sphere(t_sphere **sphere_list, t_sphere *new_sphere)
+void	append_sphere(t_sphere **sphere_list, t_sphere *new_sphere)
 {
 	t_sphere	*tmp;
 
@@ -72,7 +72,6 @@ int	fill_sphere(t_scene *scene, char **values, int *i)
 	(*i)++;
 	new_sphere->next = NULL;
 	append_sphere(&(scene->sp), new_sphere);
-	scene->sp_count++;
 	return (SUCCESS);
 }
 
@@ -104,6 +103,5 @@ int	fill_plane(t_scene *scene, char **values, int *i)
 	new_pl->id = (*i)++;
 	new_pl->next = NULL;
 	append_plane(&(scene->pl), new_pl);
-	scene->pl_count++;
 	return (SUCCESS);
 }

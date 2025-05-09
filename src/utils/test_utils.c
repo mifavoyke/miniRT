@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:22 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 11:25:39 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:47:35 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // prints linked list
-void	print_list(t_inter *head, int x, int y)
+void print_list(t_inter *head, int x, int y)
 {
 	if (!head)
-		return ;
+		return;
 	printf("[%d, %d] -----------------------------------------------\n", x, y);
 	while (head)
 	{
 		printf("Intersection point: (%f, %f, %f) distance: %f, object: %d\n",
-			head->point.x, head->point.y, head->point.z,
-			head->distance, head->type);
+			   head->point.x, head->point.y, head->point.z,
+			   head->distance, head->type);
 		head = head->next;
 	}
 }
 
-static void	print_spheres(t_sphere *sp)
+static void print_spheres(t_sphere *sp)
 {
-	t_sphere	*tmp;
+	t_sphere *tmp;
 
 	tmp = sp;
 	printf("\nSpheres:\n");
@@ -48,10 +48,10 @@ static void	print_spheres(t_sphere *sp)
 	}
 }
 
-static void	print_planes(t_plane *pl)
+static void print_planes(t_plane *pl)
 {
-	t_plane	*tmp;
-	
+	t_plane *tmp;
+
 	tmp = pl;
 	printf("\nPlanes:\n");
 	if (!pl)
@@ -70,9 +70,9 @@ static void	print_planes(t_plane *pl)
 	}
 }
 
-static void	print_cylinders(t_cylinder *cy)
+static void print_cylinders(t_cylinder *cy)
 {
-	t_cylinder	*tmp;
+	t_cylinder *tmp;
 
 	tmp = cy;
 	printf("\nCylinders:\n");
@@ -94,7 +94,27 @@ static void	print_cylinders(t_cylinder *cy)
 	}
 }
 
-void	print_camera(t_camera *c)
+void print_light(t_light *l)
+{
+	t_light *tmp;
+	
+	tmp = l;
+	if (!l)
+		printf("  No lights in the scene.\n");
+	while (tmp)
+	{
+		printf("Light:\n");
+		printf("  Position: ");
+		print_coord(l->lightpoint);
+		printf("  Brightness: %.2f\n", l->brightness);
+		printf("  Colour: ");
+		print_colour(l->colour);
+		printf("\n");
+		tmp = tmp->next;
+	}
+}
+
+void print_camera(t_camera *c)
 {
 	printf("Camera:\n");
 	printf("  Viewpoint: ");
@@ -104,18 +124,7 @@ void	print_camera(t_camera *c)
 	printf("  View Degree: %.2f\n", c->view_degree);
 }
 
-void	print_light(t_light *l)
-{
-	printf("Light:\n");
-	printf("  Position: ");
-	print_coord(l->lightpoint);
-	printf("  Brightness: %.2f\n", l->brightness);
-	printf("  Colour: ");
-	print_colour(l->colour);
-	printf("\n");
-}
-
-void	print_ambient(t_ambient *a)
+void print_ambient(t_ambient *a)
 {
 	printf("Ambient Light:\n");
 	printf("  Ratio: %.2f\n", a->ratio);
@@ -125,16 +134,12 @@ void	print_ambient(t_ambient *a)
 }
 
 // prints the scene with all its attributes
-void	print_scene(t_scene *scene)
+void print_scene(t_scene *scene)
 {
 	printf("\n=== Scene Parameters ===\n");
 	print_ambient(&scene->a);
 	print_camera(&scene->c);
-	print_light(&scene->l);
-	printf("\n--- Object Counts ---\n");
-	printf("Spheres: %d\n", scene->sp_count);
-	printf("Planes: %d\n", scene->pl_count);
-	printf("Cylinders: %d\n", scene->cy_count);
+	print_light(scene->l);
 	print_spheres(scene->sp);
 	print_planes(scene->pl);
 	print_cylinders(scene->cy);
@@ -144,7 +149,7 @@ void	print_scene(t_scene *scene)
 //		[ Ry  Fy  Uy  Ty ] * [ P0y ]
 //		[ Rz  Fz  Uz  Tz ] * [ P0z ]
 //		[  0   0   0   1 ] * [  1  ]
-void	print_tm(t_matrix Tm)
+void print_tm(t_matrix Tm)
 {
 	printf("\nTM:");
 	printf("\t[ %f  %f  %f  %f ]\n", Tm.right.x, Tm.forward.x, Tm.up.x, Tm.translation.x);

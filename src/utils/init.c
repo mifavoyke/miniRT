@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:07:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/03 10:54:06 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:30:24 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,12 @@ int	minirt_init(t_minirt *rt, t_scene *scene)
 // initilizes all allocated values in the scene to NULL
 void	init_scene(t_scene *scene)
 {
+	scene->l = NULL;
+	scene->light_spheres = NULL;
 	scene->sp = NULL;
 	scene->pl = NULL;
 	scene->cy = NULL;
 	scene->a_count = 0;
 	scene->c_count = 0;
-	scene->l_count = 0;
-	scene->sp_count = 0;
-	scene->pl_count = 0;
-	scene->cy_count = 0;
 	scene->bg = set_colour(200, 200, 200, 255);
 }

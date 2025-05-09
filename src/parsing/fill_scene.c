@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 10:53:18 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:38:41 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,25 @@ int	fill_camera(t_scene *scene, char **values)
 	return (0);
 }
 
+// appends new allocated light sources to the list
+static void	append_light(t_light **l_list, t_light *new_l)
+{
+	t_light	*tmp;
+
+	if (!l_list || !*l_list)
+		*l_list = new_l;
+	else
+	{
+		tmp = *l_list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_l;
+	}
+}
+
 // creates a visual "sun" sphere at the light's position.
 // this does NOT append the sphere to the scene. Store it manually.
-t_sphere	*fill_lightsource_object(t_light light)
+t_sphere	*fill_lightsource_object(t_light *light)
 {
 	t_sphere	*light_sphere;
 
@@ -72,9 +88,9 @@ t_sphere	*fill_lightsource_object(t_light light)
 		ft_error("Memory allocation failed for light sphere.");
 		return (NULL);
 	}
-	light_sphere->centre = light.lightpoint;
+	light_sphere->centre = light->lightpoint;
 	light_sphere->diameter = 5;
-	light_sphere->colour = light.colour;
+	light_sphere->colour = light->colour;
 	light_sphere->id = -42;
 	light_sphere->next = NULL;
 	return (light_sphere);
@@ -85,22 +101,30 @@ t_sphere	*fill_lightsource_object(t_light light)
 // expects L  POINT[x,y,z]  horizontal_FOW(0-180˚)  orientation_vector(x,y,z)
 int	fill_light(t_scene *scene, char **values)
 {
-	scene->l_count++;
-	if (scene->l_count > 1)
-		return (ft_error("Dublicate Light has been detected."));
+	t_light *new_l;
+	t_sphere *new_light_sp;
+	
 	if (!values[1] || !values[2] || !values[3] || values[4])
 		return (ft_error("Light missing/extra parameters."));
-	scene->l.lightpoint = parse_coord(values[1]);
-	if (invalid_coord(&scene->l.lightpoint))
+	new_l = malloc(sizeof(t_light));
+	if (!new_l)
+		return (ft_error("Memory allocation failed for light."));
+	new_l->lightpoint = parse_coord(values[1]);
+	if (invalid_coord(&new_l->lightpoint))
 		return (ERROR);
-	scene->l.brightness = ft_atof(values[2]);
-	if (scene->l.brightness < 0.0 || scene->l.brightness > 1.0)
+	new_l->brightness = ft_atof(values[2]);
+	if (new_l->brightness < 0.0 || new_l->brightness > 1.0)
 		return (ft_error("Light brightness out of range."));
-	scene->l.colour = parse_colour(values[3]);
-	if (invalid_colour(&scene->l.colour))
+	new_l->colour = parse_colour(values[3]);
+	if (invalid_colour(&new_l->colour))
 		return (ERROR);
-	scene->light_sphere = fill_lightsource_object(scene->l);
-	return (0);
+	new_l->next = NULL;
+	new_light_sp = fill_lightsource_object(new_l);
+	if (!new_light_sp)
+		return (ERROR);
+	append_sphere(&(scene->light_spheres), new_light_sp);
+	append_light(&(scene->l), new_l);
+	return (SUCCESS);
 }
 
 // compares first identifier and creates objects accordingly 

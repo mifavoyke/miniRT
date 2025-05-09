@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 12:06:49 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:30:30 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_light
 	t_coord			lightpoint;
 	float			brightness;
 	t_colour		colour;
+	struct s_light	*next;
 }					t_light;
 
 typedef struct s_light_math
@@ -162,22 +163,18 @@ typedef struct s_scene
 {
 	t_ambient		a;
 	t_camera		c;
-	t_light			l;
+	t_light			*l;
 	t_sphere		*sp;
 	t_plane			*pl;
 	t_cylinder		*cy;
+	t_sphere		*light_spheres;
 	int				a_count;
 	int				c_count;
-	int				l_count;
-	int				sp_count;
-	int				pl_count;
-	int				cy_count;
 	float			viewport_distance;
 	float			viewport_width;
 	float			viewport_height;
 	t_matrix		tm;
 	t_colour		bg;
-	t_sphere		*light_sphere;
 }					t_scene;
 
 typedef struct s_minirt
@@ -252,6 +249,7 @@ int			invalid_coord(t_coord *coord);
 int			invalid_colour(t_colour *clr);
 int			check_file_format(char *filename);
 int			fill_sphere(t_scene *scene, char **values, int *i);
+void		append_sphere(t_sphere **sphere_list, t_sphere *new_sphere);
 int			fill_plane(t_scene *scene, char **values, int *i);
 int			fill_cylinder(t_scene *scene, char **values, int *i);
 int			identify_object(t_scene *scene, char *identifier, char **values);
