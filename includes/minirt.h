@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 14:28:12 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:30:17 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,7 @@ int			are_parallel(t_coord vector1, t_coord vector2);
 t_coord		multiply_transpose(t_matrix R, t_coord v);
 t_coord		add_vectors(t_coord v1, t_coord v2);
 t_coord		rotate_vector_around_axis(t_coord v, t_coord axis, float angle);
+float		get_two_points_distance(t_coord a, t_coord b);
 
 // LIGHT
 int			lighting(t_minirt *minirt);
