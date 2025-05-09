@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:04:40 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 12:15:17 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:22:58 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 // based on parametric equations for sphere and ray
 // any point in ray: P = C + t*ray
 // any point in sphere: |P−C|=r --> sqrt(P-C o P - C) = r --> (P-c)o(P-C) = r^2
-t_inter	*find_sphere_inters(t_coord ray, t_camera cam, t_sphere *sp)
+t_inter	*find_sphere_inters(t_coord ray, t_scene *scene, t_sphere *sp)
 {
 	t_inter			*inter1;
 	t_inter			*inter2;
 	t_quadr_coef	qc;
 	t_coord			cam_to_sp;
+	t_camera cam = scene->c;
 
 	inter1 = NULL;
 	inter2 = NULL;

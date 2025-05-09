@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 12:12:45 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:22:21 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_inter	*get_cap_inters(t_coord ray, t_camera cam, t_coord base_ray_vector, t_cy
 // base_ray_vector = helper vector (b - c) where b os center of the base and c is point on the ray
 // ray_axis_cross = helper vector (n x a) used multiple times
 // cache often used values and check coat and caps intersections
-t_inter *find_cylinder_inters(t_coord ray, t_camera cam, t_cylinder *cy)
+t_inter *find_cylinder_inters(t_coord ray, t_scene *scene, t_cylinder *cy)
 {
 	t_inter	*coat_inters;
 	t_inter	*caps_inters;
@@ -85,6 +85,7 @@ t_inter *find_cylinder_inters(t_coord ray, t_camera cam, t_cylinder *cy)
 	t_coord	base_center;
 	t_coord base_ray_vector;
 	t_coord	ray_axis_cross;
+	t_camera cam = scene->c;
 	
 	coat_inters = NULL;
 	caps_inters = NULL;

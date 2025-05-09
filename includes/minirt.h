@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 14:13:56 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:22:47 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,9 +206,9 @@ double		scale(double num, double new_min, double new_max, double old_max);
 void		find_roots(t_quadr_coef *qc);
 
 // INTERSECTIONS
-t_inter		*find_sphere_inters(t_coord ray, t_camera cam, t_sphere *sp);
-t_inter		*find_plane_inters(t_coord ray, t_camera cam, t_plane *pl);
-t_inter		*find_cylinder_inters(t_coord ray, t_camera cam, t_cylinder *cy);
+t_inter		*find_sphere_inters(t_coord ray, t_scene *scene, t_sphere *sp);
+t_inter		*find_plane_inters(t_coord ray, t_scene *scene, t_plane *pl);
+t_inter		*find_cylinder_inters(t_coord ray, t_scene *scene, t_cylinder *cy);
 void		merge_sort(t_inter **list_head);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
 t_inter		*make_inter(void *obj, float t, t_coord ray, t_camera cam);
