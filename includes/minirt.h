@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 13:30:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:50:07 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,10 @@ float		get_two_points_distance(t_coord a, t_coord b);
 // LIGHT
 int			lighting(t_minirt *minirt);
 int			is_in_shadow(t_scene *scene, t_light_math *light_inp, int curr_id);
+t_coord		get_surface_normal(t_inter *intersection);
+t_coord		reflected_vector(t_light_math *inputs);
+float		specular_light(t_light_math *inputs, float light_brightness);
+float		diffuse_light(float scalar_nl, float light_ratio);
 
 // MOVEMENT
 void		ft_hook(void *param);
@@ -251,7 +255,10 @@ int			invalid_coord(t_coord *coord);
 int			invalid_colour(t_colour *clr);
 int			check_file_format(char *filename);
 int			fill_sphere(t_scene *scene, char **values, int *i);
+void		append_light(t_light **l_list, t_light *new_l);
 void		append_sphere(t_sphere **sphere_list, t_sphere *new_sphere);
+void		append_plane(t_plane **plane_list, t_plane *new_plane);
+void		append_cylinder(t_cylinder **cylinder_list, t_cylinder *new_cyl);
 int			fill_plane(t_scene *scene, char **values, int *i);
 int			fill_cylinder(t_scene *scene, char **values, int *i);
 int			identify_object(t_scene *scene, char *identifier, char **values);

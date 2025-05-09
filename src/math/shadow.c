@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:04:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:16:21 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,27 +99,9 @@ bool does_ray_intersect_sphere(t_coord ray_origin, t_coord ray_dir, t_sphere *sp
 	float t2 = fabs((-b + sqrt_d) / (2 * a));
 	if ((t1 > 0.001 && t1 < max_distance) || (t2 > 0.001 && t2 < max_distance))
 		return (true);
+	// printf("t1: %f t2: %f\n", t1, t2);
 	return (false);
 }
-
-// int does_ray_intersect_sphere(t_coord origin, t_coord target, t_sphere *sp, float max_dist)
-// {
-// 	t_quadr_coef	qc;
-// 	t_coord ray;
-// 	t_coord origin_to_sp;
-	
-// 	ray = make_vector(origin, target);
-// 	origin_to_sp = make_vector(origin, sp->centre);
-// 	qc.a = get_dot_product(ray, ray);
-// 	qc.b = 2 * get_dot_product(origin_to_sp, ray);
-// 	qc.c = get_dot_product(origin_to_sp, origin_to_sp) - pow((sp->diameter) / 2, 2);
-// 	find_roots(&qc);
-// 	// qc.t1 = fabs(qc.t1);
-// 	// qc.t2 = fabs(qc.t2);
-// 	if ((qc.t1 > 0.001 && qc.t1 < max_dist) || (qc.t2 > 0.001 && qc.t2 < max_dist))
-// 		return (1);
-// 	return (0);
-// }
 
 int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 {
@@ -134,7 +116,11 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 		if (tmp_sp->id == current_id)
 			return (0);
 		if (does_ray_intersect_sphere(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_sp, light_inputs->max_length))
-			return (1);
+			{
+				return (true);
+			}
+		// if ((intersection->ld > 0.001 && intersection->ld < light_inputs->max_length))
+		// 	return (true);
 		tmp_sp = tmp_sp->next;
 	}
 	tmp_pl = scene->pl;

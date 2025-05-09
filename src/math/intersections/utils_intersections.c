@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_intersections.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:03:06 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:41:15 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:30:52 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_inter	*make_inter(void *obj, float t, t_coord ray, t_scene *scene)
 			cam.point.y + t * ray.y,
 			cam.point.z + t * ray.z
 			);
-	inter->ld = get_two_points_distance(inter->point, scene->l.lightpoint);
 	inter->next = NULL;
 	return (inter);
 }
