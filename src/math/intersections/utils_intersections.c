@@ -23,10 +23,9 @@ void	set_id_colour_type(t_inter *inter, int id, enum e_obj_t t, t_colour c)
 
 // allocates intersection node and fills it with required data
 // color, id and type have to be set outside of func BECAUSE OF FCKING NORMINET
-t_inter	*make_inter(void *obj, float t, t_coord ray, t_scene *scene)
+t_inter	*make_inter(void *obj, float t, t_coord ray, t_coord origin)
 {
 	t_inter	*inter;
-	t_camera cam = scene->c;
 
 	inter = (t_inter *)malloc(sizeof(t_inter));
 	if (!inter)
@@ -34,9 +33,9 @@ t_inter	*make_inter(void *obj, float t, t_coord ray, t_scene *scene)
 	inter->obj = obj;
 	inter->distance = fabsf(t);
 	inter->point = set_coord(
-			cam.point.x + t * ray.x,
-			cam.point.y + t * ray.y,
-			cam.point.z + t * ray.z
+			origin.x + t * ray.x,
+			origin.y + t * ray.y,
+			origin.z + t * ray.z
 			);
 	inter->next = NULL;
 	return (inter);

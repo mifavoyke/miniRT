@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
 /*   Updated: 2025/05/09 16:50:07 by yhusieva         ###   ########.fr       */
@@ -128,16 +128,6 @@ typedef struct s_cylinder
 
 /* ----------------------- MATH CALCULATIONS ------------------------------ */
 
-typedef struct s_quadr_coef
-{
-	float			a;
-	float			b;
-	float			c;
-	float			discriminant;
-	float			t1;
-	float			t2;
-}					t_quadr_coef;
-
 typedef struct s_matrix
 {
 	t_coord			right;
@@ -157,6 +147,12 @@ typedef struct s_inter
 	int				id;
 	struct s_inter	*next;
 }					t_inter;
+
+typedef struct s_roots
+{
+	float	t1;
+	float	t2;
+}					t_roots;
 
 /* ------------------------ SCENE DESCRIPTION -------------------------- */
 
@@ -193,22 +189,23 @@ typedef struct s_minirt
 
 int			minirt_init(t_minirt *rt, t_scene *scene);
 int			generate_image(t_minirt *minirt);
-
-// RAY MATH
 int			shoot_rays(t_minirt *minirt, t_scene *scene);
+
+// BASIC MATH
 t_matrix	find_transformation_matrix(t_camera c);
 float		get_viewport_width(float angle_deg, float distance);
 float		get_viewport_height(float viewport_width);
 double		scale(double num, double new_min, double new_max, double old_max);
-void		find_roots(t_quadr_coef *qc);
+t_roots		find_roots(float a, float b, float c);
 
 // INTERSECTIONS
-t_inter		*find_sphere_inters(t_coord ray, t_scene *scene, t_sphere *sp);
-t_inter		*find_plane_inters(t_coord ray, t_scene *scene, t_plane *pl);
-t_inter		*find_cylinder_inters(t_coord ray, t_scene *scene, t_cylinder *cy);
-void		merge_sort(t_inter **list_head);
+t_roots		find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp);
+t_inter		*find_sphere_inters(t_coord ray, t_coord origin, t_sphere *sp);
+float		get_plane_inter_root(t_coord ray, t_coord origin, t_plane *pl);
+t_inter		*find_plane_inters(t_coord ray, t_coord origin, t_plane *pl);
+t_inter		*find_cylinder_inters(t_coord ray, t_coord origin, t_cylinder *cy);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
-t_inter		*make_inter(void *obj, float t, t_coord ray, t_scene *scene);
+t_inter		*make_inter(void *obj, float t, t_coord ray, t_coord origin);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
 
 // VECTOR MATH
@@ -276,6 +273,7 @@ int			is_empty_line(char *line);
 int			ft_is_space(char c);
 int			dot_comma_limit(char *str, int *i, int *comma, int *has_dot);
 int			is_numerical(char *str);
+void		merge_sort(t_inter **list_head);
 
 // ALLOCATE
 t_colour	**allocate_pixels(int width, int height, t_colour background_color);
