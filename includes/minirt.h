@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 13:30:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:50:50 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,14 @@ typedef struct s_inter
 	struct s_inter	*next;
 }					t_inter;
 
+typedef struct s_roots
+{
+	float	t1;
+	float	t2;
+	float	t3;
+	float	t4;
+}					t_roots;
+
 /* ------------------------ SCENE DESCRIPTION -------------------------- */
 
 typedef struct s_scene
@@ -203,12 +211,12 @@ double		scale(double num, double new_min, double new_max, double old_max);
 void		find_roots(t_quadr_coef *qc);
 
 // INTERSECTIONS
-t_inter		*find_sphere_inters(t_coord ray, t_scene *scene, t_sphere *sp);
-t_inter		*find_plane_inters(t_coord ray, t_scene *scene, t_plane *pl);
-t_inter		*find_cylinder_inters(t_coord ray, t_scene *scene, t_cylinder *cy);
+t_inter		*find_sphere_inters(t_coord ray, t_coord origin, t_sphere *sp);
+t_inter		*find_plane_inters(t_coord ray, t_coord origin, t_plane *pl);
+t_inter		*find_cylinder_inters(t_coord ray, t_coord origin, t_cylinder *cy);
 void		merge_sort(t_inter **list_head);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
-t_inter		*make_inter(void *obj, float t, t_coord ray, t_scene *scene);
+t_inter		*make_inter(void *obj, float t, t_coord ray, t_coord origin);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
 
 // VECTOR MATH

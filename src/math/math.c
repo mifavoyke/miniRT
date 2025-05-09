@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:21:11 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:47:22 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,25 @@ static t_inter	*create_intersection_list(t_scene *scene, t_coord ray)
 	temp_light_ball = scene->light_spheres;
 	while (temp_sp)
 	{
-		new_node = find_sphere_inters(ray, scene, (void *)temp_sp);
+		new_node = find_sphere_inters(ray, scene->c.point, (void *)temp_sp);
 		append_node(new_node, &head);
 		temp_sp = temp_sp->next;
 	}
 	while (temp_light_ball)
 	{
-		new_node = find_sphere_inters(ray, scene, (void *)temp_light_ball);
+		new_node = find_sphere_inters(ray, scene->c.point, (void *)temp_light_ball);
 		append_node(new_node, &head);
 		temp_light_ball = temp_light_ball->next;
 	}
 	while (temp_cy)
 	{
-		new_node = find_cylinder_inters(ray, scene, (void *)temp_cy);
+		new_node = find_cylinder_inters(ray, scene->c.point, (void *)temp_cy);
 		append_node(new_node, &head);
 		temp_cy = temp_cy->next;
 	}
 	while (temp_pl)
 	{
-		new_node = find_plane_inters(ray, scene, (void *)temp_pl);
+		new_node = find_plane_inters(ray, scene->c.point, (void *)temp_pl);
 		append_node(new_node, &head);
 		temp_pl = temp_pl->next;
 	}
