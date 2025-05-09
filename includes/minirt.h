@@ -6,7 +6,7 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 12:06:49 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:13:56 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ typedef struct s_inter
 	t_colour		colour;
 	void			*obj;
 	float			distance;
+	float			ld;
 	int				id;
 	struct s_inter	*next;
 }					t_inter;
