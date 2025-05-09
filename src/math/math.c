@@ -100,6 +100,11 @@ static t_inter	*create_intersection_list(t_scene *scene, t_coord ray)
 		append_node(new_node, &head);
 		temp_sp = temp_sp->next;
 	}
+	if (scene->light_sphere)
+	{
+		new_node = find_sphere_intersections(ray, scene->c, (void *)scene->light_sphere);
+		append_node(new_node, &head);
+	}
 	while (temp_cy)
 	{
 		new_node = find_cylinder_intersections(ray, scene->c, (void *)temp_cy);

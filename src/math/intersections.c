@@ -181,7 +181,7 @@ t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
 	return (return_object_inters(coat_inters, caps_inters));
 }
 
-t_inter *find_paraboloid_intersections(t_coord ray, t_camera cam, t_cylinder *cy)
+t_inter *find_paraboloid_intersections(t_coord ray, t_camera cam, t_cylinder *cy) // its not used anywhere
 {
 	// paraboloid:
 	t_coord axis = set_coord(0.0,0.0,1.0); // must be normalized

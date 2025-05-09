@@ -52,6 +52,7 @@ void	free_scene(t_scene *scene)
 		free(scene->cy);
 		scene->cy = cy_tmp;
 	}
+	free(scene->light_sphere);
 	free(scene);
 	scene = NULL;
 }

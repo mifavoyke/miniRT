@@ -21,32 +21,55 @@ void debug_shadow_ray(t_coord ray_origin, t_coord ray_dir, float t1, float t2, f
 	printf("max_distance:   %f\n", max_distance);
 }
 
-bool does_ray_intersect_cylinder(t_coord ray_origin, t_coord ray_dir, t_cylinder *cy, float max_distance)
+float vector_length_squared(t_coord v)
 {
-	t_coord oc = make_vector(cy->centre, ray_origin);
-	float radius = cy->diameter / 2.0;
-	float dir_dot_axis = get_dot_product(ray_dir, cy->vector);
-	float oc_dot_axis = get_dot_product(oc, cy->vector);
-	t_coord d_proj = subtract_vectors(ray_dir, multiply_vector_by_constant(cy->vector, dir_dot_axis));
-	t_coord oc_proj = subtract_vectors(oc, multiply_vector_by_constant(cy->vector, oc_dot_axis));
-	float a = get_dot_product(d_proj, d_proj);
-	float b = 2.0 * get_dot_product(d_proj, oc_proj);
-	float c = get_dot_product(oc_proj, oc_proj) - radius * radius;
-	float discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
-		return (false);
-	float sqrt_d = sqrtf(discriminant);
-	float t1 = (-b - sqrt_d) / (2 * a);
-	float t2 = (-b + sqrt_d) / (2 * a);
+	return get_dot_product(v, v);
+}
 
-	// Check bounds and height limits
-	t_coord p1 = add_vectors(ray_origin, multiply_vector_by_constant(ray_dir, t1)); // break this down in a separate ft
-	t_coord p2 = add_vectors(ray_origin, multiply_vector_by_constant(ray_dir, t2));
-	float h1 = get_dot_product(make_vector(cy->centre, p1), cy->vector);
-	float h2 = get_dot_product(make_vector(cy->centre, p2), cy->vector);
-	if ((t1 > 0.001 && t1 < max_distance && fabs(h1) <= cy->height / 2) || (t2 > 0.001 && t2 < max_distance && fabs(h2) <= cy->height / 2))
-		return (true);
-	return (false);
+int does_ray_intersect_cylinder(t_coord origin, t_coord dir, t_cylinder *cy, float max_len)
+{
+	t_coord base_center = subtract_vectors(cy->centre, multiply_vector_by_constant(cy->vector, cy->height / 2));
+	t_coord base_ray_vec = subtract_vectors(base_center, origin);
+	t_coord ray_axis_cross = get_cross_product(dir, cy->vector);
+	float dot_cross = get_dot_product(ray_axis_cross, ray_axis_cross);
+	float root_part = dot_cross * pow(cy->diameter / 2, 2) - get_dot_product(cy->vector, cy->vector) * pow(get_dot_product(base_ray_vec, ray_axis_cross), 2);
+	// ===== Check coat intersections =====
+	if (fabsf(root_part) > EPSILON && fabsf(dot_cross) > EPSILON)
+	{
+		float d1 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vec, cy->vector)) + sqrtf(root_part)) / dot_cross;
+		t_coord hit1 = add_vectors(origin, multiply_vector_by_constant(dir, d1));
+		float t1 = get_dot_product(cy->vector, subtract_vectors(hit1, base_center));
+		if (d1 > EPSILON && d1 < max_len && t1 >= 0 && t1 <= cy->height)
+			return 1;
+
+		float d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vec, cy->vector)) - sqrtf(root_part)) / dot_cross;
+		t_coord hit2 = add_vectors(origin, multiply_vector_by_constant(dir, d2));
+		float t2 = get_dot_product(cy->vector, subtract_vectors(hit2, base_center));
+		if (d2 > EPSILON && d2 < max_len && t2 >= 0 && t2 <= cy->height)
+			return 1;
+	}
+	// ===== Check cap intersections =====
+	if (get_dot_product(cy->vector, dir) != 0)
+	{
+		// Top cap
+		float top_d = get_dot_product(cy->vector, subtract_vectors(base_center, origin)) / get_dot_product(cy->vector, dir);
+		if (top_d > EPSILON && top_d < max_len)
+		{
+			t_coord top_hit = add_vectors(origin, multiply_vector_by_constant(dir, top_d));
+			if (vector_length_squared(subtract_vectors(top_hit, base_center)) < pow(cy->diameter / 2, 2))
+				return 1;
+		}
+		// Bottom cap
+		t_coord top_center = add_vectors(base_center, multiply_vector_by_constant(cy->vector, cy->height));
+		float bot_d = get_dot_product(cy->vector, subtract_vectors(top_center, origin)) / get_dot_product(cy->vector, dir);
+		if (bot_d > EPSILON && bot_d < max_len)
+		{
+			t_coord bot_hit = add_vectors(origin, multiply_vector_by_constant(dir, bot_d));
+			if (vector_length_squared(subtract_vectors(bot_hit, top_center)) < pow(cy->diameter / 2, 2))
+				return 1;
+		}
+	}
+	return 0;
 }
 
 // returns the scalar t at which the ray intersects the plane
@@ -106,6 +129,10 @@ bool does_ray_intersect_sphere(t_coord ray_origin, t_coord ray_dir, t_sphere *sp
 // 		return (1);
 // 	return (0);
 // }
+
+t_inter *find_cylinder_intersections(t_coord ray, t_camera cam, t_cylinder *cy);
+t_inter	*find_plane_intersections(t_coord ray, t_camera cam, t_plane *pl);
+t_inter	*find_sphere_intersections(t_coord ray, t_camera cam, t_sphere *sp);
 
 int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 {

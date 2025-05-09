@@ -29,9 +29,7 @@
 #define INT_ERROR INT_MIN
 #define ERROR 1
 #define SUCCESS 0
-#define MATTE 4
-#define PLASTIC 30
-#define GLASS 100
+#define REFLECTION 30
 #define ANGLE_RADIAN 0.2f
 #define ZOOM 1
 #define TRANSLATION 5
@@ -179,6 +177,7 @@ typedef struct s_scene
 	float			viewport_height;
 	t_matrix		Tm;
 	t_colour		bg;
+	t_sphere	*light_sphere;
 }					t_scene;
 
 typedef struct s_minirt

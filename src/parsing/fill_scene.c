@@ -60,6 +60,26 @@ int	fill_camera(t_scene *scene, char **values)
 	return (0);
 }
 
+// creates a visual "sun" sphere at the light's position.
+// this does NOT append the sphere to the scene. Store it manually.
+t_sphere *fill_lightsource_object(t_light light)
+{
+	t_sphere *light_sphere;
+
+	light_sphere = malloc(sizeof(t_sphere));
+	if (!light_sphere)
+	{
+		ft_error("Memory allocation failed for light sphere.");
+		return (NULL);
+	}
+	light_sphere->centre = light.lightpoint;
+	light_sphere->diameter = 5;
+	light_sphere->colour = light.colour;
+	light_sphere->id = -42;
+	light_sphere->next = NULL;
+	return (light_sphere);
+}
+
 // creates the light object if it is the first one to exits
 // if any exists before, exits
 // expects L  POINT[x,y,z]  horizontal_FOW(0-180˚)  orientation_vector(x,y,z)
@@ -79,6 +99,7 @@ int	fill_light(t_scene *scene, char **values)
 	scene->l.colour = parse_colour(values[3]);
 	if (invalid_colour(&scene->l.colour))
 		return (ERROR);
+	scene->light_sphere = fill_lightsource_object(scene->l);
 	return (0);
 }
 

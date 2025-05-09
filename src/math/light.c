@@ -106,7 +106,7 @@ float specular_light(t_light_math *inputs, float light_brightness) // Phong refl
     if (inputs->scalar_nl < 0)
         return (0.0);
     inputs->scalar_vr = get_dot_product(inputs->reflected_vector, inputs->incident_v);
-    inputs->reflectivity = fmax(0, (light_brightness * pow(inputs->scalar_vr, PLASTIC)));
+    inputs->reflectivity = fmax(0, (light_brightness * pow(inputs->scalar_vr, REFLECTION)));
     return (inputs->reflectivity);
 }
 
@@ -137,8 +137,10 @@ static t_colour compute_pixel_light(t_scene *scene, t_inter *inter, t_coord ligh
         light_inputs.reflectivity = scene->a.ratio;
     else
     {
-        reflected_vector(&light_inputs);
-        specular_light(&light_inputs, scene->l.brightness);
+        // if (inter->type != PLANE) {
+            reflected_vector(&light_inputs);
+            specular_light(&light_inputs, scene->l.brightness);
+        // }
         light_inputs.reflectivity += scene->a.ratio + diffuse_light(light_inputs.scalar_nl, scene->l.brightness);
         if (light_inputs.reflectivity > 1.0f)
             light_inputs.reflectivity = 1.0f;
@@ -151,6 +153,7 @@ int lighting(t_minirt *minirt)
     int y;
     int x;
 
+    print_scene(minirt->scene);
     y = -1;
     while (++y < minirt->img_height)
     {
