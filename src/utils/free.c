@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/04/28 15:01:13 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:54:27 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // frees the array
-void	free_arr(char **arr)
+void free_arr(char **arr)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (arr[i])
@@ -28,11 +28,13 @@ void	free_arr(char **arr)
 }
 
 // free the allocated objects in the scene (pl, cy, sp), and the scene itself
-void	free_scene(t_scene *scene)
+void free_scene(t_scene *scene)
 {
-	t_sphere	*sp_tmp;
-	t_plane		*pl_tmp;
-	t_cylinder	*cy_tmp;
+	t_sphere *sp_tmp;
+	t_plane *pl_tmp;
+	t_cylinder *cy_tmp;
+	t_light *l_tmp;
+	t_sphere *sun_tmp;
 
 	while (scene->sp)
 	{
@@ -52,18 +54,29 @@ void	free_scene(t_scene *scene)
 		free(scene->cy);
 		scene->cy = cy_tmp;
 	}
-	free(scene->light_sphere);
+	while (scene->light_spheres)
+	{
+		sun_tmp = scene->light_spheres->next;
+		free(scene->light_spheres);
+		scene->light_spheres = sun_tmp;
+	}
+	while (scene->l)
+	{
+		l_tmp = scene->l->next;
+		free(scene->l);
+		scene->l = l_tmp;
+	}
 	free(scene);
 	scene = NULL;
 }
 
-void	free_list(t_inter **lst, void (*del)(void *))
+void free_list(t_inter **lst, void (*del)(void *))
 {
-	t_inter	*node;
-	t_inter	*next;
+	t_inter *node;
+	t_inter *next;
 
 	if (lst == NULL || *lst == NULL || del == NULL)
-		return ;
+		return;
 	node = *lst;
 	while (node)
 	{
@@ -74,16 +87,16 @@ void	free_list(t_inter **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
-void	free_inter(t_inter ***section, int h, int w)
+void free_inter(t_inter ***section, int h, int w)
 {
-	int	y;
-	int	x;
+	int y;
+	int x;
 
 	y = -1;
 	while (++y < h)
 	{
 		if (!section[y])
-			continue ;
+			continue;
 		x = -1;
 		while (++x < w)
 		{
@@ -95,9 +108,9 @@ void	free_inter(t_inter ***section, int h, int w)
 	section = NULL;
 }
 
-void	free_pixels(t_colour **p, int h)
+void free_pixels(t_colour **p, int h)
 {
-	int	y;
+	int y;
 
 	y = 0;
 	while (y < h)

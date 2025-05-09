@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_objects_b.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:45:17 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/09 10:59:48 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:23:20 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,5 @@ int	fill_cylinder(t_scene *scene, char **values, int *i)
 	new_cyl->id = (*i)++;
 	new_cyl->next = NULL;
 	append_cylinder(&(scene->cy), new_cyl);
-	scene->cy_count++;
 	return (0);
 }
