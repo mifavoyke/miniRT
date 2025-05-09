@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:09:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:06:42 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int32_t	main(int argc, char *argv[])
 	scene = create_scene(argv[1]);
 	if (!scene)
 		return (ERROR);
-	// print_scene(minirt.scene);
 	if (minirt_init(&minirt, scene) == ERROR)
 	{
 		free_scene(minirt.scene);

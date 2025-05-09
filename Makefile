@@ -25,15 +25,16 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/math/vector_i.c \
 		$(SRC_DIR)/math/vector_ii.c \
 		$(SRC_DIR)/math/vector_iii.c \
+		$(SRC_DIR)/math/phong_model.c \
 		$(SRC_DIR)/math/intersections/cylinder_intersections.c \
 		$(SRC_DIR)/math/intersections/plane_intersections.c \
 		$(SRC_DIR)/math/intersections/sphere_intersections.c \
 		$(SRC_DIR)/math/intersections/utils_intersections.c \
 		$(SRC_DIR)/parsing/color_utils.c \
+		$(SRC_DIR)/parsing/append.c \
 		$(SRC_DIR)/parsing/coord_utils.c \
 		$(SRC_DIR)/parsing/file_data.c \
-		$(SRC_DIR)/parsing/fill_objects_a.c \
-		$(SRC_DIR)/parsing/fill_objects_b.c \
+		$(SRC_DIR)/parsing/fill_objects.c \
 		$(SRC_DIR)/parsing/fill_scene.c \
 		$(SRC_DIR)/parsing/parse_scene.c \
 		$(SRC_DIR)/parsing/parse_utils.c \
@@ -46,7 +47,6 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/utils/init.c \
 		$(SRC_DIR)/utils/list_utils.c \
 		$(SRC_DIR)/utils/string_utils.c \
-		$(SRC_DIR)/utils/test_utils.c \
 		$(SRC_DIR)/utils/utils.c 
 
 OBJS :=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

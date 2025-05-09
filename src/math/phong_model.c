@@ -1,0 +1,69 @@
+#include "../../includes/minirt.h"
+
+// calculates the closest point on the cylinder axis and finds the vector from
+// that closest point on the axis to the intersection point
+static t_coord calculate_cylider_normal(t_cylinder *cy, t_coord intersection_p)
+{
+    t_coord closest_axis_point;
+    t_coord normal;
+    int t;
+
+    t = get_dot_product(make_vector(cy->centre, intersection_p), cy->vector);
+    closest_axis_point = get_point_on_vector(cy->centre, cy->vector, t);
+    normal = make_vector(closest_axis_point, intersection_p);
+    return (normal);
+}
+
+t_coord get_surface_normal(t_inter *intersection)
+{
+    t_sphere *sp;
+    t_plane *pl;
+    t_cylinder *cy;
+
+    if (intersection->type == SPHERE)
+    {
+        sp = (t_sphere *)intersection->obj;
+        return (make_vector(sp->centre, intersection->point));
+    }
+    else if (intersection->type == PLANE)
+    {
+        pl = (t_plane *)intersection->obj;
+        return (set_coord(pl->vector.x, pl->vector.y, pl->vector.z));
+    }
+    else if (intersection->type == CYLINDER)
+    {
+        cy = (t_cylinder *)intersection->obj;
+        if (cy->vector.z == 1 || cy->vector.z == -1)
+            return (make_vector(cy->centre, intersection->point));
+        else
+            return (calculate_cylider_normal(cy, intersection->point));
+    }
+    return (set_coord(0, 0, 0));
+}
+
+// bidirectional reflectance distribution function (BRDF)
+// reflected vector: R = I − 2*N *(I*N)
+t_coord reflected_vector(t_light_math *inputs)
+{
+    t_coord scaled_normal_vector;
+
+    scaled_normal_vector = multiply_vector_by_constant(inputs->normal, 2 * inputs->scalar_nl);
+    inputs->reflected_vector = subtract_vectors(inputs->incident_l, scaled_normal_vector);
+    return (inputs->reflected_vector);
+}
+
+// Phong reflection model for specular light: Is = max{0, k * (R*V)^n}
+float specular_light(t_light_math *inputs, float light_brightness)
+{
+    if (inputs->scalar_nl < 0)
+        return (0.0);
+    inputs->scalar_vr = get_dot_product(inputs->reflected_vector, inputs->incident_v);
+    inputs->reflectivity = fmax(0, (light_brightness * pow(inputs->scalar_vr, REFLECTION)));
+    return (inputs->reflectivity);
+}
+
+// Lambertian reflectance for diffuse light: Id = max{0, k * (N*L)}
+float diffuse_light(float scalar_nl, float light_ratio)
+{
+    return (fmax(0, light_ratio * scalar_nl));
+}

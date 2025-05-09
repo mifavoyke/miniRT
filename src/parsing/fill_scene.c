@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:38:41 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:48:08 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // creates the ambient object only if it is the first one to exist
 // if any exists before, exits
 // expects: A  ratio<0,1>  colour(r,g,b)
-int	fill_ambient(t_scene *scene, char **values)
+static int	fill_ambient(t_scene *scene, char **values)
 {
 	scene->a_count++;
 	if (scene->a_count > 1)
@@ -34,7 +34,7 @@ int	fill_ambient(t_scene *scene, char **values)
 // creates the camera object if it is the first one to exits
 // if any exists before, exits
 // expects C  POINT[x,y,z]  horizontal_FOW(0-180˚)  orientation_vector(x,y,z)
-int	fill_camera(t_scene *scene, char **values)
+static int	fill_camera(t_scene *scene, char **values)
 {
 	scene->c_count++;
 	if (scene->c_count > 1)
@@ -60,25 +60,9 @@ int	fill_camera(t_scene *scene, char **values)
 	return (0);
 }
 
-// appends new allocated light sources to the list
-static void	append_light(t_light **l_list, t_light *new_l)
-{
-	t_light	*tmp;
-
-	if (!l_list || !*l_list)
-		*l_list = new_l;
-	else
-	{
-		tmp = *l_list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_l;
-	}
-}
-
 // creates a visual "sun" sphere at the light's position.
 // this does NOT append the sphere to the scene. Store it manually.
-t_sphere	*fill_lightsource_object(t_light *light)
+static t_sphere	*fill_lightsource_object(t_light *light)
 {
 	t_sphere	*light_sphere;
 
@@ -99,10 +83,10 @@ t_sphere	*fill_lightsource_object(t_light *light)
 // creates the light object if it is the first one to exits
 // if any exists before, exits
 // expects L  POINT[x,y,z]  horizontal_FOW(0-180˚)  orientation_vector(x,y,z)
-int	fill_light(t_scene *scene, char **values)
+static int	fill_light(t_scene *scene, char **values)
 {
-	t_light *new_l;
-	t_sphere *new_light_sp;
+	t_light		*new_l;
+	t_sphere	*new_light_sp;
 	
 	if (!values[1] || !values[2] || !values[3] || values[4])
 		return (ft_error("Light missing/extra parameters."));
