@@ -6,14 +6,14 @@
 /*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:22:21 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:26:32 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minirt.h"
 
 // there can be 2 coat intersections d1, d2
-t_inter *get_coat_inters(t_camera cam, t_coord base_ray_vector, t_coord ray_axis_cross, float root_part, t_cylinder *cy, t_coord ray)
+t_inter *get_coat_inters(t_scene *scene, t_coord base_ray_vector, t_coord ray_axis_cross, float root_part, t_cylinder *cy, t_coord ray)
 {
 	float	t1;
 	float	t2;
@@ -21,6 +21,7 @@ t_inter *get_coat_inters(t_camera cam, t_coord base_ray_vector, t_coord ray_axis
 	float	d2;
 	t_inter	*inter1;
 	t_inter	*inter2;
+	t_camera cam = scene->c;
 
 	inter1 = NULL;
 	inter2 = NULL;
@@ -45,7 +46,7 @@ t_inter *get_coat_inters(t_camera cam, t_coord base_ray_vector, t_coord ray_axis
 // can intersect one or both caps - bottom/top
 // only points on the cap planes within radius of cylinder are included
 // for each we have distance d and t - what is t ???? 
-t_inter	*get_cap_inters(t_coord ray, t_camera cam, t_coord base_ray_vector, t_cylinder *cy)
+t_inter	*get_cap_inters(t_coord ray, t_scene *scene, t_coord base_ray_vector, t_cylinder *cy)
 {
 	float	top_t;
 	float	bottom_t;
@@ -53,6 +54,8 @@ t_inter	*get_cap_inters(t_coord ray, t_camera cam, t_coord base_ray_vector, t_cy
 	float	bottom_d;
 	t_inter *inter3 = NULL;
 	t_inter *inter4 = NULL;
+	t_camera cam = scene->c;
+
 	if (get_dot_product(cy->vector, ray) != 0)
 	{
 		top_d = get_dot_product(cy->vector, base_ray_vector)/ get_dot_product(cy->vector, ray);
@@ -96,12 +99,12 @@ t_inter *find_cylinder_inters(t_coord ray, t_scene *scene, t_cylinder *cy)
 	if (fabsf(root_part) < EPSILON || fabsf(get_dot_product(ray_axis_cross, ray_axis_cross)) < EPSILON) // no intersection OR line is parallel to the axis
 	{
 		coat_inters = NULL; // there is no intersection with coat or the ray is contained in the coat
-		caps_inters = get_cap_inters(ray, cam, base_ray_vector, cy); // there will probably be 0 or 2 cap intersections
+		caps_inters = get_cap_inters(ray, scene, base_ray_vector, cy); // there will probably be 0 or 2 cap intersections
 	}	
 	else
 	{
-		coat_inters = get_coat_inters(cam, base_ray_vector, ray_axis_cross, root_part, cy, ray); // there will be 1 or 2 caot intersections
-		caps_inters = get_cap_inters(ray, cam, base_ray_vector, cy); // there will be 1 or 2 cap inters
+		coat_inters = get_coat_inters(scene, base_ray_vector, ray_axis_cross, root_part, cy, ray); // there will be 1 or 2 caot intersections
+		caps_inters = get_cap_inters(ray, scene, base_ray_vector, cy); // there will be 1 or 2 cap inters
 	}		
 	return (return_object_inters(coat_inters, caps_inters));
 }
