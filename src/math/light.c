@@ -18,13 +18,11 @@ static void init_inputs(t_inter *intersection, t_light_math *vars, t_coord light
 
     vars->normal = get_surface_normal(intersection);
     normalize(&vars->normal);
-
     vars->shadow_ray = make_vector(intersection->point, lightpoint);
     vars->max_length = sqrtf(get_dot_product(vars->shadow_ray, vars->shadow_ray));
     normalize(&vars->shadow_ray);
     offset = multiply_vector_by_constant(vars->shadow_ray, EPSILON);
     vars->shadow_origin = move_point_by_vector(intersection->point, offset);
-
     vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
     vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
@@ -60,7 +58,7 @@ static t_colour compute_light_contribution(t_scene *scene, t_inter *inter, t_coo
     t_light_math light_inputs;
 
     init_inputs(inter, &light_inputs, lightpoint, viewpoint);
-    if (is_in_shadow(scene, &light_inputs, inter->id) || inter->id == -42)
+    if (is_in_shadow(scene, &light_inputs, inter->id) || inter->id == -42 || light_inputs.scalar_nl <= 0)
         light_inputs.reflectivity = 0.0f;
     else
     {

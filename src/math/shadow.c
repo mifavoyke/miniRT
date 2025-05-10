@@ -63,70 +63,28 @@ int does_ray_intersect_cylinder(t_coord origin, t_coord dir, t_cylinder *cy, flo
 	return 0;
 }
 
-// returns the scalar t at which the ray intersects the plane
-float get_plane_inter(t_coord ray, t_coord cam_origin, t_plane *pl)
-{
-	t_coord to_plane;
-	float denom;
-	float t;
-
-	to_plane = make_vector(cam_origin, pl->point);
-	denom = get_dot_product(ray, pl->vector);
-	if (fabsf(denom) < EPSILON)
-	{
-		if (fabsf(get_dot_product(to_plane, pl->vector)) < EPSILON)
-			t = 0.1;
-		else
-			t = -1;
-	}
-	t = get_dot_product(to_plane, pl->vector) / denom;
-	return (t);
-}
-
-bool does_ray_intersect_sphere(t_coord ray_origin, t_coord ray_dir, t_sphere *sp, float max_distance)
-{
-	t_coord oc = make_vector(ray_origin, sp->centre);
-	float radius = sp->diameter / 2.0;
-	float a = get_dot_product(ray_dir, ray_dir);
-	float b = 2.0 * get_dot_product(oc, ray_dir);
-	float c = get_dot_product(oc, oc) - radius * radius;
-	float discriminant = b * b - 4 * a * c;
-
-	if (discriminant <= 0)
-		return (false);
-	float sqrt_d = sqrtf(discriminant);
-	float t1 = fabs((-b - sqrt_d) / (2 * a));
-	float t2 = fabs((-b + sqrt_d) / (2 * a));
-	if ((t1 > 0.001 && t1 < max_distance) || (t2 > 0.001 && t2 < max_distance))
-		return (true);
-	// printf("t1: %f t2: %f\n", t1, t2);
-	return (false);
-}
-
 int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 {
 	float t;
 	t_plane *tmp_pl;
 	t_cylinder *tmp_cy;
 	t_sphere *tmp_sp;
+	t_roots roots;
 
 	tmp_sp = scene->sp;
 	while (tmp_sp)
 	{
 		if (tmp_sp->id == current_id)
 			return (0);
-		if (does_ray_intersect_sphere(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_sp, light_inputs->max_length))
-			{
-				return (true);
-			}
-		// if ((intersection->ld > 0.001 && intersection->ld < light_inputs->max_length))
-		// 	return (true);
+		roots = find_sphere_inter_roots(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_sp);
+		if ((roots.t1 > 0.001 && roots.t1 < light_inputs->max_length) || (roots.t2 > 0.001 && roots.t2 < light_inputs->max_length))
+			return (1);
 		tmp_sp = tmp_sp->next;
 	}
 	tmp_pl = scene->pl;
 	while (tmp_pl)
 	{
-		t = get_plane_inter(light_inputs->shadow_ray, light_inputs->shadow_origin, tmp_pl);
+		t = get_plane_inter_root(light_inputs->shadow_ray, light_inputs->shadow_origin, tmp_pl);
 		if (t > 0.001 && t < light_inputs->max_length)
 			return (1);
 		tmp_pl = tmp_pl->next;
@@ -134,7 +92,9 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 	tmp_cy = scene->cy;
 	while (tmp_cy)
 	{
-		if (tmp_cy->id != current_id && does_ray_intersect_cylinder(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_cy, light_inputs->max_length)) // replace with Zuzka's function
+		if (tmp_cy->id == current_id)
+			return (0);
+		if (does_ray_intersect_cylinder(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_cy, light_inputs->max_length)) // replace with Zuzka's function
 			return (1);
 		tmp_cy = tmp_cy->next;
 	}

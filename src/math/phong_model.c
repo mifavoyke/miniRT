@@ -55,8 +55,6 @@ t_coord reflected_vector(t_light_math *inputs)
 // Phong reflection model for specular light: Is = max{0, k * (R*V)^n}
 float specular_light(t_light_math *inputs, float light_brightness)
 {
-    if (inputs->scalar_nl < 0)
-        return (0.0);
     inputs->scalar_vr = get_dot_product(inputs->reflected_vector, inputs->incident_v);
     inputs->reflectivity = fmax(0, (light_brightness * pow(inputs->scalar_vr, REFLECTION)));
     return (inputs->reflectivity);
