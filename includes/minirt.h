@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/09 16:50:07 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:49:57 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define ANGLE_RADIAN 0.2f
 # define ZOOM 1
 # define TRANSLATION 5
-# define EPSILON 1e-6
+# define EPSILON 1e-5
 
 /* ------------------------ DATA STRUCTURES --------------------------- */
 typedef struct s_colour
