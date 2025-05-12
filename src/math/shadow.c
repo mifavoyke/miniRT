@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:16:21 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:29:21 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 	{
 		if (tmp_sp->id == current_id)
 			return (0);
-		roots = find_sphere_inter_roots(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_sp);
-		if ((roots.t1 > 0.001 && roots.t1 < light_inputs->max_length) || (roots.t2 > 0.001 && roots.t2 < light_inputs->max_length))
+		roots = find_sphere_inter_roots(light_inputs->shadow_ray, light_inputs->shadow_origin, tmp_sp);
+		if ((roots.t1 > EPSILON && roots.t1 < light_inputs->max_length) || (roots.t2 > EPSILON && roots.t2 < light_inputs->max_length))
 			return (1);
 		tmp_sp = tmp_sp->next;
 	}
@@ -85,7 +85,7 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 	while (tmp_pl)
 	{
 		t = get_plane_inter_root(light_inputs->shadow_ray, light_inputs->shadow_origin, tmp_pl);
-		if (t > 0.001 && t < light_inputs->max_length)
+		if (t > EPSILON && t < light_inputs->max_length)
 			return (1);
 		tmp_pl = tmp_pl->next;
 	}

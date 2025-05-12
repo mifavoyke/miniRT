@@ -1,4 +1,4 @@
-* miniRT - mifavoke & zuzanapiarova * 
+* miniRT - mifavoyke & zuzanapiarova * 
 
 ** RESOURCES **
 Ray tracing basics Stanford paper

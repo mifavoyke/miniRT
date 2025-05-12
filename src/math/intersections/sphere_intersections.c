@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_intersections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:04:40 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:14:10 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:36:51 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_roots find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp)
 // based on parametric equations for sphere and ray
 // any point in ray: P = C + t*ray
 // any point in sphere: |P−C|=r --> sqrt(P-C o P - C) = r --> (P-c)o(P-C) = r^2
-// rewrite this to accept the ray, ray origin, and return the intersection points - but not inters yet 
+// accepts ray and ray origin, and object
+// @returns intersection distance of ray with object - but not inter point yet
 t_inter	*find_sphere_inters(t_coord ray, t_coord origin, t_sphere *sp)
 {
 	t_inter	*inter1;
