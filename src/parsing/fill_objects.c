@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fill_objects_a.c                                   :+:      :+:    :+:   */
+/*   fill_objects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:27:16 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/09 16:48:38 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:31:48 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ static int	check_error_values_cylinder(t_cylinder *cylinder)
 		return (ERROR);
 	else if (invalid_colour(&cylinder->colour))
 		return (ERROR);
-	else if (!cylinder->vector.x && !cylinder->vector.y && !cylinder->vector.z)
+	else if (!cylinder->axis.x && !cylinder->axis.y && !cylinder->axis.z)
 		return (ft_error("Cylinder orientation vector can't be (0,0,0)."));
 	else if (cylinder->diameter <= 0)
 		return (ft_error("Cylinder diameter must be greater than zero."));
-	else if (cylinder->height <= 0)
+	else if (cylinder->h <= 0)
 		return (ft_error("Cylinder height must be greater than zero."));
 	else
 		return (SUCCESS);
@@ -106,11 +106,11 @@ int	fill_cylinder(t_scene *scene, char **values, int *i)
 	if (!new_cyl)
 		return (ft_error("Memory allocation failed for cylinder."));
 	new_cyl->centre = parse_coord(values[1]);
-	new_cyl->vector = parse_coord(values[2]);
-	if (!is_vector_normalized(new_cyl->vector))
-		normalize(&new_cyl->vector);
+	new_cyl->axis = parse_coord(values[2]);
+	if (!is_vector_normalized(new_cyl->axis))
+		normalize(&new_cyl->axis);
 	new_cyl->diameter = ft_atof(values[3]);
-	new_cyl->height = ft_atof(values[4]);
+	new_cyl->h = ft_atof(values[4]);
 	new_cyl->colour = parse_colour(values[5]);
 	if (check_error_values_cylinder(new_cyl) == ERROR)
 	{

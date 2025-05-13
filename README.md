@@ -39,7 +39,6 @@ https://arxiv.org/pdf/2301.03191
 - multithreding - parallelization?
 - maybe optimization as in the article "Starter ray tracing math" above
 - should we change viewport width in minirt struct when resizing? 
-- rename cy->vector to cy->axis
 
 ** GENERAL INFORMATION **
 - viewport/film/near plane = the canvas or the imaginary somputer screen we put between camera and the scene to map rays to pixels 

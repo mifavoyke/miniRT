@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:14:57 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/09 10:52:31 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:47:00 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+void	print_inter_list(t_inter **head)
+{
+	t_inter	*temp;
+
+	if (!head || !*head)
+		return ;
+	temp = *head;
+	while (temp)
+	{
+		if (temp->type == SPHERE)
+			printf("sphere %d ", temp->id);
+		else if (temp->type == CYLINDER)
+			printf("cylinder %d ", temp->id);
+		else if (temp->type == PLANE)
+			printf("plane %d ", temp->id);
+		printf("%f\n", temp->distance);
+		temp = temp->next;
+	}
+	printf("-----------------\n");
+}
 
 // appends new_node to the end of the list
 // new_node has a next - either another t_inter node appended or NULL

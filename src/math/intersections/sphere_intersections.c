@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:04:40 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/12 11:36:51 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/13 12:22:19 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // accept the ray, ray origin, and sphere
 // returns the intersection points - but not inters yet 
-t_roots find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp)
+t_roots	find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp)
 {
 	t_coord	cam_to_sp;
 	float	a;
@@ -23,11 +23,15 @@ t_roots find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp)
 	t_roots	roots;
 
 	cam_to_sp = make_vector(sp->centre, origin);
-	a = get_dot_product(ray, ray);
-	b = 2 * get_dot_product(cam_to_sp, ray);
-	c = get_dot_product(cam_to_sp, cam_to_sp) - pow((sp->diameter) / 2, 2);
+	a = dot(ray, ray);
+	b = 2 * dot(cam_to_sp, ray);
+	c = dot(cam_to_sp, cam_to_sp) - pow((sp->diameter) / 2, 2);
 	roots = find_roots(a, b, c);
-	return(roots);
+	if (roots.t1 < EPS)
+		roots.t1 = -1;
+	if (roots.t2 < EPS)
+		roots.t2 = -1;
+	return (roots);
 }
 
 // based on parametric equations for sphere and ray
@@ -44,12 +48,12 @@ t_inter	*find_sphere_inters(t_coord ray, t_coord origin, t_sphere *sp)
 	inter1 = NULL;
 	inter2 = NULL;
 	roots = find_sphere_inter_roots(ray, origin, sp);
-	if (roots.t1 > EPSILON)
+	if (roots.t1 > EPS)
 	{
 		inter1 = make_inter((void *)sp, roots.t1, ray, origin);
 		set_id_colour_type(inter1, sp->id, SPHERE, sp->colour);
 	}
-	if (roots.t2 > EPSILON && roots.t2 != roots.t1)
+	if (roots.t2 > EPS && roots.t2 != roots.t1)
 	{
 		inter2 = make_inter((void *)sp, roots.t2, ray, origin);
 		set_id_colour_type(inter2, sp->id, SPHERE, sp->colour);

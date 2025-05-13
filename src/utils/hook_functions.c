@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 11:27:32 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:12:56 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	rotate_x(t_minirt *minirt, t_coord *original_vector, float angle)
 	tm->up = rotate_vector_around_axis(tm->up, tm->right, angle);
 	normalize(&tm->forward);
 	normalize(&tm->up);
-	tm->right = get_cross_product(tm->forward, tm->up);
+	tm->right = cross(tm->forward, tm->up);
 	normalize(&tm->right);
 	*original_vector = tm->forward;
 	if (generate_image(minirt) == ERROR)
@@ -90,7 +90,7 @@ void	rotate_z(t_minirt *minirt, t_coord *original_vector, float angle)
 	tm->forward = rotate_vector_around_axis(tm->forward, tm->up, angle);
 	normalize(&tm->right);
 	normalize(&tm->forward);
-	tm->up = get_cross_product(tm->right, tm->forward);
+	tm->up = cross(tm->right, tm->forward);
 	normalize(&tm->up);
 	*original_vector = tm->forward;
 	if (generate_image(minirt) == ERROR)

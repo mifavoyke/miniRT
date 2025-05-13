@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 10:52:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:11:21 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:32:11 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ void	print_controls(void)
 	printf("========================\n");
 }
 
-
-static void print_spheres(t_sphere *sp)
+static void	print_spheres(t_sphere *sp)
 {
-	t_sphere *tmp;
+	t_sphere	*tmp;
 
 	tmp = sp;
 	printf("\nSpheres:\n");
@@ -51,9 +50,9 @@ static void print_spheres(t_sphere *sp)
 	}
 }
 
-static void print_planes(t_plane *pl)
+static void	print_planes(t_plane *pl)
 {
-	t_plane *tmp;
+	t_plane	*tmp;
 
 	tmp = pl;
 	printf("\nPlanes:\n");
@@ -73,9 +72,9 @@ static void print_planes(t_plane *pl)
 	}
 }
 
-static void print_cylinders(t_cylinder *cy)
+static void	print_cylinders(t_cylinder *cy)
 {
-	t_cylinder *tmp;
+	t_cylinder	*tmp;
 
 	tmp = cy;
 	printf("\nCylinders:\n");
@@ -87,9 +86,9 @@ static void print_cylinders(t_cylinder *cy)
 		printf("  Centre: ");
 		print_coord(tmp->centre);
 		printf("  Normal Vector: ");
-		print_coord(tmp->vector);
+		print_coord(tmp->axis);
 		printf("  Diameter: %.2f\n", tmp->diameter);
-		printf("  Height: %.2f\n", tmp->height);
+		printf("  Height: %.2f\n", tmp->h);
 		printf("  Colour: ");
 		print_colour(tmp->colour);
 		printf("\n\n");
@@ -98,7 +97,7 @@ static void print_cylinders(t_cylinder *cy)
 }
 
 // prints the scene with all its attributes
-void print_scene(t_scene *scene)
+void	print_scene(t_scene *scene)
 {
 	printf("\n=== Scene Parameters ===\n");
 	printf("Ambient Light:\n");

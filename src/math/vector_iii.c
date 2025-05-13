@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_iii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:33:59 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:13:31 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:28:28 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 // @returns 1 if are parallel, 0 if not 
 int	are_parallel(t_coord vector1, t_coord vector2)
 {
-	t_coord	cross;
+	t_coord	cross_product;
 
-	cross = get_cross_product(vector1, vector2);
-	if (fabsf(cross.x) < EPSILON
-		&& fabsf(cross.y) < EPSILON
-		&& fabsf(cross.z) < EPSILON)
+	cross_product = cross(vector1, vector2);
+	if (fabsf(cross_product.x) < EPS
+		&& fabsf(cross_product.y) < EPS
+		&& fabsf(cross_product.z) < EPS)
 		return (1);
 	return (0);
 }
@@ -32,6 +32,7 @@ int	are_parallel(t_coord vector1, t_coord vector2)
 t_coord	multiply_transpose(t_matrix R, t_coord v)
 {
 	t_coord	result;
+
 	result.x = v.x * R.right.x + v.y * R.forward.x + v.z * R.up.x;
 	result.y = v.x * R.right.y + v.y * R.forward.y + v.z * R.up.y;
 	result.z = v.x * R.right.z + v.y * R.forward.z + v.z * R.up.z;
@@ -79,8 +80,8 @@ float	get_two_points_distance(t_coord a, t_coord b)
 	float	distance;
 
 	distance = sqrt(
-		(a.x - b.x) * (a.x - b.x)
-		+ (a.y - b.y) * (a.y - b.y)
-		+ (a.z - b.z) * (a.z - b.z));
+			(a.x - b.x) * (a.x - b.x)
+			+ (a.y - b.y) * (a.y - b.y)
+			+ (a.z - b.z) * (a.z - b.z));
 	return (distance);
 }

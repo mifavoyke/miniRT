@@ -8,8 +8,8 @@ static t_coord calculate_cylider_normal(t_cylinder *cy, t_coord intersection_p)
     t_coord normal;
     int t;
 
-    t = get_dot_product(make_vector(cy->centre, intersection_p), cy->vector);
-    closest_axis_point = get_point_on_vector(cy->centre, cy->vector, t);
+    t = dot(make_vector(cy->centre, intersection_p), cy->axis);
+    closest_axis_point = get_point_on_vector(cy->centre, cy->axis, t);
     normal = make_vector(closest_axis_point, intersection_p);
     return (normal);
 }
@@ -33,7 +33,7 @@ t_coord get_surface_normal(t_inter *intersection)
     else if (intersection->type == CYLINDER)
     {
         cy = (t_cylinder *)intersection->obj;
-        if (cy->vector.z == 1 || cy->vector.z == -1)
+        if (cy->axis.z == 1 || cy->axis.z == -1)
             return (make_vector(cy->centre, intersection->point));
         else
             return (calculate_cylider_normal(cy, intersection->point));
@@ -47,7 +47,7 @@ t_coord reflected_vector(t_light_math *inputs)
 {
     t_coord scaled_normal_vector;
 
-    scaled_normal_vector = multiply_vector_by_constant(inputs->normal, 2 * inputs->scalar_nl);
+    scaled_normal_vector = mult_vector_by_c(inputs->normal, 2 * inputs->scalar_nl);
     inputs->reflected_vector = subtract_vectors(inputs->incident_l, scaled_normal_vector);
     return (inputs->reflected_vector);
 }
@@ -55,7 +55,7 @@ t_coord reflected_vector(t_light_math *inputs)
 // Phong reflection model for specular light: Is = max{0, k * (R*V)^n}
 float specular_light(t_light_math *inputs, float light_brightness)
 {
-    inputs->scalar_vr = get_dot_product(inputs->reflected_vector, inputs->incident_v);
+    inputs->scalar_vr = dot(inputs->reflected_vector, inputs->incident_v);
     inputs->reflectivity = fmax(0, (light_brightness * pow(inputs->scalar_vr, REFLECTION)));
     return (inputs->reflectivity);
 }

@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/13 09:59:43 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/13 13:29:40 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define ANGLE_RADIAN 0.2f
 # define ZOOM 1
 # define TRANSLATION 5
-# define EPSILON 1e-5
+# define EPS 1e-5
 
 /* ------------------------ DATA STRUCTURES --------------------------- */
 typedef struct s_colour
@@ -119,9 +119,9 @@ typedef struct s_cylinder
 {
 	int					id;
 	t_coord				centre;
-	t_coord				vector;
+	t_coord				axis;
 	float				diameter;
-	float				height;
+	float				h;
 	t_colour			colour;
 	struct s_cylinder	*next;
 }						t_cylinder;
@@ -211,17 +211,20 @@ void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
 t_inter		*make_inter(void *obj, float t, t_coord ray, t_coord origin);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
 t_inter		*create_intersection_list(t_scene *scene, t_coord ray);
+void		set_roots(t_roots *roots, float t1, float t2, enum e_obj_t type);
+void		final_set_roots(t_roots *roots, t_roots new_roots);
+
 
 // VECTOR MATH
-float		get_dot_product(t_coord A, t_coord B);
-t_coord		get_cross_product(t_coord A, t_coord B);
+float		dot(t_coord A, t_coord B);
+t_coord		cross(t_coord A, t_coord B);
 int			is_vector_normalized(t_coord v);
 void		normalize(t_coord *N);
 t_coord		make_vector(t_coord from, t_coord to);
 t_coord		get_point_on_vector(t_coord C, t_coord v, float d);
 bool		are_collinear(t_coord A, t_coord B);
 t_coord		subtract_vectors(t_coord from, t_coord to);
-t_coord		multiply_vector_by_constant(t_coord v, float n);
+t_coord		mult_vector_by_c(t_coord v, float n);
 t_coord		move_point_by_vector(t_coord point, t_coord vector);
 int			are_parallel(t_coord vector1, t_coord vector2);
 t_coord		multiply_transpose(t_matrix R, t_coord v);

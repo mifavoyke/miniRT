@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 11:23:28 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/13 11:54:59 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	ft_hook(void *param)
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_DOWN))
 		rotate_x(minirt, &minirt->scene->c.vector, ANGLE_RADIAN);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_K))
-		rotate_y(minirt, &minirt->scene->c.vector, ANGLE_RADIAN);
-	if (mlx_is_key_down(minirt->mlx, MLX_KEY_J))
 		rotate_y(minirt, &minirt->scene->c.vector, -ANGLE_RADIAN);
+	if (mlx_is_key_down(minirt->mlx, MLX_KEY_J))
+		rotate_y(minirt, &minirt->scene->c.vector, ANGLE_RADIAN);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_LEFT))
 		rotate_z(minirt, &minirt->scene->c.vector, -ANGLE_RADIAN);
 	if (mlx_is_key_down(minirt->mlx, MLX_KEY_RIGHT))

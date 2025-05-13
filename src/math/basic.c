@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:42 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:10:11 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:25:47 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_roots	find_roots(float a, float b, float c)
 {
 	float	discriminant;
 	t_roots	roots;
-	
+
 	discriminant = pow(b, 2) - (4 * a * c);
 	if (discriminant < 0 || a == 0)
 	{

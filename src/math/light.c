@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:16:38 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:22:38 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static void init_inputs(t_inter *intersection, t_light_math *vars, t_coord light
     vars->normal = get_surface_normal(intersection);
     normalize(&vars->normal);
     vars->shadow_ray = make_vector(intersection->point, lightpoint);
-    vars->max_length = sqrtf(get_dot_product(vars->shadow_ray, vars->shadow_ray));
+    vars->max_length = sqrtf(dot(vars->shadow_ray, vars->shadow_ray));
     normalize(&vars->shadow_ray);
-    offset = multiply_vector_by_constant(vars->shadow_ray, EPSILON);
+    offset = mult_vector_by_c(vars->shadow_ray, EPS);
     vars->shadow_origin = move_point_by_vector(intersection->point, offset);
     vars->incident_l = make_vector(intersection->point, lightpoint);
     normalize(&vars->incident_l);
-    vars->scalar_nl = get_dot_product(vars->incident_l, vars->normal);
+    vars->scalar_nl = dot(vars->incident_l, vars->normal);
     vars->incident_v = make_vector(viewpoint, intersection->point);
     normalize(&vars->incident_v);
     vars->reflectivity = 0.0;

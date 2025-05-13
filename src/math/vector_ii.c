@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_ii.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:28:02 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/01 15:14:16 by zpiarova         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:22:51 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ bool	are_collinear(t_coord A, t_coord B)
 {
 	t_coord	cross_product;
 
-	cross_product = get_cross_product(A, B);
-	return (fabs(cross_product.x) < EPSILON
-		&& fabs(cross_product.y) < EPSILON
-		&& fabs(cross_product.z) < EPSILON);
+	cross_product = cross(A, B);
+	return (fabs(cross_product.x) < EPS
+		&& fabs(cross_product.y) < EPS
+		&& fabs(cross_product.z) < EPS);
 }
 
 // gets the difference between vectors
@@ -49,7 +49,7 @@ t_coord	subtract_vectors(t_coord from, t_coord to)
 }
 
 // multiplies one vector with a constant
-t_coord	multiply_vector_by_constant(t_coord v, float n)
+t_coord	mult_vector_by_c(t_coord v, float n)
 {
 	t_coord	result_v;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 16:48:08 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:07:58 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int	fill_light(t_scene *scene, char **values)
 {
 	t_light		*new_l;
 	t_sphere	*new_light_sp;
-	
+
 	if (!values[1] || !values[2] || !values[3] || values[4])
 		return (ft_error("Light missing/extra parameters."));
 	new_l = malloc(sizeof(t_light));
