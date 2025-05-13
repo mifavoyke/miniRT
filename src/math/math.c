@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 10:21:15 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/13 11:14:33 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	shoot_rays(t_minirt *minirt, t_scene *scene)
 		x = -1;
 		while (++x < minirt->img_width)
 		{
-			//printf("x: %d, y: %d\n", x, y);
+			// printf("x: %d, y: %d\n", x, y);
 			ray = get_viewport_ray(scene, scene->tm, x, y);
 			intersection_list = create_intersection_list(scene, ray);
 			if (minirt->intersection[y][x])

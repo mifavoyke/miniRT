@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 10:20:57 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/13 10:37:15 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,51 +17,51 @@ float vector_length_squared(t_coord v)
 	return get_dot_product(v, v);
 }
 
-int does_ray_intersect_cylinder(t_coord origin, t_coord dir, t_cylinder *cy, float max_len)
-{
-	t_coord base_center = subtract_vectors(cy->centre, multiply_vector_by_constant(cy->vector, cy->height / 2));
-	t_coord base_ray_vec = subtract_vectors(base_center, origin);
-	t_coord ray_axis_cross = get_cross_product(dir, cy->vector);
-	float dot_cross = get_dot_product(ray_axis_cross, ray_axis_cross);
-	float root_part = dot_cross * pow(cy->diameter / 2, 2) - get_dot_product(cy->vector, cy->vector) * pow(get_dot_product(base_ray_vec, ray_axis_cross), 2);
-	// ===== Check coat intersections =====
-	if (fabsf(root_part) > EPSILON && fabsf(dot_cross) > EPSILON)
-	{
-		float d1 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vec, cy->vector)) + sqrtf(root_part)) / dot_cross;
-		t_coord hit1 = add_vectors(origin, multiply_vector_by_constant(dir, d1));
-		float t1 = get_dot_product(cy->vector, subtract_vectors(hit1, base_center));
-		if (d1 > EPSILON && d1 < max_len && t1 >= 0 && t1 <= cy->height)
-			return 1;
+// int does_ray_intersect_cylinder(t_coord origin, t_coord dir, t_cylinder *cy, float max_len)
+// {
+// 	t_coord base_center = subtract_vectors(cy->centre, multiply_vector_by_constant(cy->vector, cy->height / 2));
+// 	t_coord base_ray_vec = subtract_vectors(base_center, origin);
+// 	t_coord ray_axis_cross = get_cross_product(dir, cy->vector);
+// 	float dot_cross = get_dot_product(ray_axis_cross, ray_axis_cross);
+// 	float root_part = dot_cross * pow(cy->diameter / 2, 2) - get_dot_product(cy->vector, cy->vector) * pow(get_dot_product(base_ray_vec, ray_axis_cross), 2);
+// 	// ===== Check coat intersections =====
+// 	if (fabsf(root_part) > EPSILON && fabsf(dot_cross) > EPSILON)
+// 	{
+// 		float d1 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vec, cy->vector)) + sqrtf(root_part)) / dot_cross;
+// 		t_coord hit1 = add_vectors(origin, multiply_vector_by_constant(dir, d1));
+// 		float t1 = get_dot_product(cy->vector, subtract_vectors(hit1, base_center));
+// 		if (d1 > EPSILON && d1 < max_len && t1 >= 0 && t1 <= cy->height)
+// 			return 1;
 
-		float d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vec, cy->vector)) - sqrtf(root_part)) / dot_cross;
-		t_coord hit2 = add_vectors(origin, multiply_vector_by_constant(dir, d2));
-		float t2 = get_dot_product(cy->vector, subtract_vectors(hit2, base_center));
-		if (d2 > EPSILON && d2 < max_len && t2 >= 0 && t2 <= cy->height)
-			return 1;
-	}
-	// ===== Check cap intersections =====
-	if (get_dot_product(cy->vector, dir) != 0)
-	{
-		// Top cap
-		float top_d = get_dot_product(cy->vector, subtract_vectors(base_center, origin)) / get_dot_product(cy->vector, dir);
-		if (top_d > EPSILON && top_d < max_len)
-		{
-			t_coord top_hit = add_vectors(origin, multiply_vector_by_constant(dir, top_d));
-			if (vector_length_squared(subtract_vectors(top_hit, base_center)) < pow(cy->diameter / 2, 2))
-				return 1;
-		}
-		// Bottom cap
-		t_coord top_center = add_vectors(base_center, multiply_vector_by_constant(cy->vector, cy->height));
-		float bot_d = get_dot_product(cy->vector, subtract_vectors(top_center, origin)) / get_dot_product(cy->vector, dir);
-		if (bot_d > EPSILON && bot_d < max_len)
-		{
-			t_coord bot_hit = add_vectors(origin, multiply_vector_by_constant(dir, bot_d));
-			if (vector_length_squared(subtract_vectors(bot_hit, top_center)) < pow(cy->diameter / 2, 2))
-				return 1;
-		}
-	}
-	return 0;
-}
+// 		float d2 = (get_dot_product(ray_axis_cross, get_cross_product(base_ray_vec, cy->vector)) - sqrtf(root_part)) / dot_cross;
+// 		t_coord hit2 = add_vectors(origin, multiply_vector_by_constant(dir, d2));
+// 		float t2 = get_dot_product(cy->vector, subtract_vectors(hit2, base_center));
+// 		if (d2 > EPSILON && d2 < max_len && t2 >= 0 && t2 <= cy->height)
+// 			return 1;
+// 	}
+// 	// ===== Check cap intersections =====
+// 	if (get_dot_product(cy->vector, dir) != 0)
+// 	{
+// 		// Top cap
+// 		float top_d = get_dot_product(cy->vector, subtract_vectors(base_center, origin)) / get_dot_product(cy->vector, dir);
+// 		if (top_d > EPSILON && top_d < max_len)
+// 		{
+// 			t_coord top_hit = add_vectors(origin, multiply_vector_by_constant(dir, top_d));
+// 			if (vector_length_squared(subtract_vectors(top_hit, base_center)) < pow(cy->diameter / 2, 2))
+// 				return 1;
+// 		}
+// 		// Bottom cap
+// 		t_coord top_center = add_vectors(base_center, multiply_vector_by_constant(cy->vector, cy->height));
+// 		float bot_d = get_dot_product(cy->vector, subtract_vectors(top_center, origin)) / get_dot_product(cy->vector, dir);
+// 		if (bot_d > EPSILON && bot_d < max_len)
+// 		{
+// 			t_coord bot_hit = add_vectors(origin, multiply_vector_by_constant(dir, bot_d));
+// 			if (vector_length_squared(subtract_vectors(bot_hit, top_center)) < pow(cy->diameter / 2, 2))
+// 				return 1;
+// 		}
+// 	}
+// 	return 0;
+// }
 
 int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 {
