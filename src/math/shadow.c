@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/12 11:48:13 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/13 10:20:57 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,13 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 	{
 		if (tmp_cy->id == current_id)
 			return (0);
-		if (does_ray_intersect_cylinder(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_cy, light_inputs->max_length)) // replace with Zuzka's function
+		roots = find_cylinder_inters_roots(light_inputs->shadow_ray, light_inputs->shadow_origin, tmp_cy);
+		if ((roots.t1 > EPSILON && roots.t1 < light_inputs->max_length) || (roots.t2 > EPSILON && roots.t2 < light_inputs->max_length))
 			return (1);
 		tmp_cy = tmp_cy->next;
+		// if (does_ray_intersect_cylinder(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_cy, light_inputs->max_length)) // replace with Zuzka's function
+		// 	return (1);
+		// tmp_cy = tmp_cy->next;
 	}
 	return (0);
 }

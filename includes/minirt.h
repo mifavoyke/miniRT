@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/12 11:49:57 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/13 09:59:43 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,10 @@ typedef struct s_inter
 
 typedef struct s_roots
 {
-	float	t1;
-	float	t2;
+	float			t1;
+	enum e_obj_t	type1; 
+	float			t2;
+	enum e_obj_t	type2; 
 }					t_roots;
 
 /* ------------------------ SCENE DESCRIPTION -------------------------- */
@@ -203,10 +205,12 @@ t_roots		find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp);
 t_inter		*find_sphere_inters(t_coord ray, t_coord origin, t_sphere *sp);
 float		get_plane_inter_root(t_coord ray, t_coord origin, t_plane *pl);
 t_inter		*find_plane_inters(t_coord ray, t_coord origin, t_plane *pl);
+t_roots		find_cylinder_inters_roots(t_coord ray, t_coord origin, t_cylinder *cy);
 t_inter		*find_cylinder_inters(t_coord ray, t_coord origin, t_cylinder *cy);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
 t_inter		*make_inter(void *obj, float t, t_coord ray, t_coord origin);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
+t_inter		*create_intersection_list(t_scene *scene, t_coord ray);
 
 // VECTOR MATH
 float		get_dot_product(t_coord A, t_coord B);
