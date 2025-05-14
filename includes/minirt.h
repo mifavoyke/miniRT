@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/13 13:29:40 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/14 09:27:25 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,15 @@ typedef struct s_cylinder
 	struct s_cylinder	*next;
 }						t_cylinder;
 
+typedef struct	s_objs
+{
+	t_sphere	*sp;
+	t_plane		*pl;
+	t_cylinder	*cy;
+	t_sphere	*sun;
+	t_light		*light;
+}				t_objs;
+
 /* ----------------------- MATH CALCULATIONS ------------------------------ */
 
 typedef struct s_matrix
@@ -201,6 +210,7 @@ double		scale(double num, double new_min, double new_max, double old_max);
 t_roots		find_roots(float a, float b, float c);
 
 // INTERSECTIONS
+t_inter		*create_intersection_list(t_scene *scene, t_coord ray, t_objs tmp);
 t_roots		find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp);
 t_inter		*find_sphere_inters(t_coord ray, t_coord origin, t_sphere *sp);
 float		get_plane_inter_root(t_coord ray, t_coord origin, t_plane *pl);
@@ -210,9 +220,8 @@ t_inter		*find_cylinder_inters(t_coord ray, t_coord origin, t_cylinder *cy);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
 t_inter		*make_inter(void *obj, float t, t_coord ray, t_coord origin);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
-t_inter		*create_intersection_list(t_scene *scene, t_coord ray);
-void		set_roots(t_roots *roots, float t1, float t2, enum e_obj_t type);
-void		final_set_roots(t_roots *roots, t_roots new_roots);
+void		set_cyl_roots(t_roots *roots, float t1, float t2, enum e_obj_t type);
+void		final_cyl_roots(t_roots *roots, t_roots new_roots);
 
 
 // VECTOR MATH
@@ -252,6 +261,8 @@ void		rotate_z(t_minirt *minirt, t_coord *original_vector, float angle);
 // PARSING
 t_scene		*create_scene(char *filename);
 void		init_scene(t_scene *scene);
+int			minirt_init(t_minirt *rt, t_scene *scene);
+t_objs		set_objects(t_scene *scene);
 char		**store_file_contents(char *filename);
 t_coord		parse_coord(char *coord);
 t_colour	parse_colour(char *clr);

@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/13 12:34:46 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/14 09:41:11 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,44 +27,42 @@ void	free_arr(char **arr)
 	arr = NULL;
 }
 
-// free the allocated objects in the scene (pl, cy, sp), and the scene itself
+// free the allocated objects in the scene (pl, cy, sp, lights, light spheres)
+// and free the scene itself
 void	free_scene(t_scene *scene)
 {
-	t_sphere	*sp_tmp;
-	t_plane		*pl_tmp;
-	t_cylinder	*cy_tmp;
-	t_light		*l_tmp;
-	t_sphere	*sun_tmp;
+	t_objs	tmp;
 
+	tmp = set_objects(scene);
 	while (scene->sp)
 	{
-		sp_tmp = scene->sp->next;
+		tmp.sp = scene->sp->next;
 		free(scene->sp);
-		scene->sp = sp_tmp;
+		scene->sp = tmp.sp;
 	}
 	while (scene->pl)
 	{
-		pl_tmp = scene->pl->next;
+		tmp.pl = scene->pl->next;
 		free(scene->pl);
-		scene->pl = pl_tmp;
+		scene->pl = tmp.pl;
 	}
 	while (scene->cy)
 	{
-		cy_tmp = scene->cy->next;
+		tmp.cy = scene->cy->next;
 		free(scene->cy);
-		scene->cy = cy_tmp;
+		scene->cy = tmp.cy;
 	}
 	while (scene->light_spheres)
 	{
-		sun_tmp = scene->light_spheres->next;
+		tmp.sun = scene->light_spheres->next;
 		free(scene->light_spheres);
-		scene->light_spheres = sun_tmp;
+		scene->light_spheres = tmp.sun;
 	}
 	while (scene->l)
 	{
-		l_tmp = scene->l->next;
+		tmp.light = scene->l->next;
 		free(scene->l);
-		scene->l = l_tmp;
+		scene->l = tmp.light;
 	}
 	free(scene);
 	scene = NULL;
@@ -87,7 +85,7 @@ void	free_list(t_inter **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
-void	free_inter(t_inter ***section, int h, int w)
+void	free_inter(t_inter ***intersection, int h, int w)
 {
 	int	y;
 	int	x;
@@ -95,17 +93,17 @@ void	free_inter(t_inter ***section, int h, int w)
 	y = -1;
 	while (++y < h)
 	{
-		if (!section[y])
+		if (!intersection[y])
 			continue ;
 		x = -1;
 		while (++x < w)
 		{
-			free_list(&section[y][x], free);
+			free_list(&intersection[y][x], free);
 		}
-		free(section[y]);
+		free(intersection[y]);
 	}
-	free(section);
-	section = NULL;
+	free(intersection);
+	intersection = NULL;
 }
 
 void	free_pixels(t_colour **p, int h)

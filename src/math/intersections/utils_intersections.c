@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 12:03:06 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 13:29:24 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/14 08:55:55 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_inter	*return_object_inters(t_inter *in1, t_inter *in2)
 	return (NULL);
 }
 
-void	set_roots(t_roots *roots, float t1, float t2, enum e_obj_t type)
+void	set_cyl_roots(t_roots *roots, float t1, float t2, enum e_obj_t type)
 {
 	if (t2 != t1)
 	{
@@ -73,7 +73,7 @@ void	set_roots(t_roots *roots, float t1, float t2, enum e_obj_t type)
 	}
 }
 
-void	final_set_roots(t_roots *roots, t_roots new_roots)
+void	final_cyl_roots(t_roots *roots, t_roots new_roots)
 {
 	if (roots->t1 == -1)
 	{

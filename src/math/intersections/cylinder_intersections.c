@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:47:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 13:30:29 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/14 08:56:37 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_roots	coat_inters(t_coord brv, t_coord rac, t_cylinder *cy, t_coord ray)
 	projection = dot(cy->axis,
 			subtract_vectors(mult_vector_by_c(ray, t2), brv));
 	if (t2 > EPS && projection >= EPS && projection <= (cy->h))
-		set_roots(&roots, t1, t2, CYLINDER);
+		set_cyl_roots(&roots, t1, t2, CYLINDER);
 	return (roots);
 }
 
@@ -87,7 +87,7 @@ t_roots	cap_inters(t_coord ray, t_coord brv, t_cylinder *cy)
 							cy->h)))) / dot(cy->axis, ray);
 		tbcd = get_tbcd(ray, brv, t_bottom, cy);
 		if (t_bottom > EPS && tbcd < pow(cy->diameter / 2, 2) && tbcd > EPS)
-			set_roots(&roots, t_top, t_bottom, PLANE);
+			set_cyl_roots(&roots, t_top, t_bottom, PLANE);
 	}
 	return (roots);
 }
@@ -119,7 +119,7 @@ t_roots	find_cylinder_inters_roots(t_coord ray, t_coord origin, t_cylinder *cy)
 	{
 		roots = coat_inters(base_ray_vector, ray_axis_cross, cy, ray);
 		if (roots.t1 == -1 || roots.t2 == -1)
-			final_set_roots(&roots, cap_inters(ray, base_ray_vector, cy));
+			final_cyl_roots(&roots, cap_inters(ray, base_ray_vector, cy));
 	}
 	return (roots);
 }

@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 12:25:06 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/14 09:27:51 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,44 +84,30 @@ static t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 
 // creates linked list of intersections of ray with all scene objects
 // --> for one pixel, checks all objects in the scene
-t_inter	*create_intersection_list(t_scene *scene, t_coord ray)
+t_inter	*create_intersection_list(t_scene *scene, t_coord ray, t_objs tmp)
 {
-	t_sphere	*temp_sp;
-	t_plane		*temp_pl;
-	t_cylinder	*temp_cy;
-	t_sphere	*temp_light_ball;
-	t_inter		*head;
-	t_inter		*new_node;
+	t_inter	*head;
 
 	head = NULL;
-	new_node = NULL;
-	temp_sp = scene->sp;
-	temp_cy = scene->cy;
-	temp_pl = scene->pl;
-	temp_light_ball = scene->light_spheres;
-	while (temp_sp)
+	while (tmp.sp)
 	{
-		new_node = find_sphere_inters(ray, scene->c.point, (void *)temp_sp);
-		append_node(new_node, &head);
-		temp_sp = temp_sp->next;
+		append_node(find_sphere_inters(ray, scene->c.point, tmp.sp), &head);
+		tmp.sp = tmp.sp->next;
 	}
-	while (temp_light_ball)
+	while (tmp.sun)
 	{
-		new_node = find_sphere_inters(ray, scene->c.point, (void *)temp_light_ball);
-		append_node(new_node, &head);
-		temp_light_ball = temp_light_ball->next;
+		append_node(find_sphere_inters(ray, scene->c.point, tmp.sun), &head);
+		tmp.sun = tmp.sun->next;
 	}
-	while (temp_cy)
+	while (tmp.cy)
 	{
-		new_node = find_cylinder_inters(ray, scene->c.point, (void *)temp_cy);
-		append_node(new_node, &head);
-		temp_cy = temp_cy->next;
+		append_node(find_cylinder_inters(ray, scene->c.point, tmp.cy), &head);
+		tmp.cy = tmp.cy->next;
 	}
-	while (temp_pl)
+	while (tmp.pl)
 	{
-		new_node = find_plane_inters(ray, scene->c.point, (void *)temp_pl);
-		append_node(new_node, &head);
-		temp_pl = temp_pl->next;
+		append_node(find_plane_inters(ray, scene->c.point, tmp.pl), &head);
+		tmp.pl = tmp.pl->next;
 	}
 	merge_sort(&head);
 	return (head);
@@ -139,7 +125,9 @@ int	shoot_rays(t_minirt *minirt, t_scene *scene)
 	int		y;
 	t_coord	ray;
 	t_inter	*intersection_list;
+	t_objs	tmp;
 
+	tmp = set_objects(scene);
 	y = -1;
 	while (++y < minirt->img_height)
 	{
@@ -147,7 +135,7 @@ int	shoot_rays(t_minirt *minirt, t_scene *scene)
 		while (++x < minirt->img_width)
 		{
 			ray = get_viewport_ray(scene, scene->tm, x, y);
-			intersection_list = create_intersection_list(scene, ray);
+			intersection_list = create_intersection_list(scene, ray, tmp);
 			if (minirt->intersection[y][x])
 				free_list(&minirt->intersection[y][x], free);
 			minirt->intersection[y][x] = intersection_list;
@@ -157,5 +145,5 @@ int	shoot_rays(t_minirt *minirt, t_scene *scene)
 				minirt->pixels[y][x] = minirt->scene->bg;
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }

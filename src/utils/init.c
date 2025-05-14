@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:07:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 13:30:24 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:27:03 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,17 @@ void	init_scene(t_scene *scene)
 	scene->a_count = 0;
 	scene->c_count = 0;
 	scene->bg = set_colour(200, 200, 200, 255);
+}
+
+// sets object lists from scene to objects struct
+t_objs	set_objects(t_scene *scene)
+{
+	t_objs	objs;
+
+	objs.sp = scene->sp;
+	objs.cy = scene->cy;
+	objs.pl = scene->pl;
+	objs.sun = scene->light_spheres;
+	objs.light = scene->l;
+	return (objs);
 }
