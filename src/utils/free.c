@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/14 09:41:11 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 16:39:21 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,23 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 	arr = NULL;
+}
+
+// helper functoin that frees the lights and light spheres from the scene
+void	free_lights(t_scene *scene, t_objs *tmp)
+{
+	while (scene->light_spheres)
+	{
+		tmp->sun = scene->light_spheres->next;
+		free(scene->light_spheres);
+		scene->light_spheres = tmp->sun;
+	}
+	while (scene->l)
+	{
+		tmp->light = scene->l->next;
+		free(scene->l);
+		scene->l = tmp->light;
+	}
 }
 
 // free the allocated objects in the scene (pl, cy, sp, lights, light spheres)
@@ -52,37 +69,9 @@ void	free_scene(t_scene *scene)
 		free(scene->cy);
 		scene->cy = tmp.cy;
 	}
-	while (scene->light_spheres)
-	{
-		tmp.sun = scene->light_spheres->next;
-		free(scene->light_spheres);
-		scene->light_spheres = tmp.sun;
-	}
-	while (scene->l)
-	{
-		tmp.light = scene->l->next;
-		free(scene->l);
-		scene->l = tmp.light;
-	}
+	free_lights(scene, &tmp);
 	free(scene);
 	scene = NULL;
-}
-
-void	free_list(t_inter **lst, void (*del)(void *))
-{
-	t_inter	*node;
-	t_inter	*next;
-
-	if (lst == NULL || *lst == NULL || del == NULL)
-		return ;
-	node = *lst;
-	while (node)
-	{
-		next = node->next;
-		free(node);
-		node = next;
-	}
-	*lst = NULL;
 }
 
 void	free_inter(t_inter ***intersection, int h, int w)

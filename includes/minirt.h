@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/15 10:40:14 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 16:26:32 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define ZOOM 1
 # define TRANSLATION 5
 # define EPS 1e-5
+# define RESIZE_CONST 30
 
 /* ------------------------ DATA STRUCTURES --------------------------- */
 typedef struct s_colour
@@ -262,12 +263,13 @@ float		diffuse_light(float scalar_nl, float light_ratio);
 // HOOKS
 void		ft_hook(void *param);
 void		resize_hook(int width, int height, void *param);
-void		scroll_zoom(double xdelta, double ydelta, void *param);
+void		scroll_zoom_hook(double xdelta, double ydelta, void *param);
 void		mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
 void		move(t_minirt *minirt, t_coord direction, float translation);
 void		rotate_x(t_minirt *minirt, t_coord *original_vector, float angle);
 void		rotate_y(t_minirt *minirt, t_coord *original_vector, float angle);
 void		rotate_z(t_minirt *minirt, t_coord *original_vector, float angle);
+void		set_object_to_resize(t_minirt *minirt, t_mouse *mouse);
 void		resize_object(t_minirt *minirt, t_mouse *mouse);
 
 // PARSING

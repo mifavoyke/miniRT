@@ -43,7 +43,8 @@ SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/utils/ft_atof.c \
 		$(SRC_DIR)/utils/print.c \
 		$(SRC_DIR)/utils/hooks.c \
-		$(SRC_DIR)/utils/hook_functions.c \
+		$(SRC_DIR)/utils/hook_camera_functions.c \
+		$(SRC_DIR)/utils/hook_resize_functions.c \
 		$(SRC_DIR)/utils/init.c \
 		$(SRC_DIR)/utils/list_utils.c \
 		$(SRC_DIR)/utils/string_utils.c \
