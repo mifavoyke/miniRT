@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:09 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 13:22:38 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 17:25:10 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,30 @@ static t_colour add_light_contribution(t_colour base, t_colour light, float inte
 	result.r = base.r * (light.r / 255) * intensity;
 	result.g = base.g * (light.g / 255) * intensity;
 	result.b = base.b * (light.b / 255) * intensity;
+    printf("Mixing: base(%d, %d, %d) + light(%d, %d, %d) * %f\n",
+       base.r, base.g, base.b, light.r, light.g, light.b, intensity);
 	return (result);
 }
 
-static t_colour compute_light_contribution(t_scene *scene, t_inter *inter, t_coord lightpoint, t_coord viewpoint)
+static t_colour compute_light_contribution(t_scene *scene, t_inter *inter, t_light *l, t_coord viewpoint)
 {
     t_light_math light_inputs;
 
-    init_inputs(inter, &light_inputs, lightpoint, viewpoint);
-    if (is_in_shadow(scene, &light_inputs, inter->id) || inter->id == -42 || light_inputs.scalar_nl <= 0)
+    init_inputs(inter, &light_inputs, l->lightpoint, viewpoint);
+    if (is_in_shadow(scene, &light_inputs, inter->id) || inter->id == -42 || light_inputs.scalar_nl <= EPS || (dot(light_inputs.normal, light_inputs.incident_v) >= 0.5))
         light_inputs.reflectivity = 0.0f;
     else
     {
         if (inter->type != PLANE)
         {
             reflected_vector(&light_inputs);
-            specular_light(&light_inputs, scene->l->brightness);
+            specular_light(&light_inputs, l->brightness);
         }
-        light_inputs.reflectivity += diffuse_light(light_inputs.scalar_nl, scene->l->brightness);
+        light_inputs.reflectivity += diffuse_light(light_inputs.scalar_nl, l->brightness);
         if (light_inputs.reflectivity > 1.0f)
             light_inputs.reflectivity = 1.0f;
     }
-    return (add_light_contribution(inter->colour, scene->l->colour, light_inputs.reflectivity));
+    return (add_light_contribution(inter->colour, l->colour, light_inputs.reflectivity));
 }
 
 static t_colour compute_pixel_light(t_scene *scene, t_inter *intersection)
@@ -84,13 +86,14 @@ static t_colour compute_pixel_light(t_scene *scene, t_inter *intersection)
     accumulated = apply_light(intersection->colour, scene->a.colour, scene->a.ratio);
     while (tmp_l)
     {
-        light_contrib = compute_light_contribution(scene, intersection, scene->l->lightpoint, scene->c.point);
+        light_contrib = compute_light_contribution(scene, intersection, tmp_l, scene->c.point);
         accumulated.r = fmin(255, accumulated.r + light_contrib.r);
         accumulated.g = fmin(255, accumulated.g + light_contrib.g);
         accumulated.b = fmin(255, accumulated.b + light_contrib.b);
+        // printf("Final pixel color: (%d, %d, %d)\n", accumulated.r, accumulated.g, accumulated.b);
         tmp_l = tmp_l->next;
     }
-   return (accumulated);
+    return (accumulated);
 }
 
 int lighting(t_minirt *minirt)
@@ -107,6 +110,7 @@ int lighting(t_minirt *minirt)
             if (minirt->intersection[y][x])
             {
                 minirt->pixels[y][x] = compute_pixel_light(minirt->scene, minirt->intersection[y][x]);
+                // printf("Pixel[%d,%d] Final = (%d, %d, %d)\n", x, y, minirt->pixels[y][x].r, minirt->pixels[y][x].g, minirt->pixels[y][x].b);
             }
         }
     }
