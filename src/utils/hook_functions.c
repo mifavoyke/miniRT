@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 12:12:56 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 10:41:09 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,54 @@ void	rotate_z(t_minirt *minirt, t_coord *original_vector, float angle)
 		cleanup(minirt);
 		exit(ERROR);
 	}
+}
+
+// hooks for mouse movement ? 
+// drag side - xdelta+ - increase diameter - cy,sp
+// drag side - xdelta- - decrease diamerer - cy,sp
+// drag up - ydelta+ - increase height
+// drag down - ydelta - decrease height
+void	resize_object(t_minirt *minirt, t_mouse *mouse)
+{
+	int32_t		deltax;
+	int32_t		deltay;
+	t_sphere *sp;
+	t_cylinder *cy;
+
+	if (mouse->mousex < 0 || mouse->mousex >= WIDTH || mouse->mousey < 0
+		|| mouse->mousey >= HEIGHT || mouse->new_mousex < 0
+		|| mouse->new_mousex >= WIDTH || mouse->new_mousey < 0
+		|| mouse->new_mousey >= HEIGHT || !mouse->object)
+		return ;
+	deltax = mouse->new_mousex - mouse->mousex;
+	deltay = mouse->new_mousey - mouse->mousey;
+	// diameter
+	if (deltax >= deltay)
+	{
+		if (mouse->object->type == SPHERE)
+		{
+			sp = (t_sphere *)mouse->object;
+			sp->diameter += deltax / WIDTH;
+		}
+		if (mouse->object->type == CYLINDER)
+		{
+			cy = (t_cylinder *)mouse->object;
+			cy->diameter += deltax / WIDTH;
+		}	
+	}	
+// height
+	if (deltay > deltax)
+	{
+		if (mouse->object->type == CYLINDER)
+		{
+			cy = (t_cylinder *)mouse->object;
+			cy->diameter -= deltax / WIDTH;
+		}
+	}
+	print_scene(minirt->scene);
+	// if (generate_image(minirt) == ERROR)
+	// {
+	// 	cleanup(minirt);
+	// 	exit(ERROR);
+	// }
 }

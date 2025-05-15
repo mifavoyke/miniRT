@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/14 09:27:25 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 10:40:14 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,15 @@ typedef struct s_roots
 
 /* ------------------------ SCENE DESCRIPTION -------------------------- */
 
+typedef struct s_mouse
+{
+	int32_t		mousex;
+	int32_t		mousey;
+	int32_t		new_mousex;
+	int32_t		new_mousey;
+	t_inter		*object;
+}				t_mouse;
+
 typedef struct s_scene
 {
 	t_ambient		a;
@@ -191,6 +200,7 @@ typedef struct s_minirt
 	mlx_image_t		*img;
 	int				img_width;
 	int				img_height;
+	t_mouse			temp_mouse_data;
 	t_scene			*scene;
 	t_colour		**pixels;
 	t_inter			***intersection;
@@ -249,20 +259,19 @@ t_coord		reflected_vector(t_light_math *inputs);
 float		specular_light(t_light_math *inputs, float light_brightness);
 float		diffuse_light(float scalar_nl, float light_ratio);
 
-// MOVEMENT
+// HOOKS
 void		ft_hook(void *param);
 void		resize_hook(int width, int height, void *param);
 void		scroll_zoom(double xdelta, double ydelta, void *param);
+void		mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
 void		move(t_minirt *minirt, t_coord direction, float translation);
 void		rotate_x(t_minirt *minirt, t_coord *original_vector, float angle);
 void		rotate_y(t_minirt *minirt, t_coord *original_vector, float angle);
 void		rotate_z(t_minirt *minirt, t_coord *original_vector, float angle);
+void		resize_object(t_minirt *minirt, t_mouse *mouse);
 
 // PARSING
 t_scene		*create_scene(char *filename);
-void		init_scene(t_scene *scene);
-int			minirt_init(t_minirt *rt, t_scene *scene);
-t_objs		set_objects(t_scene *scene);
 char		**store_file_contents(char *filename);
 t_coord		parse_coord(char *coord);
 t_colour	parse_colour(char *clr);
@@ -296,6 +305,12 @@ void		merge_sort(t_inter **list_head);
 // ALLOCATE
 t_colour	**allocate_pixels(int width, int height, t_colour background_color);
 t_inter		***allocate_inter(int width, int height);
+
+// INIT
+void		init_scene(t_scene *scene);
+int			minirt_init(t_minirt *rt, t_scene *scene);
+t_objs		set_objects(t_scene *scene);
+t_mouse		init_mouse_data(void);
 
 // FREE
 void		cleanup(t_minirt *minirt);

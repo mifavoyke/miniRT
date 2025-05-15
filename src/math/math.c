@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 15:24:04 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/14 09:27:51 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/14 23:16:48 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,14 @@
 
 // maps camera axis to world axis
 // cam orientation is described by vectors R,F,U defined in world coordinates
-// this matrix assumes that init camera local vectors in world coortinates are:
-// 		 Right = [1, 0, 0] - along x
-// 	   Forward = [0, 1, 0] - along y
-//			Up = [0, 0, 1] - along z
-//    Position = [0, 0, 0] - placed in Origin
-// So the initial matrix Tm0 is:
-//				 | 1  0  0  0 |
-//				 | 0  1  0  0 |
-//				 | 0  0  1  0 |
-//				 | 0  0  0  1 |
-//  final : Tm = [ Rx  Fx  Ux  Tx ]   [ P0x ]
-//	matrix		 [ Ry  Fy  Uy  Ty ] * [ P0y ]
-//				 [ Rz  Fz  Uz  Tz ] * [ P0z ]
-//				 [  0   0   0   1 ] * [  1  ]
+// initial default camera position is [0,0,0] and local vectors
+// defined in world coortinates are R(1, 0, 0), F(0,1,0), U(0,0,1)
 // if F(0, 0, 1/-1) we would be making cross product of colinear vectors !wrong
 // global up to be able to create cross product
+//  final = [ Rx  Fx  Ux  Tx ]
+//	   Tm   [ Ry  Fy  Uy  Ty ]
+//			[ Rz  Fz  Uz  Tz ]
+//			[  0   0   0   1 ]
 t_matrix	find_transformation_matrix(t_camera c)
 {
 	t_matrix	tm;
@@ -60,22 +52,29 @@ t_matrix	find_transformation_matrix(t_camera c)
 
 // maps coordinate from top-left 2d screen to the viewport plane in 3D
 // and applies Tm to find final vector from camera to that pixel in 3D=>THE RAY
+//  P = [ Rx  Fx  Ux  Tx ] * [ P0x ]
+//		[ Ry  Fy  Uy  Ty ] * [ P0y ]
+//		[ Rz  Fz  Uz  Tz ] * [ P0z ]
+//		[  0   0   0   1 ] * [  1  ]
+// p is the point in the viewport relative to the default position of camera
+// p_new is the point in the viewport relative to the real position of camera, 
+// after the transformation matrix has been applied to it
 static t_coord	get_viewport_ray(t_scene *scene, t_matrix Tm, int x, int y)
 {
-	t_coord	pv;
+	t_coord	p;
 	t_coord	p_new;
 	t_coord	ray_vector;
 
-	pv.x = scale(x + 0.5, -scene->viewport_width / 2,
+	p.x = scale(x + 0.5, -scene->viewport_width / 2,
 			scene->viewport_width / 2, WIDTH);
-	pv.y = scene->viewport_distance;
-	pv.z = scale(y + 0.5, scene->viewport_height / 2,
+	p.y = scene->viewport_distance;
+	p.z = scale(y + 0.5, scene->viewport_height / 2,
 			-scene->viewport_height / 2, HEIGHT);
-	p_new.x = Tm.right.x * pv.x + Tm.forward.x * pv.y + Tm.up.x * pv.z
+	p_new.x = Tm.right.x * p.x + Tm.forward.x * p.y + Tm.up.x * p.z
 		+ Tm.translation.x;
-	p_new.y = Tm.right.y * pv.x + Tm.forward.y * pv.y + Tm.up.y * pv.z
+	p_new.y = Tm.right.y * p.x + Tm.forward.y * p.y + Tm.up.y * p.z
 		+ Tm.translation.y;
-	p_new.z = Tm.right.z * pv.x + Tm.forward.z * pv.y + Tm.up.z * pv.z
+	p_new.z = Tm.right.z * p.x + Tm.forward.z * p.y + Tm.up.z * p.z
 		+ Tm.translation.z;
 	ray_vector = make_vector(scene->c.point, p_new);
 	normalize(&ray_vector);

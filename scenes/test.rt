@@ -10,13 +10,13 @@ L -5,5,-2 0.5 255,255,255
 # L 5,5,2 0.7 255,255,255
 
 # Sphere: center at (0, 0, -5), radius 2, color red
-sp -3,10,-15 8 255,0,0
+sp 3,10,-15 8 255,0,0
 
 # Sphere: center at (0, 0, -5), radius 2, color red
-sp -4,8,-10 4 255,130,0
+sp 4,8,-10 4 255,130,0
 
 # Sphere: center at (0, 0, -5), radius 2, color red
-sp -5,-1,-5 2 255,130,100
+sp 5,-1,-5 2 255,130,100
 
 # Cylinder: center at (0, 0, -6), axis (0, 1, 0), diameter 2, height 4, color blue
 cy 0,0,-6 0,1,0 2 4 0,250,0

@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:07:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/14 09:27:03 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 09:59:03 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	minirt_init(t_minirt *rt, t_scene *scene)
 	rt->scene = scene;
 	rt->img_width = WIDTH;
 	rt->img_height = HEIGHT;
+	rt->temp_mouse_data = init_mouse_data();
 	rt->pixels = allocate_pixels(rt->img_width,
 			rt->img_height, rt->scene->bg);
 	if (!rt->pixels)
@@ -61,4 +62,16 @@ t_objs	set_objects(t_scene *scene)
 	objs.sun = scene->light_spheres;
 	objs.light = scene->l;
 	return (objs);
+}
+
+t_mouse	init_mouse_data(void)
+{
+	t_mouse mouse_data;
+	
+	mouse_data.mousex = -1;
+	mouse_data.mousey = -1;
+	mouse_data.new_mousex = -1;
+	mouse_data.new_mousey = -1;
+	mouse_data.object = NULL;
+	return (mouse_data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:06:42 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:08:30 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int32_t	main(int argc, char *argv[])
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
 	mlx_scroll_hook(minirt.mlx, &scroll_zoom, (void *)&minirt);
 	mlx_resize_hook(minirt.mlx, resize_hook, (void *)&minirt);
+	mlx_mouse_hook(minirt.mlx, mouse_hook, (void*)&minirt);
 	mlx_loop(minirt.mlx);
 	cleanup(&minirt);
 	return (SUCCESS);
