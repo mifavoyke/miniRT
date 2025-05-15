@@ -3,71 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 13:25:05 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 17:18:07 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-float vector_length_squared(t_coord v)
+static int is_sphere_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 {
-	return dot(v, v);
-}
-
-// int does_ray_intersect_cylinder(t_coord origin, t_coord dir, t_cylinder *cy, float max_len)
-// {
-// 	t_coord base_center = subtract_vectors(cy->centre, mult_vector_by_c(cy->axis, cy->height / 2));
-// 	t_coord base_ray_vec = subtract_vectors(base_center, origin);
-// 	t_coord ray_axis_cross = cross(dir, cy->axis);
-// 	float dot_cross = dot(ray_axis_cross, ray_axis_cross);
-// 	float root_part = dot_cross * pow(cy->diameter / 2, 2) - dot(cy->axis, cy->axis) * pow(dot(base_ray_vec, ray_axis_cross), 2);
-// 	// ===== Check coat intersections =====
-// 	if (fabsf(root_part) > EPS && fabsf(dot_cross) > EPS)
-// 	{
-// 		float d1 = (dot(ray_axis_cross, cross(base_ray_vec, cy->axis)) + sqrtf(root_part)) / dot_cross;
-// 		t_coord hit1 = add_vectors(origin, mult_vector_by_c(dir, d1));
-// 		float t1 = dot(cy->axis, subtract_vectors(hit1, base_center));
-// 		if (d1 > EPS && d1 < max_len && t1 >= 0 && t1 <= cy->height)
-// 			return 1;
-
-// 		float d2 = (dot(ray_axis_cross, cross(base_ray_vec, cy->axis)) - sqrtf(root_part)) / dot_cross;
-// 		t_coord hit2 = add_vectors(origin, mult_vector_by_c(dir, d2));
-// 		float t2 = dot(cy->axis, subtract_vectors(hit2, base_center));
-// 		if (d2 > EPS && d2 < max_len && t2 >= 0 && t2 <= cy->height)
-// 			return 1;
-// 	}
-// 	// ===== Check cap intersections =====
-// 	if (dot(cy->axis, dir) != 0)
-// 	{
-// 		// Top cap
-// 		float top_d = dot(cy->axis, subtract_vectors(base_center, origin)) / dot(cy->axis, dir);
-// 		if (top_d > EPS && top_d < max_len)
-// 		{
-// 			t_coord top_hit = add_vectors(origin, mult_vector_by_c(dir, top_d));
-// 			if (vector_length_squared(subtract_vectors(top_hit, base_center)) < pow(cy->diameter / 2, 2))
-// 				return 1;
-// 		}
-// 		// Bottom cap
-// 		t_coord top_center = add_vectors(base_center, mult_vector_by_c(cy->axis, cy->height));
-// 		float bot_d = dot(cy->axis, subtract_vectors(top_center, origin)) / dot(cy->axis, dir);
-// 		if (bot_d > EPS && bot_d < max_len)
-// 		{
-// 			t_coord bot_hit = add_vectors(origin, mult_vector_by_c(dir, bot_d));
-// 			if (vector_length_squared(subtract_vectors(bot_hit, top_center)) < pow(cy->diameter / 2, 2))
-// 				return 1;
-// 		}
-// 	}
-// 	return 0;
-// }
-
-int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
-{
-	float t;
-	t_plane *tmp_pl;
-	t_cylinder *tmp_cy;
 	t_sphere *tmp_sp;
 	t_roots roots;
 
@@ -81,6 +27,14 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 			return (1);
 		tmp_sp = tmp_sp->next;
 	}
+	return (0);
+}
+
+static int is_plane_in_shadow(t_scene *scene, t_light_math *light_inputs)
+{
+	t_plane *tmp_pl;
+	float t;
+
 	tmp_pl = scene->pl;
 	while (tmp_pl)
 	{
@@ -89,6 +43,14 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 			return (1);
 		tmp_pl = tmp_pl->next;
 	}
+	return (0);
+}
+
+static int is_cylinder_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
+{
+	t_cylinder *tmp_cy;
+	t_roots roots;
+
 	tmp_cy = scene->cy;
 	while (tmp_cy)
 	{
@@ -98,9 +60,19 @@ int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int current_id)
 		if ((roots.t1 > EPS && roots.t1 < light_inputs->max_length) || (roots.t2 > EPS && roots.t2 < light_inputs->max_length))
 			return (1);
 		tmp_cy = tmp_cy->next;
-		// if (does_ray_intersect_cylinder(light_inputs->shadow_origin, light_inputs->shadow_ray, tmp_cy, light_inputs->max_length)) // replace with Zuzka's function
-		// 	return (1);
-		// tmp_cy = tmp_cy->next;
 	}
+	return (0);
+}
+
+int is_in_shadow(t_scene *scene, t_light_math *light_inputs, int id)
+{
+	if (is_sphere_in_shadow(scene, light_inputs, id))
+		return (1);
+	if (is_plane_in_shadow(scene, light_inputs)) {
+		printf("shadowed here\n");
+		return (1);
+	}
+	if (is_cylinder_in_shadow(scene, light_inputs, id))
+		return (1);
 	return (0);
 }

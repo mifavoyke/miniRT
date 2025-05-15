@@ -33,8 +33,8 @@
 # define ANGLE_RADIAN 0.2f
 # define ZOOM 1
 # define TRANSLATION 5
-# define EPS 1e-5
 # define RESIZE_CONST 30
+# define EPS 2e-5
 
 /* ------------------------ DATA STRUCTURES --------------------------- */
 typedef struct s_colour
@@ -254,7 +254,7 @@ float		get_two_points_distance(t_coord a, t_coord b);
 
 // LIGHT
 int			lighting(t_minirt *minirt);
-int			is_in_shadow(t_scene *scene, t_light_math *light_inp, int curr_id);
+int			is_in_shadow(t_scene * scene, t_light_math *light_inputs, int id);
 t_coord		get_surface_normal(t_inter *intersection);
 t_coord		reflected_vector(t_light_math *inputs);
 float		specular_light(t_light_math *inputs, float light_brightness);

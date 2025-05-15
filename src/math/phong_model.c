@@ -63,5 +63,6 @@ float specular_light(t_light_math *inputs, float light_brightness)
 // Lambertian reflectance for diffuse light: Id = max{0, k * (N*L)}
 float diffuse_light(float scalar_nl, float light_ratio)
 {
+    printf("scalar nl: %f light ratio: %f, result: %f\n", scalar_nl, light_ratio, scalar_nl * light_ratio);
     return (fmax(0, light_ratio * scalar_nl));
 }
