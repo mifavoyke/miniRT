@@ -24,17 +24,7 @@ Torus (donut) intersection:
 https://arxiv.org/pdf/2301.03191
 
 
-
-* FOR YEVA *
-- NEW: before we were allocating new inter array for each new image, now we just allocate once and when creating new image, free the existing list of intersections there and assign the newly generated list intead - it happend in the math.c - shoot_rays() - seems faster now
-- ALSO i removed the init pixels function and if there is no intersectoin, we assign the default background color in the shoot_rays again
-- CAMERA MOVEMENT: now movement happens relative to camera, not relative to world origin 
-
 * FOR ZUZANA *
-- i think we should handle being inside objects - now when first inter is behind camera, the second inter - so calculate even inters that are behind the camera and set the other inter to black - if the inter in front of the camera is black, it is inside and no difused light applies
-- inside objects: remove absolute values for t and do a is_insid efunction that checks all ids before the input element and if the id exists before, our point is secnd one meaning we are inside and colour it to the colour of the object toend down to more dark AND render the first pont bigger than 0
-- 
-- redo the printf for errors to write to stderr
 - multithreding - parallelization?
 - maybe optimization as in the article "Starter ray tracing math" above
 - should we change viewport width in minirt struct when resizing? 
@@ -49,6 +39,7 @@ https://arxiv.org/pdf/2301.03191
 - changing camera viewpoint coordinates ensures translation, changing normal vector ensures rotation
 - camera is positioned in 3D space and oriented by a transformation matrix from default position (0, 0, 0) and default forward vector (0, 1, 0) to its specififed orientation and point in 3D
 - in most cases, no, you do not need to explicitly normalize the camera's orientation vectors after applying the rotation matrices, because rotation matrices are orthogonal. This means that, after applying a rotation matrix, the basis vectors (right, forward, up) are guaranteed to remain normalized if they were initially normalized. BUT we normalize to avoid small deviations whn working with floats
+- movement happens relative to camera, not relative to world origin 
 
 In graphics/math practice:
 It’s very common to treat positions and vectors interchangeably when doing algebra — because both are just 3D tuples (𝑥,𝑦,𝑧)
