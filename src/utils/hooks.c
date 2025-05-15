@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 10:40:39 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 11:25:23 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void* 
 			mouse->object = minirt->intersection[mouse->mousey][mouse->mousex];
 		else
 			mouse->object = NULL;
+		printf("id: %d\n", minirt->intersection[mouse->mousey][mouse->mousex]->id);
 	}
 	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_RELEASE)
 	{

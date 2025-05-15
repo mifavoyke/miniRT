@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 10:41:09 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 11:29:49 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,33 +119,39 @@ void	resize_object(t_minirt *minirt, t_mouse *mouse)
 		return ;
 	deltax = mouse->new_mousex - mouse->mousex;
 	deltay = mouse->new_mousey - mouse->mousey;
+	printf("delta: x: %d, y: %d\n", deltax, deltay);
 	// diameter
-	if (deltax >= deltay)
+	// dd rule that stops teh object at minimum dimeter or height so the obejct does not disapear
+	if (abs(deltax) >= abs(deltay))
 	{
 		if (mouse->object->type == SPHERE)
 		{
-			sp = (t_sphere *)mouse->object;
-			sp->diameter += deltax / WIDTH;
+			sp = (t_sphere *)mouse->object->obj;
+			sp->diameter += + deltax / 20; 
+			printf("new sp diameter: %f\n", sp->diameter);
+
 		}
 		if (mouse->object->type == CYLINDER)
 		{
-			cy = (t_cylinder *)mouse->object;
-			cy->diameter += deltax / WIDTH;
+			cy = (t_cylinder *)mouse->object->obj;
+			cy->diameter += deltax / 20;
+			printf("new cy diameter: %f\n", cy->diameter);
 		}	
 	}	
 // height
-	if (deltay > deltax)
+	if (abs(deltay) > abs(deltax))
 	{
 		if (mouse->object->type == CYLINDER)
 		{
-			cy = (t_cylinder *)mouse->object;
-			cy->diameter -= deltax / WIDTH;
+			cy = (t_cylinder *)mouse->object->obj;
+			cy->h -= deltay / 20;
+			printf("new cy height: %f\n", cy->h);
+
 		}
 	}
-	print_scene(minirt->scene);
-	// if (generate_image(minirt) == ERROR)
-	// {
-	// 	cleanup(minirt);
-	// 	exit(ERROR);
-	// }
+	if (generate_image(minirt) == ERROR)
+	{
+		cleanup(minirt);
+		exit(ERROR);
+	}
 }
