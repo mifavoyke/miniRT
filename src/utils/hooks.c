@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 11:25:23 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 16:32:51 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // moves camera forward on zoom relative to its local forward axis
-void	scroll_zoom(double xdelta, double ydelta, void *param)
+void	scroll_zoom_hook(double xdelta, double ydelta, void *param)
 {
 	t_minirt	*minirt;
 
@@ -87,74 +87,28 @@ void	resize_hook(int width, int height, void *param)
 	}
 }
 
-// mouse press finds the obejct to resize
-// mouse release finds value to resize and performs it 
-void mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void* param)
+// gets the mouse drag movement and processes it for object resizing
+// on mouse press, get the object to resize
+// on mouse release, find difference in mouse position and call func to resize
+// stores both mouse positions(press,release) in struct minirt->temp_mouse_data
+// after resizing is done, sets the mouse data back to default values
+void	mouse_hook(mouse_key_t btn, action_t action, modifier_key_t m, void *p)
 {
 	t_minirt	*minirt;
 	t_mouse		*mouse;
 
-	minirt = (t_minirt *)param;
-	(void)mods;
+	(void)m;
+	minirt = (t_minirt *)p;
 	mouse = &minirt->temp_mouse_data;
-	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+	if (btn == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
 	{
 		mlx_get_mouse_pos(minirt->mlx, &(mouse->mousex), &(mouse->mousey));
-		if (mouse->mousex >= 0 && mouse->mousex < WIDTH
-			&& mouse->mousey >=0 && mouse->mousey < HEIGHT 
-			&& minirt->intersection[mouse->mousey][mouse->mousex])
-			mouse->object = minirt->intersection[mouse->mousey][mouse->mousex];
-		else
-			mouse->object = NULL;
-		printf("id: %d\n", minirt->intersection[mouse->mousey][mouse->mousex]->id);
+		set_object_to_resize(minirt, mouse);
 	}
-	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_RELEASE)
+	if (mouse->object && btn == MLX_MOUSE_BUTTON_LEFT && action == MLX_RELEASE)
 	{
 		mlx_get_mouse_pos(minirt->mlx, &mouse->new_mousex, &mouse->new_mousey);
 		resize_object(minirt, mouse);
-		minirt->temp_mouse_data = init_mouse_data(); // set data to default values again
+		minirt->temp_mouse_data = init_mouse_data();
 	}
 }
-
-// void mlx_get_mouse_pos(mlx_t* mlx, int32_t* x, int32_t* y)
-// {
-// 	MLX_NONNULL(mlx);
-// 	MLX_NONNULL(x);
-// 	MLX_NONNULL(y);
-
-// 	double xd, yd;
-// 	glfwGetCursorPos(mlx->window, &xd, &yd);
-// 	*x = (int32_t)xd;
-// 	*y = (int32_t)yd;
-// }
-
-// /**
-//  * The mouse button keycodes.
-//  * @param LEFT The left mouse button.
-//  * @param RIGHT The right mouse button.
-//  * @param MIDDLE The middle mouse button, aka the Scrollwheel.
-//  */
-// typedef enum mouse_key
-// {
-// 	MLX_MOUSE_BUTTON_LEFT	= 0,
-// 	MLX_MOUSE_BUTTON_RIGHT	= 1,
-// 	MLX_MOUSE_BUTTON_MIDDLE	= 2,
-// }	mouse_key_t;
-// /**
-//  * Callback function used to handle raw mouse movement.
-//  * 
-//  * @param[in] xpos The mouse x position.
-//  * @param[in] ypos The mouse y position.
-//  * @param[in] param Additional parameter to pass on to the function.
-//  */
-// typedef void (*mlx_cursorfunc)(double xpos, double ypos, void* param);
-
-// /**
-//  * Callback function used to handle mouse actions.
-//  * 
-//  * @param[in] button The mouse button/key pressed.
-//  * @param[in] action The mouse action that took place.
-//  * @param[in] mods The modifier keys pressed together with the mouse key.
-//  * @param[in] param Additional parameter to pass on to the function.
-//  */
-// typedef void (*mlx_mousefunc)(mouse_key_t button, action_t action, modifier_key_t mods, void* param);

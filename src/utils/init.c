@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:07:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 09:59:03 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 16:32:35 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ t_objs	set_objects(t_scene *scene)
 
 t_mouse	init_mouse_data(void)
 {
-	t_mouse mouse_data;
-	
+	t_mouse	mouse_data;
+
 	mouse_data.mousex = -1;
 	mouse_data.mousey = -1;
 	mouse_data.new_mousex = -1;

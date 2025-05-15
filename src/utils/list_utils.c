@@ -3,35 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:14:57 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/13 12:47:00 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 16:38:50 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
-void	print_inter_list(t_inter **head)
-{
-	t_inter	*temp;
-
-	if (!head || !*head)
-		return ;
-	temp = *head;
-	while (temp)
-	{
-		if (temp->type == SPHERE)
-			printf("sphere %d ", temp->id);
-		else if (temp->type == CYLINDER)
-			printf("cylinder %d ", temp->id);
-		else if (temp->type == PLANE)
-			printf("plane %d ", temp->id);
-		printf("%f\n", temp->distance);
-		temp = temp->next;
-	}
-	printf("-----------------\n");
-}
 
 // appends new_node to the end of the list
 // new_node has a next - either another t_inter node appended or NULL
@@ -50,6 +29,23 @@ void	append_node(t_inter *new_node, t_inter **head)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new_node;
+}
+
+void	free_list(t_inter **lst, void (*del)(void *))
+{
+	t_inter	*node;
+	t_inter	*next;
+
+	if (lst == NULL || *lst == NULL || del == NULL)
+		return ;
+	node = *lst;
+	while (node)
+	{
+		next = node->next;
+		free(node);
+		node = next;
+	}
+	*lst = NULL;
 }
 
 // ---------------------------- MERGE SORT ------------------------------------
