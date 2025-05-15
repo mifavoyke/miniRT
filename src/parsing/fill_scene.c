@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 12:07:58 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 18:25:08 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static t_sphere	*fill_lightsource_object(t_light *light)
 		return (NULL);
 	}
 	light_sphere->centre = light->lightpoint;
-	light_sphere->diameter = 5;
+	light_sphere->diameter = 10 * light->brightness;
 	light_sphere->colour = light->colour;
 	light_sphere->id = -42;
 	light_sphere->next = NULL;

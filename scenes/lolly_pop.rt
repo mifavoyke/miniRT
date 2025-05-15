@@ -1,26 +1,22 @@
-A 0.1             0,0,0       # Soft warm ambient light
-C 0,0,60          0,0,-1            70      # Camera straight-on, like human eye level
-L 0,40,100         0.6               20,255,255   # Strong white light from top-front
-L 0,50,-30         0.4               255,50,0   # Strong white light from top-front
+A 0.1             0,0,0
+C 0,0,60          0,0,-1            70
+L 0,40,40         0.6               20,255,255
+L 0,20,-40         0.4               255,50,0
+# L 0,20,-50         0.4               255,50,0 will cause shadow acne
 
-# 🍬 Lollipop head (main sphere)
-# sp 0,0,0          10                255,80,100     # Vibrant red-pink
+# 🍬 Lollipop head
+sp 0,0,0          10                255,80,100     # Vibrant red-pink
 # sp 0,0,0          6                10,80,230 
 
-# 🎀 Decorative band (horizontal cylinder around the sphere)
-# cy 0,0,0          0,1,0             12 2.5           60,220,200   # Thin turquoise ring
-# pl 0,0,0          0,1,0                 60,220,200   # Thin turquoise ring
+# 🎀 Decorative band
+cy 0,0,0          0,1,0             12 2.5           60,220,200
+# pl 0,0,0          0,1,0                 60,220,200
 
-# 🍡 Stick (below sphere)
-# cy 0,-15,0        0,-1,0            2 30           255,255,230  # Creamy white stick
+# 🍡 Stick
+cy 0,-15,0        0,1,0            2 30           255,255,230  # Creamy white stick
 
-# Floor
-pl 0,-30,0        0,1,0             200,200,200    # Light neutral gray
-# Ceiling
-pl 0,50,0         0,-1,0            220,220,230    # Cool light gray
-# Back wall
-pl 0,0,-50        0,0,1             100,100,120    # Muted bluish-gray
-# Left wall
-pl -50,0,0        1,0,0             140,120,120    # Warm muted gray-pink
-# Right wall
-pl 50,0,0         -1,0,0            120,140,140    # Cool muted teal-gray
+pl 0,-30,0        0,1,0             200,200,200
+pl 0,50,0         0,-1,0            220,220,230
+pl 0,0,-50        0,0,1             100,100,120
+pl -50,0,0        1,0,0             140,120,120
+pl 50,0,0         -1,0,0            120,140,140

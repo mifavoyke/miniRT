@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/15 17:18:57 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:06:16 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,10 +254,12 @@ float		get_two_points_distance(t_coord a, t_coord b);
 // LIGHT
 int			lighting(t_minirt *minirt);
 int			is_in_shadow(t_scene * scene, t_light_math *light_inputs, int id);
-t_coord		get_surface_normal(t_inter *intersection);
 t_coord		reflected_vector(t_light_math *inputs);
 float		specular_light(t_light_math *inputs, float light_brightness);
 float		diffuse_light(float scalar_nl, float light_ratio);
+t_colour	apply_light(t_colour original, t_colour light, float reflectivity);
+t_colour	add_light_contribution(t_colour base, t_colour light, float intensity);
+void		init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, t_coord viewpoint);
 
 // HOOKS
 void		ft_hook(void *param);

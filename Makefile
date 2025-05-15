@@ -20,6 +20,7 @@ endif
 SRCS := $(SRC_DIR)/minirt.c \
 		$(SRC_DIR)/math/basic.c \
 		$(SRC_DIR)/math/light.c \
+		$(SRC_DIR)/math/light_inputs.c \
 		$(SRC_DIR)/math/math.c \
 		$(SRC_DIR)/math/shadow.c \
 		$(SRC_DIR)/math/vector_i.c \
