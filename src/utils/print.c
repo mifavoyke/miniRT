@@ -6,7 +6,7 @@
 /*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 10:52:46 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/13 13:32:11 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/15 11:37:01 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ void	print_controls(void)
 	printf("  [UP] / [DOWN]     → Pitch (rotate around X-axis - up/down)\n");
 	printf("  [J] / [K]         → Roll (rotate Y-axis - tilt to sides)\n");
 	printf("  [LEFT] / [RIGHT]  → Yaw (rotate around Z-axis-left/right)\n");
+	printf("Resizing objects:\n");
+	printf("  diameter increase → drag object right\n");
+	printf("  diameter decrease → drag object left\n");
+	printf("  height increase   → drag object up\n");
+	printf("  height decrease   → drag object down\n");
 	printf("========================\n");
 }
 
