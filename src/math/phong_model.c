@@ -1,11 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   phong_model.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 23:21:40 by zuzanapiaro       #+#    #+#             */
+/*   Updated: 2025/05/20 17:33:30 by yhusieva         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minirt.h"
+
+// calculates the closest point on the cylinder axis and finds the vector from
+// that closest point on the axis to the intersection point
+static t_coord	calculate_cylider_normal(t_cylinder *cy, t_coord inter_point)
+{
+	t_coord	closest_axis_point;
+	t_coord	normal;
+	int		t;
+
+	t = dot(make_vector(cy->centre, inter_point), cy->axis);
+	closest_axis_point = get_point_on_vector(cy->centre, cy->axis, t);
+	normal = make_vector(closest_axis_point, inter_point);
+	return (normal);
+}
+
+t_coord	get_surface_normal(t_inter *intersection)
+{
+	t_sphere	*sp;
+	t_plane		*pl;
+	t_cylinder	*cy;
+
+	if (intersection->type == SPHERE)
+	{
+		sp = (t_sphere *)intersection->obj;
+		return (make_vector(sp->centre, intersection->point));
+	}
+	else if (intersection->type == PLANE)
+	{
+		pl = (t_plane *)intersection->obj;
+		return (set_coord(pl->vector.x, pl->vector.y, pl->vector.z));
+	}
+	else if (intersection->type == CYLINDER)
+	{
+		cy = (t_cylinder *)intersection->obj;
+		if (cy->axis.z == 1 || cy->axis.z == -1)
+			return (make_vector(cy->centre, intersection->point));
+		else
+			return (calculate_cylider_normal(cy, intersection->point));
+	}
+	return (set_coord(0, 0, 0));
+}
 
 // bidirectional reflectance distribution function (BRDF)
 // reflected vector: R = I − 2*N *(I*N)
 t_coord	reflected_vector(t_light_math *inputs)
 {
 	t_coord		scaled_normal_vector;
-
+	
 	scaled_normal_vector = mult_vector_by_c(inputs->normal,
 			2 * inputs->scalar_nl);
 	inputs->reflected_vector = subtract_vectors(inputs->incident_l,

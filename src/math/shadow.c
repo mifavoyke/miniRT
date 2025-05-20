@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 19:33:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:35:57 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,19 @@ static int	is_sphere_in_shadow(t_scene *scene,
 	tmp_sp = scene->sp;
 	while (tmp_sp)
 	{
-		if (tmp_sp->id == current_id)
+		if (tmp_sp->id == id)
 			return (0);
-		roots = find_sphere_inter_roots(light_inputs->shadow_ray,
-				light_inputs->shadow_origin, tmp_sp);
-		if ((roots.t1 > EPS && roots.t1 < light_inputs->max_length)
-			|| (roots.t2 > EPS && roots.t2 < light_inputs->max_length))
+		roots = find_sphere_inter_roots(l_input->shadow_ray,
+				l_input->shadow_origin, tmp_sp);
+		if ((roots.t1 > EPS && roots.t1 < l_input->max_length)
+			|| (roots.t2 > EPS && roots.t2 < l_input->max_length))
 			return (1);
 		tmp_sp = tmp_sp->next;
 	}
 	return (0);
 }
 
-static int	is_plane_in_shadow(t_scene *scene,
-	t_light_math *light_inputs, int current_id)
+static int	is_plane_in_shadow(t_scene *scene, t_light_math *l_input)
 {
 	t_plane	*tmp_pl;
 	float	t;
@@ -62,7 +61,7 @@ static int	is_cylinder_in_shadow(t_scene *scene,
 	tmp_cy = scene->cy;
 	while (tmp_cy)
 	{
-		if (tmp_cy->id == current_id)
+		if (tmp_cy->id == id)
 			return (0);
 		roots = find_cylinder_inters_roots(light_inputs->shadow_ray,
 				light_inputs->shadow_origin, tmp_cy);
@@ -76,7 +75,7 @@ static int	is_cylinder_in_shadow(t_scene *scene,
 
 int	is_in_shadow(t_scene *scene, t_light_math *light_inputs, int id)
 {
-	if (is_sphere_in_shadow(scene, light_inputs, id))
+	if (is_sphere_in_shadow(scene, l_input, id))
 		return (1);
 	if (is_plane_in_shadow(scene, light_inputs, id))
 		return (1);
