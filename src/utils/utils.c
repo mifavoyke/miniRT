@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:05:53 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/20 16:35:54 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:42:43 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 // prints error message nd returns 1
 int	ft_error(const char *msg)
 {
-	ft_putstr_fd("Error", STDERR_FILENO);
-	ft_putendl_fd((char *)msg, STDERR_FILENO);
+	write(STDERR_FILENO, "Error: ", 7);
+	write(STDERR_FILENO, msg, ft_strlen(msg));
+	write(STDERR_FILENO, "\n", 1);
 	return (ERROR);
 }

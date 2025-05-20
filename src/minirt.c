@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:15 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:37:28 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:42:47 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int32_t	main(int argc, char *argv[])
 	if (generate_image(&minirt) == ERROR)
 		return (ERROR);
 	mlx_loop_hook(minirt.mlx, ft_hook, (void *)&minirt);
-	mlx_scroll_hook(minirt.mlx, &scroll_zoom, (void *)&minirt);
+	mlx_scroll_hook(minirt.mlx, &scroll_zoom_hook, (void *)&minirt);
 	mlx_resize_hook(minirt.mlx, resize_hook, (void *)&minirt);
 	mlx_mouse_hook(minirt.mlx, mouse_hook, (void *)&minirt);
 	mlx_loop(minirt.mlx);

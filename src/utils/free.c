@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/20 16:01:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:40:34 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,23 @@ static void	free_objects(t_scene *scene, t_objs	*tmp)
 	}
 }
 
+// helper functoin that frees the lights and light spheres from the scene
+void	free_lights(t_scene *scene, t_objs *tmp)
+{
+	while (scene->light_spheres)
+	{
+		tmp->sun = scene->light_spheres->next;
+		free(scene->light_spheres);
+		scene->light_spheres = tmp->sun;
+	}
+	while (scene->l)
+	{
+		tmp->light = scene->l->next;
+		free(scene->l);
+		scene->l = tmp->light;
+	}
+}
+
 // free the allocated objects in the scene (pl, cy, sp, lights, light spheres)
 // and free the scene itself
 void	free_scene(t_scene *scene)
@@ -56,23 +73,6 @@ void	free_scene(t_scene *scene)
 	}
 	free(scene);
 	scene = NULL;
-}
-
-void	free_list(t_inter **lst, void (*del)(void *))
-{
-	t_inter	*node;
-	t_inter	*next;
-
-	if (lst == NULL || *lst == NULL || del == NULL)
-		return ;
-	node = *lst;
-	while (node)
-	{
-		next = node->next;
-		free(node);
-		node = next;
-	}
-	*lst = NULL;
 }
 
 void	free_inter(t_inter ***intersection, int h, int w)

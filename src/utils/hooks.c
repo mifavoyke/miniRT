@@ -3,17 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
 /*   Updated: 2025/05/20 16:31:15 by yhusieva         ###   ########.fr       */
+=======
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
+/*   Updated: 2025/05/15 16:32:51 by zpiarova         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // moves camera forward on zoom relative to its local forward axis
-void	scroll_zoom(double xdelta, double ydelta, void *param)
+void	scroll_zoom_hook(double xdelta, double ydelta, void *param)
 {
 	t_minirt	*minirt;
 
@@ -95,20 +102,15 @@ void	mouse_hook(mouse_key_t button, action_t action,
 	t_minirt	*minirt;
 	t_mouse		*mouse;
 
-	minirt = (t_minirt *)param;
-	(void)mods;
+	(void)m;
+	minirt = (t_minirt *)p;
 	mouse = &minirt->temp_mouse_data;
-	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+	if (btn == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
 	{
 		mlx_get_mouse_pos(minirt->mlx, &(mouse->mousex), &(mouse->mousey));
-		if (mouse->mousex >= 0 && mouse->mousex < WIDTH
-			&& mouse->mousey >= 0 && mouse->mousey < HEIGHT
-			&& minirt->intersection[mouse->mousey][mouse->mousex])
-			mouse->object = minirt->intersection[mouse->mousey][mouse->mousex];
-		else
-			mouse->object = NULL;
+		set_object_to_resize(minirt, mouse);
 	}
-	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_RELEASE)
+	if (mouse->object && btn == MLX_MOUSE_BUTTON_LEFT && action == MLX_RELEASE)
 	{
 		mlx_get_mouse_pos(minirt->mlx, &mouse->new_mousex, &mouse->new_mousey);
 		resize_object(minirt, mouse);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hook_functions.c                                   :+:      :+:    :+:   */
+/*   hook_camera_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:36:02 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:41:19 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,59 +93,6 @@ void	rotate_z(t_minirt *minirt, t_coord *original_vector, float angle)
 	tm->up = cross(tm->right, tm->forward);
 	normalize(&tm->up);
 	*original_vector = tm->forward;
-	if (generate_image(minirt) == ERROR)
-	{
-		cleanup(minirt);
-		exit(ERROR);
-	}
-}
-
-// hooks for mouse movement ? 
-// drag side - xdelta+ - increase diameter - cy,sp
-// drag side - xdelta- - decrease diamerer - cy,sp
-// drag up - ydelta+ - increase height
-// drag down - ydelta - decrease height
-void	resize_object(t_minirt *minirt, t_mouse *mouse)
-{
-	int32_t		deltax;
-	int32_t		deltay;
-	t_sphere	*sp;
-	t_cylinder	*cy;
-
-	if (mouse->mousex < 0 || mouse->mousex >= WIDTH || mouse->mousey < 0
-		|| mouse->mousey >= HEIGHT || mouse->new_mousex < 0
-		|| mouse->new_mousex >= WIDTH || mouse->new_mousey < 0
-		|| mouse->new_mousey >= HEIGHT || !mouse->object)
-		return ;
-	deltax = mouse->new_mousex - mouse->mousex;
-	deltay = mouse->new_mousey - mouse->mousey;
-	if (abs(deltax) >= abs(deltay))
-	{
-		if (mouse->object->type == SPHERE)
-		{
-			sp = (t_sphere *)mouse->object->obj;
-			sp->diameter += + deltax / 20; 
-			printf("new sp diameter: %f\n", sp->diameter);
-
-		}
-		if (mouse->object->type == CYLINDER)
-		{
-			cy = (t_cylinder *)mouse->object->obj;
-			cy->diameter += deltax / 20;
-			printf("new cy diameter: %f\n", cy->diameter);
-		}	
-	}	
-// height
-	if (abs(deltay) > abs(deltax))
-	{
-		if (mouse->object->type == CYLINDER)
-		{
-			cy = (t_cylinder *)mouse->object->obj;
-			cy->h -= deltay / 20;
-			printf("new cy height: %f\n", cy->h);
-
-		}
-	}
 	if (generate_image(minirt) == ERROR)
 	{
 		cleanup(minirt);

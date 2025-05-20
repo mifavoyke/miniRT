@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:11:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 18:25:08 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:36:14 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,18 @@ static int	fill_light(t_scene *scene, char **values)
 	if (!new_l)
 		return (ft_error("Memory allocation failed for light."));
 	new_l->lightpoint = parse_coord(values[1]);
-	if (invalid_coord(&new_l->lightpoint))
-		return (ERROR);
+	if (invalid_colour(&new_l->colour))
+		return (free(new_l), ERROR);
 	new_l->brightness = ft_atof(values[2]);
 	if (new_l->brightness < 0.0 || new_l->brightness > 1.0)
-		return (ft_error("Light brightness out of range."));
+		return (free(new_l), ft_error("Light brightness out of range."));
 	new_l->colour = parse_colour(values[3]);
-	if (invalid_colour(&new_l->colour))
-		return (ERROR);
+	if (invalid_coord(&new_l->lightpoint))
+		return (free(new_l), ERROR);
 	new_l->next = NULL;
 	new_light_sp = fill_lightsource_object(new_l);
 	if (!new_light_sp)
-		return (ERROR);
+		return (free(new_l), ERROR);
 	append_sphere(&(scene->light_spheres), new_light_sp);
 	append_light(&(scene->l), new_l);
 	return (SUCCESS);
