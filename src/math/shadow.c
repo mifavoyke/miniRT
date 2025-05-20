@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 19:33:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:14:24 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ static int	is_plane_in_shadow(t_scene *scene,
 {
 	t_plane	*tmp_pl;
 	float	t;
+	(void)current_id;
 
 	tmp_pl = scene->pl;
 	while (tmp_pl)
 	{
-		if (tmp_pl->id == current_id)
-			return (0);
+		// if (tmp_pl->id == current_id)
+		// 	return (0);
 		t = get_plane_inter_root(light_inputs->shadow_ray,
 				light_inputs->shadow_origin, tmp_pl);
 		if (t > EPS && t < light_inputs->max_length)

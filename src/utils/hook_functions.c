@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:11:41 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 11:29:49 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/20 15:36:02 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ void	resize_object(t_minirt *minirt, t_mouse *mouse)
 {
 	int32_t		deltax;
 	int32_t		deltay;
-	t_sphere *sp;
-	t_cylinder *cy;
+	t_sphere	*sp;
+	t_cylinder	*cy;
 
 	if (mouse->mousex < 0 || mouse->mousex >= WIDTH || mouse->mousey < 0
 		|| mouse->mousey >= HEIGHT || mouse->new_mousex < 0
@@ -119,9 +119,6 @@ void	resize_object(t_minirt *minirt, t_mouse *mouse)
 		return ;
 	deltax = mouse->new_mousex - mouse->mousex;
 	deltay = mouse->new_mousey - mouse->mousey;
-	printf("delta: x: %d, y: %d\n", deltax, deltay);
-	// diameter
-	// dd rule that stops teh object at minimum dimeter or height so the obejct does not disapear
 	if (abs(deltax) >= abs(deltay))
 	{
 		if (mouse->object->type == SPHERE)

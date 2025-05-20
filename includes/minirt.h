@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:28 by yhusieva          #+#    #+#             */
-/*   Updated: 2025/05/15 19:06:16 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:35:25 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <math.h>
 # include <fcntl.h>
-# include <float.h>
-# include <ctype.h>
+// # include <float.h>
+// # include <ctype.h>
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
@@ -126,7 +126,7 @@ typedef struct s_cylinder
 	struct s_cylinder	*next;
 }						t_cylinder;
 
-typedef struct	s_objs
+typedef struct s_objs
 {
 	t_sphere	*sp;
 	t_plane		*pl;
@@ -160,9 +160,9 @@ typedef struct s_inter
 typedef struct s_roots
 {
 	float			t1;
-	enum e_obj_t	type1; 
+	enum e_obj_t	type1;
 	float			t2;
-	enum e_obj_t	type2; 
+	enum e_obj_t	type2;
 }					t_roots;
 
 /* ------------------------ SCENE DESCRIPTION -------------------------- */
@@ -225,14 +225,15 @@ t_roots		find_sphere_inter_roots(t_coord ray, t_coord origin, t_sphere *sp);
 t_inter		*find_sphere_inters(t_coord ray, t_coord origin, t_sphere *sp);
 float		get_plane_inter_root(t_coord ray, t_coord origin, t_plane *pl);
 t_inter		*find_plane_inters(t_coord ray, t_coord origin, t_plane *pl);
-t_roots		find_cylinder_inters_roots(t_coord ray, t_coord origin, t_cylinder *cy);
+t_roots		find_cylinder_inters_roots(t_coord ray,
+				t_coord origin, t_cylinder *cy);
 t_inter		*find_cylinder_inters(t_coord ray, t_coord origin, t_cylinder *cy);
 void		set_id_colour_type(t_inter *i, int id, enum e_obj_t t, t_colour c);
 t_inter		*make_inter(void *obj, float t, t_coord ray, t_coord origin);
 t_inter		*return_object_inters(t_inter *in1, t_inter *in2);
-void		set_cyl_roots(t_roots *roots, float t1, float t2, enum e_obj_t type);
+void		set_cyl_roots(t_roots *roots,
+				float t1, float t2, enum e_obj_t type);
 void		final_cyl_roots(t_roots *roots, t_roots new_roots);
-
 
 // VECTOR MATH
 float		dot(t_coord A, t_coord B);
@@ -253,19 +254,23 @@ float		get_two_points_distance(t_coord a, t_coord b);
 
 // LIGHT
 int			lighting(t_minirt *minirt);
-int			is_in_shadow(t_scene * scene, t_light_math *light_inputs, int id);
+int			is_in_shadow(t_scene *scene, t_light_math *light_inputs, int id);
 t_coord		reflected_vector(t_light_math *inputs);
 float		specular_light(t_light_math *inputs, float light_brightness);
 float		diffuse_light(float scalar_nl, float light_ratio);
 t_colour	apply_light(t_colour original, t_colour light, float reflectivity);
-t_colour	add_light_contribution(t_colour base, t_colour light, float intensity);
-void		init_inputs(t_inter *intersection, t_light_math *vars, t_coord lightpoint, t_coord viewpoint);
+t_colour	add_light_contribution(t_colour base,
+				t_colour light, float intensity);
+void		init_inputs(t_inter *intersection,
+				t_light_math *vars, t_coord lightpoint, t_coord viewpoint);
 
 // HOOKS
 void		ft_hook(void *param);
 void		resize_hook(int width, int height, void *param);
-void		scroll_zoom(double xdelta, double ydelta, void *param);
-void		mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
+void		scroll_zoom(double xdelta,
+				double ydelta, void *param);
+void		mouse_hook(mouse_key_t button,
+				action_t action, modifier_key_t mods, void *param);
 void		move(t_minirt *minirt, t_coord direction, float translation);
 void		rotate_x(t_minirt *minirt, t_coord *original_vector, float angle);
 void		rotate_y(t_minirt *minirt, t_coord *original_vector, float angle);

@@ -24,7 +24,7 @@ Torus (donut) intersection:
 https://arxiv.org/pdf/2301.03191
 
 
-
+- segfault when clicking on empty space 
 * FOR YEVA *
 - NEW: before we were allocating new inter array for each new image, now we just allocate once and when creating new image, free the existing list of intersections there and assign the newly generated list intead - it happend in the math.c - shoot_rays() - seems faster now
 - ALSO i removed the init pixels function and if there is no intersectoin, we assign the default background color in the shoot_rays again

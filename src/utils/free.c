@@ -3,28 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:19:43 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/14 09:41:11 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/20 16:01:30 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// frees the array
-void	free_arr(char **arr)
+static void	free_objects(t_scene *scene, t_objs	*tmp)
 {
-	int	i;
-
-	i = 0;
-	while (arr[i])
+	while (scene->sp)
 	{
-		free(arr[i]);
-		i++;
+		tmp->sp = scene->sp->next;
+		free(scene->sp);
+		scene->sp = tmp->sp;
 	}
-	free(arr);
-	arr = NULL;
+	while (scene->pl)
+	{
+		tmp->pl = scene->pl->next;
+		free(scene->pl);
+		scene->pl = tmp->pl;
+	}
+	while (scene->cy)
+	{
+		tmp->cy = scene->cy->next;
+		free(scene->cy);
+		scene->cy = tmp->cy;
+	}
 }
 
 // free the allocated objects in the scene (pl, cy, sp, lights, light spheres)
@@ -34,24 +41,7 @@ void	free_scene(t_scene *scene)
 	t_objs	tmp;
 
 	tmp = set_objects(scene);
-	while (scene->sp)
-	{
-		tmp.sp = scene->sp->next;
-		free(scene->sp);
-		scene->sp = tmp.sp;
-	}
-	while (scene->pl)
-	{
-		tmp.pl = scene->pl->next;
-		free(scene->pl);
-		scene->pl = tmp.pl;
-	}
-	while (scene->cy)
-	{
-		tmp.cy = scene->cy->next;
-		free(scene->cy);
-		scene->cy = tmp.cy;
-	}
+	free_objects(scene, &tmp);
 	while (scene->light_spheres)
 	{
 		tmp.sun = scene->light_spheres->next;
