@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:05:53 by zuzanapiaro       #+#    #+#             */
-/*   Updated: 2025/05/15 23:10:45 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/20 17:42:43 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:03 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/04/26 19:28:45 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2025/05/20 15:32:26 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ double	get_fractional_part(char *str, int *i)
 	return (fractional_part);
 }
 
-// converts string to float 
+// converts string to float
 double	ft_atof(char *str)
 {
 	double	result;
