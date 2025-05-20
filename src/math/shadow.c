@@ -6,14 +6,13 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:54 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/20 17:40:20 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:49:38 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-static int	is_sphere_in_shadow(t_scene *scene,
-	t_light_math *light_inputs, int current_id)
+static int	is_sphere_in_shadow(t_scene *scene, t_light_math *l_inputs, int id)
 {
 	t_sphere	*tmp_sp;
 	t_roots		roots;
@@ -23,30 +22,27 @@ static int	is_sphere_in_shadow(t_scene *scene,
 	{
 		if (tmp_sp->id == id)
 			return (0);
-		roots = find_sphere_inter_roots(l_input->shadow_ray,
-				l_input->shadow_origin, tmp_sp);
-		if ((roots.t1 > EPS && roots.t1 < l_input->max_length)
-			|| (roots.t2 > EPS && roots.t2 < l_input->max_length))
+		roots = find_sphere_inter_roots(l_inputs->shadow_ray,
+				l_inputs->shadow_origin, tmp_sp);
+		if ((roots.t1 > EPS && roots.t1 < l_inputs->max_length)
+			|| (roots.t2 > EPS && roots.t2 < l_inputs->max_length))
 			return (1);
 		tmp_sp = tmp_sp->next;
 	}
 	return (0);
 }
 
-static int	is_plane_in_shadow(t_scene *scene, t_light_math *l_input)
+static int	is_plane_in_shadow(t_scene *scene, t_light_math *l_inputs)
 {
 	t_plane	*tmp_pl;
 	float	t;
-	(void)current_id;
 
 	tmp_pl = scene->pl;
 	while (tmp_pl)
 	{
-		// if (tmp_pl->id == current_id)
-		// 	return (0);
-		t = get_plane_inter_root(light_inputs->shadow_ray,
-				light_inputs->shadow_origin, tmp_pl);
-		if (t > EPS && t < light_inputs->max_length)
+		t = get_plane_inter_root(l_inputs->shadow_ray,
+				l_inputs->shadow_origin, tmp_pl);
+		if (t > EPS && t < l_inputs->max_length)
 			return (1);
 		tmp_pl = tmp_pl->next;
 	}
@@ -54,7 +50,7 @@ static int	is_plane_in_shadow(t_scene *scene, t_light_math *l_input)
 }
 
 static int	is_cylinder_in_shadow(t_scene *scene,
-	t_light_math *light_inputs, int current_id)
+	t_light_math *light_inputs, int id)
 {
 	t_cylinder	*tmp_cy;
 	t_roots		roots;
@@ -76,9 +72,9 @@ static int	is_cylinder_in_shadow(t_scene *scene,
 
 int	is_in_shadow(t_scene *scene, t_light_math *light_inputs, int id)
 {
-	if (is_sphere_in_shadow(scene, l_input, id))
+	if (is_sphere_in_shadow(scene, light_inputs, id))
 		return (1);
-	if (is_plane_in_shadow(scene, light_inputs, id))
+	if (is_plane_in_shadow(scene, light_inputs))
 		return (1);
 	if (is_cylinder_in_shadow(scene, light_inputs, id))
 		return (1);

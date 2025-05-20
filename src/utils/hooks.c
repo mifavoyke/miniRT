@@ -3,24 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:31:15 by yhusieva         ###   ########.fr       */
-=======
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/20 14:13:05 by zpiarova          #+#    #+#             */
-/*   Updated: 2025/05/15 16:32:51 by zpiarova         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2025/05/20 17:47:11 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 // moves camera forward on zoom relative to its local forward axis
-void	scroll_zoom_hook(double xdelta, double ydelta, void *param)
+void	scroll_zoom(double xdelta, double ydelta, void *param)
 {
 	t_minirt	*minirt;
 
@@ -96,8 +89,7 @@ void	resize_hook(int width, int height, void *param)
 
 // mouse press finds the obejct to resize
 // mouse release finds value to resize and performs it 
-void	mouse_hook(mouse_key_t button, action_t action,
-		modifier_key_t mods, void *param)
+void	mouse_hook(mouse_key_t btn, action_t action, modifier_key_t m, void *p)
 {
 	t_minirt	*minirt;
 	t_mouse		*mouse;
