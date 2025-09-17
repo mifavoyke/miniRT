@@ -1,9 +1,5 @@
 # miniRT - Ray tracing engine
 
-## DEMOS
-
-### Epic lolly pop
-
 <div align="center">
   <video src="https://github.com/user-attachments/assets/04f25d52-7d02-4efb-8516-6e92747df57e"/>
 </div>
