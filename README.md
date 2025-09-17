@@ -2,7 +2,23 @@
 
 ## DEMOS
 
+### Epic lolly pop
 
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/04f25d52-7d02-4efb-8516-6e92747df57e"/>
+</div>
+
+### What happens if you resize the blueberry so much it eats other blueberries?
+
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/f19a30f9-b0d6-47e2-a079-bcb209944796"/>
+</div>
+
+### What happens if you wanna go through walls like you turned into a ghost?
+
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/516acfdb-6cdc-4e2f-9d27-ced500e69c39"/>
+</div>
 
 ## Mathematical Foundations
 
