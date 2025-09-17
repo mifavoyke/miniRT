@@ -6,6 +6,7 @@ HEADERS = -I ./includes -I ./lib/MLX42/include/MLX42 -I ./lib/libft
 
 SRC_DIR := ./src
 OBJ_DIR = ./obj
+LIBFT_REPO := git@github.com:mifavoyke/libft.git
 LIBFT_DIR := ./lib/libft
 MLX42_DIR = ./lib/MLX42
 MLX42_BUILD = ./lib/MLX42/build
@@ -68,10 +69,22 @@ check_mlx:
 		cd $(MLX42_DIR) && git pull; \
 	fi
 
+
 libmlx: check_mlx
 	@cmake -DDEBUG=1 $(MLX42_DIR) -B $(MLX42_BUILD) && make -C $(MLX42_BUILD) -j4
 
 libft:
+	@if [ ! -d "$(LIBFT_DIR)" ]; then \
+		echo "MLX42 not found, cloning from GitHub..."; \
+		git clone $(LIBFT_REPO) $(LIBFT_DIR); \
+	elif [ -z "$(shell ls $(LIBFT_DIR))" ]; then \
+		echo "MLX42 directory is empty, cloning from GitHub..."; \
+		rm -rf $(LIBFT_DIR); \
+		git clone $(LIBFT_REPO) $(LIBFT_DIR); \
+	else \
+		echo "MLX42 exists, pulling latest updates..."; \
+		cd $(LIBFT_DIR) && git pull; \
+	fi
 	@echo "\033[0;35mCompiling...\033[0m"
 	@make all -C $(LIBFT_DIR)
 
@@ -89,12 +102,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	@$(RM) $(OBJ_DIR)
 	@$(RM) $(MLX42_BUILD)
-	@make clean -C $(LIBFT_DIR)
+	@if [ -d "$(LIBFT_DIR)" ]; then make clean -C $(LIBFT_DIR); fi
 
 fclean: clean
 	@$(RM) $(NAME)
 	@$(RM) ./lib/MLX42
-	@make fclean -C $(LIBFT_DIR)
+	@$(RM) $(LIBFT_DIR)
 
 valgrind:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=mlx.supp ./$(NAME) scenes/stack.rt
