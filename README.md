@@ -1,5 +1,9 @@
 # miniRT - Ray tracing engine
 
+## DEMOS
+
+
+
 ## Mathematical Foundations
 
 ### Ray tracing algorithm
@@ -113,41 +117,7 @@ The program must take a scene description file with the .rt extension as an argu
 
 ./minirt scenes/scene1.rt
 
-The .rt file contains parameters that describe the scene, and includes the lightning parameters, camera information, and descriptions of objects in the scene. Each type of element can be set in any order in the file. The project must expect at least the following parameters with properties:
-
-Mandatory paramters:
-Ambient lighting   A  0.2  255,255,255
-ambient lighting ratio in the range [0.0,1.0]
-R, G, B colors in the range [0-255]
-Can only be declared once in the scene
-Camera   C  -50.0,0,20  0,0,1  70
-x, y, z coordinates of the viewpoint
-3D normalized orientation vector in the range [-1,1] for each x, y, z axis
-Horizontal field of view (FOV) in degrees in the range [0,180]
-Can only be declared once in the scene
-Light   L  -40.0,50.0,0.0  0.6  10,0,255
-x, y, z coordinates of the light point
-brightness ratio in the range [0.0,1.0]
-light color described by R, G, B colors in the range [0-255]
-Scene objects:
-A. Sphere   sp  0.0,0.0,20.6  12.6  10,0,255
-
-x, y, z coordinates of the sphere center
-the sphere diameter
-R,G,B colors in the range [0-255]
-B. Plane   pl  0.0,0.0,-10.0  0.0,1.0,0.0  0,0,225
-
-x, y, z coordinates of a point in the plane
-3D normalized normal vector in the range [-1,1] for each x, y, z axis
-R,G,B colors in the range [0-255]
-C. Cylinder   cy  50.0,0.0,20.6  0.0,0.0,1.0  14.2  21.42  10,0,255
-
-x, y, z coordinates of the center of the cylinder
-3D normalized vector of axis of cylinder in the range [-1,1] for each x, y, z axis
-the cylinder diameter
-the cylinder height
-R, G, B colors in the range [0,255]
-On top of that, the program must be able to resize the unique properties of objects (diameter for a sphere and the width and height for a cylinder). The program must also be able to apply translation and rotation transformations to objects, lights, and cameras (except for spheres and lights that cannot be rotated).
+The .rt file contains parameters that describe the scene and includes the lightning parameters, camera information and descriptions of objects in the scene. Each type of element can be set in any order in the file.
 
 Example input to the project - lollypop.rt:
 ```
@@ -165,6 +135,14 @@ pl 0,0,-50        0,0,1             100,100,120
 pl -50,0,0        1,0,0             140,120,120
 pl 50,0,0         -1,0,0            120,140,140
 ```
+
+## Challenges that we encountered
+
+1. Colours, shadows, movement - all went south at once
+2. Intersections logic went wild
+
+<img src="https://github.com/user-attachments/assets/f78f47d9-5eaa-4be0-887d-c7b3ddf06954" width="400" />
+<img src="https://github.com/user-attachments/assets/a582effa-d9a8-4e76-b817-063bd5db4275" width="400" />
 
 ## Authors
 
